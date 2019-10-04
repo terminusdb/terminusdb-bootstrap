@@ -76,7 +76,7 @@ if [ ! -z "$1" ]; then
         || printf "\nIs the container running?\n"
     ;;
     "attach")
-      printf "Ctrl+p Ctrl+q to dettach\n\n"
+      printf "Ctrl+p Ctrl+q to detach\n\n"
       _attach
     ;;
     "stats")
