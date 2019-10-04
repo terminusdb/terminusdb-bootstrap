@@ -1,0 +1,100 @@
+#!/bin/bash
+
+#
+# CONFIG
+#
+
+CONTAINER=terminus-server
+REPOSITORY=terminusdb/terminus-server
+TAG=latest
+
+SERVER=localhost
+PORT=6363:6363
+PASS=root
+
+#
+# functions
+#
+
+_usage () {
+  printf "\
+USAGE:
+  terminus-container [COMMAND]
+
+  help      show usage
+  run       run container
+  stop      stop container
+  restart   restart container
+  attach    attach to prolog shell
+  stats     show container stats\n"
+}
+
+_run () {
+  sudo docker run --name $CONTAINER -p $PORT -d -it --rm \
+    -e SERVER_NAME=$SERVER \
+    -e DB_PASS=$PASS \
+    $REPOSITORY:$TAG
+}
+
+_stop () {
+  sudo docker stop $CONTAINER
+}
+
+_restart () {
+  sudo docker stop $CONTAINER
+}
+
+_attach () {
+  sudo docker attach $CONTAINER
+}
+
+_stats () {
+  sudo docker stats $CONTAINER
+}
+
+#
+# PROCESS ARGS
+#
+
+printf "\n"
+
+if [ ! -z "$1" ]; then
+  case "$1" in
+    "run")
+      _run > /dev/null \
+        && printf "terminus-server container started\n" \
+        || printf "\nIs the container already running?\n"
+    ;;
+    "stop")
+      _stop > /dev/null \
+        && printf "terminus-server container stopped\n" \
+        || printf "\nIs the container running?\n"
+    ;;
+    "restart")
+      _restart > /dev/null \
+        && printf "terminus-server container restarted\n" \
+        || printf "\nIs the container running?\n"
+    ;;
+    "attach")
+      printf "Ctrl+p Ctrl+q to dettach\n\n"
+      _attach
+    ;;
+    "stats")
+      _stats \
+        || printf "\nIs the container running?\n"
+    ;;
+    "help")
+      _usage
+    ;;
+    *)
+      printf "invalid command\n\n"
+      _usage
+    ;;
+  esac
+else
+  _usage
+fi
+
+printf "\n"
+
+# vim: set filetype=sh :
