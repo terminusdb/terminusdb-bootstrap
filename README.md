@@ -27,8 +27,8 @@ Since letting unprivileged users run docker is like insecure and all, this scrip
 ## Get this script, cd to it
 
 ```
-$ git clone https://github.com/dmytri/terminus-container
-$ cd terminus-container
+$ git clone https://github.com/terminusdb/terminus-quickstart
+$ cd terminus-quickstart
 ```
 
 ## Run the container
