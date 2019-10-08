@@ -55,7 +55,7 @@ _run () {
     -v terminus-config:$CONFIG_VOLUME:rw \
     -e SERVER_NAME=$SERVER \
     -e SERVER_PORT=$PORT \
-    -e WORKERS_AMOUNT=$WORKERS \
+    -e WORKERS=$WORKERS \
     -e DB_PASS=$PASS \
     $REPOSITORY:$TAG
 }
