@@ -4,16 +4,23 @@
 # CONFIG
 #
 
+# Contianer
 CONTAINER=terminus-server
 REPOSITORY=terminusdb/terminus-server
 TAG=latest
 
+# Volumes
+STORAGE_VOLUME=/app/terminusdb/storage
+CONFIG_VOLUME=/app/terminusdb/config
+
+# Server
 SERVER=localhost
-PORT=6363:6363
+PORT=6363
+WORKERS=8
 PASS=root
 
 #
-# functions
+# FUNCTIONS
 #
 
 _usage () {
@@ -24,14 +31,31 @@ USAGE:
   help      show usage
   run       run container
   stop      stop container
-  restart   restart container
   attach    attach to prolog shell
   stats     show container stats\n"
 }
 
+_confirm() {
+  read -r -p "Are you sure? [y/N] " RESPONSE
+  case "$RESPONSE" in
+      [yY][eE][sS]|[yY]) 
+          true
+      ;;
+      *)
+          false
+      ;;
+  esac
+  printf "\n"
+}
+
 _run () {
-  sudo docker run --name $CONTAINER -p $PORT -d -it --rm \
+  sudo docker run -d -it --rm \
+    --name $CONTAINER -p $PORT:$PORT \
+    -v terminus-storage:$STORAGE_VOLUME:rw \
+    -v terminus-config:$CONFIG_VOLUME:rw \
     -e SERVER_NAME=$SERVER \
+    -e SERVER_PORT=$PORT \
+    -e WORKERS_AMOUNT=$WORKERS \
     -e DB_PASS=$PASS \
     $REPOSITORY:$TAG
 }
@@ -61,6 +85,7 @@ printf "\n"
 if [ ! -z "$1" ]; then
   case "$1" in
     "run")
+      # _build
       _run > /dev/null \
         && printf "terminus-server container started\n" \
         || printf "\nIs the container already running?\n"
@@ -70,11 +95,6 @@ if [ ! -z "$1" ]; then
         && printf "terminus-server container stopped\n" \
         || printf "\nIs the container running?\n"
     ;;
-    "restart")
-      _restart > /dev/null \
-        && printf "terminus-server container restarted\n" \
-        || printf "\nIs the container running?\n"
-    ;;
     "attach")
       printf "Ctrl+p Ctrl+q to detach\n\n"
       _attach
@@ -82,6 +102,9 @@ if [ ! -z "$1" ]; then
     "stats")
       _stats \
         || printf "\nIs the container running?\n"
+    ;;
+    "rm")
+      _confirm && sudo docker rmi $REPOSITORY:$LOCALTAG
     ;;
     "help")
       _usage
@@ -97,4 +120,4 @@ fi
 
 printf "\n"
 
-# vim: set filetype=sh :
+# vim:ft=sh

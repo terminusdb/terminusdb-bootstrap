@@ -50,7 +50,7 @@ d9fa4a1acf93: Pulling fs layer
 
 Ready to terminate? Go here: http://localhost:6363/dashboard
 
-## To stop, restart, attach, etc, see usage
+## To stop, attach, etc, see usage
 ```
 $ ./terminus-container 
 
@@ -60,7 +60,6 @@ USAGE:
   help      show usage
   run       run container
   stop      stop container
-  restart   restart container
   attach    attach to prolog shell
   stats     show container stats
 ```
