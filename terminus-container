@@ -1,4 +1,4 @@
-#!/bin/bash
+m!/bin/bash
 
 #
 # CONFIG
@@ -104,7 +104,7 @@ if [ ! -z "$1" ]; then
         || printf "\nIs the container running?\n"
     ;;
     "rm")
-      _confirm && sudo docker rmi $REPOSITORY:$LOCALTAG
+      _confirm && sudo docker rmi $REPOSITORY:$TAG
     ;;
     "help")
       _usage
