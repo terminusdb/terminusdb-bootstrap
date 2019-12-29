@@ -1,4 +1,4 @@
-m!/bin/bash
+#!/bin/bash
 
 #
 # CONFIG
@@ -51,8 +51,8 @@ _confirm() {
 _run () {
   sudo docker run -d -it --rm \
     --name $CONTAINER -p $PORT:$PORT \
-    -v terminus-storage:$STORAGE_VOLUME:rw \
-    -v terminus-config:$CONFIG_VOLUME:rw \
+    -v terminus_storage:$STORAGE_VOLUME:rw \
+    -v terminus_config:$CONFIG_VOLUME:rw \
     -e SERVER_NAME=$SERVER \
     -e SERVER_PORT=$PORT \
     -e WORKERS=$WORKERS \
