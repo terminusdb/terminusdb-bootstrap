@@ -48,20 +48,21 @@ d9fa4a1acf93: Pulling fs layer
 [ ... ]
 ```
 
-Ready to terminate? Go here: http://localhost:6363/dashboard
+Ready to terminate? Go here: http://localhost:6363/console
 
 ## To stop, attach, etc, see usage
 ```
 $ ./terminus-container 
-
 USAGE:
   terminus-container [COMMAND]
 
   help      show usage
   run       run container
   stop      stop container
+  console   launch console in web browser
   attach    attach to prolog shell
   stats     show container stats
+  rm        remove container and volumes
 ```
 Oh, and flattery motivates us, please give us a star here: https://github.com/terminusdb/terminus-server
 
