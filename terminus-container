@@ -18,6 +18,7 @@ SERVER=localhost
 PORT=6363
 WORKERS=8
 PASS=root
+CONSOLE=http://$SERVER:$PORT/console
 
 #
 # FUNCTIONS
@@ -31,8 +32,10 @@ USAGE:
   help      show usage
   run       run container
   stop      stop container
+  console   launch console in web browser
   attach    attach to prolog shell
-  stats     show container stats\n"
+  stats     show container stats
+  rm        remove container and volumes\n"
 }
 
 _confirm() {
@@ -76,6 +79,17 @@ _stats () {
   sudo docker stats $CONTAINER
 }
 
+_rm () {
+ _confirm \
+   && sudo docker rmi $REPOSITORY:$TAG \
+   && docker volume rm "$STORAGE_VOLUME" \
+   && docker volume rm "$CONFIG_VOLUME"
+}
+
+_console () {
+  python -m webbrowser "$CONSOLE"
+}
+
 #
 # PROCESS ARGS
 #
@@ -87,13 +101,17 @@ if [ ! -z "$1" ]; then
     "run")
       # _build
       _run > /dev/null \
-        && printf "terminus-server container started\n" \
+        && printf "terminus-server container started $CONSOLE\n" \
         || printf "\nIs the container already running?\n"
     ;;
     "stop")
       _stop > /dev/null \
         && printf "terminus-server container stopped\n" \
         || printf "\nIs the container running?\n"
+    ;;
+    "console")
+      _console \
+        || printf "this command requires python\n"
     ;;
     "attach")
       printf "Ctrl+p Ctrl+q to detach\n\n"
@@ -104,7 +122,9 @@ if [ ! -z "$1" ]; then
         || printf "\nIs the container running?\n"
     ;;
     "rm")
-      _confirm && sudo docker rmi $REPOSITORY:$TAG
+      printf "removing will delete storage and config volumes\n"
+      _rm \
+        || printf "\nIs the container stopped?\n"
     ;;
     "help")
       _usage
