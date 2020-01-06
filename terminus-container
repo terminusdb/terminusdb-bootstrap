@@ -7,7 +7,7 @@
 # Contianer
 CONTAINER=terminus-server
 REPOSITORY=terminusdb/terminus-server
-TAG=latest
+TAG=${TERMINUS_TAG:-latest} 
 
 # Volumes
 STORAGE_VOLUME=/app/terminusdb/storage
