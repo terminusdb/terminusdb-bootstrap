@@ -42,10 +42,10 @@ _confirm() {
   read -r -p "Are you sure? [y/N] " RESPONSE
   case "$RESPONSE" in
       [yY][eE][sS]|[yY]) 
-          true
+          return 0
       ;;
       *)
-          false
+          return 1
       ;;
   esac
   printf "\n"
@@ -80,10 +80,12 @@ _stats () {
 }
 
 _rm () {
- _confirm \
-   && sudo docker rmi $REPOSITORY:$TAG \
+ if _confirm
+ then
+   sudo docker rmi $REPOSITORY:$TAG \
    && docker volume rm "$STORAGE_VOLUME" \
    && docker volume rm "$CONFIG_VOLUME"
+ fi
 }
 
 _console () {
