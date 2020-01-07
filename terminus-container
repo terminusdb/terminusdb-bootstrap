@@ -5,20 +5,20 @@
 #
 
 # Contianer
-CONTAINER=terminus-server
-REPOSITORY=terminusdb/terminus-server
+CONTAINER=${TERMINUS_CONTAINER:-terminus-server}
+REPOSITORY=${TERMINUS_REPOSITORY:-terminusdb/terminus-server}
 TAG=${TERMINUS_TAG:-latest} 
 
 # Volumes
-STORAGE_VOLUME=/app/terminusdb/storage
-CONFIG_VOLUME=/app/terminusdb/config
+STORAGE_VOLUME=${TERMINUS_STORAGE_VOLUME:-/app/terminusdb/storage}
+CONFIG_VOLUME=${TERMINUS_CONFIG_VOLUME:-/app/terminusdb/config}
 
 # Server
-SERVER=localhost
-PORT=6363
-WORKERS=8
-PASS=root
-CONSOLE=http://$SERVER:$PORT/console
+SERVER=${TERMINUS_SERVER:-localhost}
+PORT=${TERMINUS_PORT:-6363}
+WORKERS=${TERMINUS_WORKERS:-8}
+PASS=${TEMRINUS_PASS:-root}
+CONSOLE=http://$SERVER:$PORT${TERMINUS_CONSOLE:-/console}
 
 #
 # FUNCTIONS
