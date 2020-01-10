@@ -20,6 +20,13 @@ WORKERS=${TERMINUS_WORKERS:-8}
 PASS=${TEMRINUS_PASS:-root}
 CONSOLE=http://$SERVER:$PORT${TERMINUS_CONSOLE:-/console}
 
+if command -v sudo >/dev/null;
+then
+  DOCKER="sudo docker"
+else
+  DOCKER="docker"
+fi
+
 #
 # FUNCTIONS
 #
@@ -52,7 +59,8 @@ _confirm() {
 }
 
 _run () {
-  sudo docker run -d -it --rm \
+  $DOCKER image rm -v $REPOSITORY:$TAG 2>/dev/null
+  $DOCKER run -d -it --rm \
     --name $CONTAINER -p $PORT:$PORT \
     -v terminus_storage:$STORAGE_VOLUME:rw \
     -v terminus_config:$CONFIG_VOLUME:rw \
@@ -64,25 +72,25 @@ _run () {
 }
 
 _stop () {
-  sudo docker stop $CONTAINER
+  $DOCKER stop $CONTAINER
 }
 
 _restart () {
-  sudo docker stop $CONTAINER
+  $DOCKER stop $CONTAINER
 }
 
 _attach () {
-  sudo docker attach $CONTAINER
+  $DOCKER attach $CONTAINER
 }
 
 _stats () {
-  sudo docker stats $CONTAINER
+  $DOCKER stats $CONTAINER
 }
 
 _rm () {
  if _confirm
  then
-   sudo docker rmi $REPOSITORY:$TAG \
+   $DOCKER rmi $REPOSITORY:$TAG \
    && docker volume rm "$STORAGE_VOLUME" \
    && docker volume rm "$CONFIG_VOLUME"
  fi
