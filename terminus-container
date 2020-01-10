@@ -62,7 +62,7 @@ _confirm() {
 }
 
 _run () {
-  $DOCKER image rm -v $REPOSITORY:$TAG 2>/dev/null
+  $DOCKER image rm $REPOSITORY:$TAG 2>/dev/null
   $DOCKER run -d -it --rm \
     --name $CONTAINER -p $PORT:$PORT \
     -v $TERMINUS_STORAGE:$STORAGE_VOLUME:rw \
