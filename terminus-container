@@ -10,8 +10,11 @@ REPOSITORY=${TERMINUS_REPOSITORY:-terminusdb/terminus-server}
 TAG=${TERMINUS_TAG:-latest} 
 
 # Volumes
+TERMINUS_STORAGE=${TERINUS_TERMINUS_STORAGE:-terminus_storage}
+TERMINUS_CONFIG=${TERMINUS_TERMINUS_CONFIG:-terminus_config}
 STORAGE_VOLUME=${TERMINUS_STORAGE_VOLUME:-/app/terminusdb/storage}
 CONFIG_VOLUME=${TERMINUS_CONFIG_VOLUME:-/app/terminusdb/config}
+
 
 # Server
 SERVER=${TERMINUS_SERVER:-localhost}
@@ -42,7 +45,7 @@ USAGE:
   console   launch console in web browser
   attach    attach to prolog shell
   stats     show container stats
-  rm        remove container and volumes\n"
+  rm        remove volumes\n"
 }
 
 _confirm() {
@@ -62,8 +65,8 @@ _run () {
   $DOCKER image rm -v $REPOSITORY:$TAG 2>/dev/null
   $DOCKER run -d -it --rm \
     --name $CONTAINER -p $PORT:$PORT \
-    -v terminus_storage:$STORAGE_VOLUME:rw \
-    -v terminus_config:$CONFIG_VOLUME:rw \
+    -v $TERMINUS_STORAGE:$STORAGE_VOLUME:rw \
+    -v $TERMINUS_CONFIG:$CONFIG_VOLUME:rw \
     -e SERVER_NAME=$SERVER \
     -e SERVER_PORT=$PORT \
     -e WORKERS=$WORKERS \
@@ -90,9 +93,8 @@ _stats () {
 _rm () {
  if _confirm
  then
-   $DOCKER rmi $REPOSITORY:$TAG \
-   && docker volume rm "$STORAGE_VOLUME" \
-   && docker volume rm "$CONFIG_VOLUME"
+   $DOCKER volume rm "$TERMINUS_STORAGE" \
+   && $DOCKER volume rm "$TERMINUS_CONFIG"
  fi
 }
 
