@@ -10,19 +10,44 @@
 
 # TerminusDB Server Container Control
 
-This is a simple convenience script to run terminus-server as a docker container. These instructions are for linux or similar
+This is a simple convenience script to run terminus-server as a docker
+container.
 
 What the heck is TerminusDB? See here: https://terminusdb.com
 
 ## Prerequisites
 
-- docker
+### Docker
 
-Obvs, you need to have docker running.
+Since this script uses the TerminusDB Docker container, you need to have Docker
+running.
 
-- sudo
+On Windows and Mac, Docker Desktop can be downloaded here:
+https://www.docker.com/products/docker-desktop
 
-Since letting unprivileged users run docker is like insecure and all, this script uses sudo, so get your sudoers on.
+On Linux, use your distro's package manager, or find more information here:
+https://www.docker.com/products/container-runtime
+
+### Git
+
+This script is distributed via GitHub, so you will need git to clone and update
+it, if you don't already have git, you can download it here:
+https://git-scm.com/downloads
+
+Windows users should use the application "Git Bash" for all terminual commands
+described below, this application comes with Git for Windows.
+
+### Sudo
+
+Sudo is optional. As letting unprivileged users run docker is insecure, this
+script uses sudo by default if it is available. 
+
+Most users will not need to do anything here, sudo is installed by default on
+Macs and many populer Linux distros such as Fedora, Red Hat, Debian, Ubuntu and
+Mint. Linux users who use minmal distros such as Archlinux, are advised to
+install sudo and confugure their sudoers file accordingly.
+
+Windows users do not need to do anything here.
 
 ## Get this script, cd to it
 
@@ -50,16 +75,23 @@ d9fa4a1acf93: Pulling fs layer
 
 ## If you've installed before 
 
-You may need to move or remove previous volumes or you may encounter bugs or the old console.
+You may need to move or remove previous volumes or you may encounter bugs or
+the old console.
+
+Warning: This will lead to losing local data.
 
 ```
-sudo docker volume rm terminus_config
-sudo docker volume rm terminus_storage
+ ./terminus-container rm
+
+removing will delete storage and config volumes
+Are you sure? [y/N] y
+terminus_storage
+terminus_config
 ```
 
 ## Using the console
 
-Ready to terminate? 
+Ready to terminate? Open the TerminusDB Console in your web browser.
 
 ```
 $ ./terminus_container console
