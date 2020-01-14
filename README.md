@@ -129,14 +129,14 @@ done by setting enviroment variables.
 ## Examples
 
 ### Not using sudo even tho sudo is available
-'''
+```
 TERMINUS_DOCKER=docker ./terminus-container [command]
-'''
+```
 
 ### Using the development release instead of latest realease
-'''
+```
 TERMINUS_TAG=dev ./terminus-container [command]
-'''
+```
 
 See the source code to find the other environment variables that can be set.
 
