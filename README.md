@@ -52,14 +52,14 @@ Windows users do not need to do anything here.
 ## Get this script, cd to it
 
 ```
-$ git clone https://github.com/terminusdb/terminus-quickstart
-$ cd terminus-quickstart
+git clone https://github.com/terminusdb/terminus-quickstart
+cd terminus-quickstart
 ```
 
 ## Run the container (the first time)
 
 ```
-$ ./terminus-container run
+./terminus-container run
 
 Unable to find image 'terminusdb/terminus-server:latest' locally
 latest: Pulling from terminusdb/terminus-server
@@ -94,14 +94,14 @@ terminus_config
 Ready to terminate? Open the TerminusDB Console in your web browser.
 
 ```
-$ ./terminus_container console
+./terminus_container console
 ```
 
 Or go here: http://localhost:6363/console
 
 ## To stop, attach, etc, see usage
 ```
-$ ./terminus-container 
+./terminus-container 
 USAGE:
   terminus-container [COMMAND]
 
