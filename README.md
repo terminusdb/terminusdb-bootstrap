@@ -102,6 +102,7 @@ Or go here: http://localhost:6363/console
 ## To stop, attach, etc, see usage
 ```
 ./terminus-container 
+
 USAGE:
   terminus-container [COMMAND]
 
@@ -113,7 +114,31 @@ USAGE:
   stats     show container stats
   rm        remove container and volumes
 ```
-Oh, and flattery motivates us, please give us a star here: https://github.com/terminusdb/terminus-server
+
+That's it! You're ready to go!
+
+Oh, and flattery motivates us, please give us a star here:
+https://github.com/terminusdb/terminus-server
+
+# Using The Enviroment
+
+This script is designed to "work out of the box," however, there may be
+situations where advanced users want to override some of it's defaults, this is
+done by setting enviroment variables.
+
+## Examples
+
+### Not using sudo even tho sudo is available
+'''
+TERMINUS_DOCKER=docker ./terminus-container [command]
+'''
+
+### Using the development release instead of latest realease
+'''
+TERMINUS_TAG=dev ./terminus-container [command]
+'''
+
+See the source code to find the other environment variables that can be set.
 
 
 
