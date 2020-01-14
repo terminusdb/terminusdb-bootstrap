@@ -128,7 +128,7 @@ done by setting enviroment variables.
 
 ## Examples
 
-### Not using sudo even tho sudo is available
+### Not using sudo even when sudo is available
 ```
 TERMINUS_DOCKER=docker ./terminus-container [command]
 ```
