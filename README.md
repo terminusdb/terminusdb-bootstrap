@@ -51,14 +51,14 @@ Windows users do not need to do anything here.
 
 ## Get this script, cd to it
 
-```bash
+```
 git clone https://github.com/terminusdb/terminus-quickstart
 cd terminus-quickstart
 ```
 
 ## Run the container (the first time)
 
-```bash
+```
 ./terminus-container run
 
 Unable to find image 'terminusdb/terminus-server:latest' locally
@@ -80,7 +80,7 @@ the old console.
 
 Warning: This will lead to losing local data.
 
-```bash
+```
  ./terminus-container rm
 
 removing will delete storage and config volumes
@@ -93,14 +93,14 @@ terminus_config
 
 Ready to terminate? Open the TerminusDB Console in your web browser.
 
-```bash
+```
 ./terminus_container console
 ```
 
 Or go here: http://localhost:6363/console
 
 ## To stop, attach, etc, see usage
-```bash
+```
 ./terminus-container 
 
 USAGE:
@@ -129,13 +129,13 @@ done by setting enviroment variables.
 ## Examples
 
 ### Not using sudo even when sudo is available
-```bash
-TERMINUS_DOCKER=docker ./terminus-container [command]
+```
+TERMINUS_DOCKER=docker ./terminus-container [COMMAND]
 ```
 
 ### Using the development release instead of latest realease
-```bash
-TERMINUS_TAG=dev ./terminus-container [command]
+```
+TERMINUS_TAG=dev ./terminus-container [COMMAND]
 ```
 
 See the source code to find the other environment variables that can be set.
