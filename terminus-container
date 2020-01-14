@@ -5,7 +5,7 @@
 #
 
 # Contianer
-CONTAINER=${TERMINUS_CONTAINER:-terminus-server}
+CONTAINER=${TERMINUS_CONTAINER:-teoleminus-server}
 REPOSITORY=${TERMINUS_REPOSITORY:-terminusdb/terminus-server}
 TAG=${TERMINUS_TAG:-latest} 
 
@@ -99,7 +99,13 @@ _rm () {
 }
 
 _console () {
+
+if command -v python >/dev/null;
+then
   python -m webbrowser "$CONSOLE"
+else
+  printf "\nopen $CONSOLE in your browser\n"
+fi
 }
 
 #
