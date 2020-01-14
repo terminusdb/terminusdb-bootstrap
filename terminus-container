@@ -25,9 +25,9 @@ CONSOLE=http://$SERVER:$PORT${TERMINUS_CONSOLE:-/console}
 
 if command -v sudo >/dev/null;
 then
-  DOCKER="sudo docker"
+  DOCKER=${TERMINUS_DOCKER:-sudo docker}
 else
-  DOCKER="docker"
+  DOCKER=${TERMINUS_DOCKER:-docker}
 fi
 
 #
