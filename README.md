@@ -138,6 +138,11 @@ TERMINUS_DOCKER=docker ./terminus-container [COMMAND]
 TERMINUS_TAG=dev ./terminus-container [COMMAND]
 ```
 
+### Using a specific release instead of latest realease
+```
+TERMINUS_TAG=v1.1.1 ./terminus-container [COMMAND]
+```
+
 See the source code to find the other environment variables that can be set.
 
 
