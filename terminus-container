@@ -15,13 +15,14 @@ TERMINUS_CONFIG=${TERMINUS_TERMINUS_CONFIG:-terminus_config}
 STORAGE_VOLUME=${TERMINUS_STORAGE_VOLUME:-/app/terminusdb/storage}
 CONFIG_VOLUME=${TERMINUS_CONFIG_VOLUME:-/app/terminusdb/config}
 
-
 # Server
+SCHEME=${TERMINUS_SCHEME:-http}
 SERVER=${TERMINUS_SERVER:-localhost}
+SERVER_PORT=${TERMINUS_SERVER_PORT:-6363}
 PORT=${TERMINUS_PORT:-6363}
 WORKERS=${TERMINUS_WORKERS:-8}
 PASS=${TEMRINUS_PASS:-root}
-CONSOLE=http://$SERVER:$PORT${TERMINUS_CONSOLE:-/console}
+CONSOLE=${TERMINUS_CONSOLE:-$SCHEME://$SERVER:$PORT/console}
 
 if command -v sudo >/dev/null;
 then
@@ -62,13 +63,16 @@ _confirm() {
 }
 
 _run () {
-  $DOCKER image rm $REPOSITORY:$TAG 2>/dev/null
+  if [[ $TAG == latest ]];
+  then
+    $DOCKER image rm $REPOSITORY:$TAG 2>/dev/null
+  fi
   $DOCKER run -d -it --rm \
-    --name $CONTAINER -p $PORT:$PORT \
+    --name $CONTAINER -p $PORT:$SERVER_PORT \
     -v $TERMINUS_STORAGE:$STORAGE_VOLUME:rw \
     -v $TERMINUS_CONFIG:$CONFIG_VOLUME:rw \
     -e SERVER_NAME=$SERVER \
-    -e SERVER_PORT=$PORT \
+    -e SERVER_PORT=$SERVER_PORT \
     -e WORKERS=$WORKERS \
     -e DB_PASS=$PASS \
     $REPOSITORY:$TAG
