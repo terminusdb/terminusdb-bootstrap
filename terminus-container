@@ -65,16 +65,16 @@ _confirm() {
 _run () {
   if [[ $TAG == latest ]];
   then
-    $DOCKER image rm $REPOSITORY:$TAG 2>/dev/null
+    $DOCKER image rm "$REPOSITORY":"$TAG" 2>/dev/null
   fi
   $DOCKER run -d -it --rm \
-    --name $CONTAINER -p $PORT:$SERVER_PORT \
-    -v $TERMINUS_STORAGE:$STORAGE_VOLUME:rw \
-    -v $TERMINUS_CONFIG:$CONFIG_VOLUME:rw \
-    -e SERVER_NAME=$SERVER \
-    -e SERVER_PORT=$SERVER_PORT \
-    -e WORKERS=$WORKERS \
-    -e ADMIN_PASS=$PASS \
+    --name "$CONTAINER" -p "$PORT":"$SERVER_PORT" \
+    -v "$TERMINUS_STORAGE":"$STORAGE_VOLUME":rw \
+    -v "$TERMINUS_CONFIG":"$CONFIG_VOLUME":rw \
+    -e SERVER_NAME="$SERVER" \
+    -e SERVER_PORT="$SERVER_PORT" \
+    -e WORKERS="$WORKERS" \
+    -e ADMIN_PASS="$PASS" \
     $REPOSITORY:$TAG
 }
 
