@@ -74,7 +74,7 @@ _run () {
     -e SERVER_NAME=$SERVER \
     -e SERVER_PORT=$SERVER_PORT \
     -e WORKERS=$WORKERS \
-    -e DB_PASS=$PASS \
+    -e ADMIN_PASS=$PASS \
     $REPOSITORY:$TAG
 }
 
