@@ -65,33 +65,33 @@ _confirm() {
 _run () {
   if [[ $TAG == latest ]];
   then
-    $DOCKER image rm "$REPOSITORY":"$TAG" 2>/dev/null
+    $DOCKER image rm "$REPOSITORY:$TAG" 2>/dev/null
   fi
   $DOCKER run -d -it --rm \
-    --name "$CONTAINER" -p "$PORT":"$SERVER_PORT" \
-    -v "$TERMINUS_STORAGE":"$STORAGE_VOLUME":rw \
-    -v "$TERMINUS_CONFIG":"$CONFIG_VOLUME":rw \
+    --name "$CONTAINER" -p "$PORT:$SERVER_PORT" \
+    -v "$TERMINUS_STORAGE:$STORAGE_VOLUME:rw" \
+    -v "$TERMINUS_CONFIG:$CONFIG_VOLUME:rw" \
     -e SERVER_NAME="$SERVER" \
     -e SERVER_PORT="$SERVER_PORT" \
     -e WORKERS="$WORKERS" \
     -e ADMIN_PASS="$PASS" \
-    $REPOSITORY:$TAG
+    "$REPOSITORY:$TAG"
 }
 
 _stop () {
-  $DOCKER stop $CONTAINER
+  $DOCKER stop "$CONTAINER"
 }
 
 _restart () {
-  $DOCKER stop $CONTAINER
+  $DOCKER stop "$CONTAINER"
 }
 
 _attach () {
-  $DOCKER attach $CONTAINER
+  $DOCKER attach "$CONTAINER"
 }
 
 _stats () {
-  $DOCKER stats $CONTAINER
+  $DOCKER stats "$CONTAINER"
 }
 
 _rm () {
@@ -108,7 +108,7 @@ if command -v python >/dev/null;
 then
   python -m webbrowser "$CONSOLE"
 else
-  printf "\nopen $CONSOLE in your browser\n"
+  printf "\nopen %s in your browser\n" "$CONSOLE"
 fi
 }
 
@@ -118,12 +118,12 @@ fi
 
 printf "\n"
 
-if [ ! -z "$1" ]; then
+if [ -n "$1" ]; then
   case "$1" in
     "run")
       # _build
       _run > /dev/null \
-        && printf "terminus-server container started $CONSOLE\n" \
+        && printf "terminus-server container started %s\n" "$CONSOLE" \
         || printf "\nIs the container already running?\n"
     ;;
     "stop")
