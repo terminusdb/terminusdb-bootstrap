@@ -112,6 +112,18 @@ else
 fi
 }
 
+_serve () {
+if command -v python >/dev/null;
+then
+  mkdir local_files
+  cd local_files
+
+  python -m http.server 8888
+else
+  printf "\npython is require for this feature\n"
+fi
+}
+
 #
 # PROCESS ARGS
 #
@@ -150,6 +162,9 @@ if [ -n "$1" ]; then
     ;;
     "help")
       _usage
+    ;;
+    "serve")
+      _serve
     ;;
     *)
       printf "invalid command\n\n"
