@@ -31,6 +31,13 @@ else
   DOCKER=${TERMINUS_DOCKER:-docker}
 fi
 
+if false; then
+   MOUNTLOCAL="-v $(pwd)/local_files:/app/local_files"
+ else
+   MOUNTLOCAL=""
+fi
+
+
 #
 # FUNCTIONS
 #
@@ -72,7 +79,7 @@ _run () {
     --name "$CONTAINER" -p "$PORT:$SERVER_PORT" \
     -v "$TERMINUS_STORAGE:$STORAGE_VOLUME:rw" \
     -v "$TERMINUS_CONFIG:$CONFIG_VOLUME:rw" \
-    -v "$(pwd)/local_files:/app/local_files" \
+    $MOUNTLOCAL \
     -e SERVER_NAME="$SERVER" \
     -e SERVER_PORT="$SERVER_PORT" \
     -e WORKERS="$WORKERS" \
