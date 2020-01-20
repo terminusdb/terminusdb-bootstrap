@@ -31,10 +31,11 @@ else
   DOCKER=${TERMINUS_DOCKER:-docker}
 fi
 
-if false; then
-   MOUNTLOCAL="-v $(pwd)/local_files:/app/local_files"
+if [ -z $TERMINUS_LOCAL ];
+then
+  MOUNTLOCAL=""
  else
-   MOUNTLOCAL=""
+  MOUNTLOCAL="-v $TERMINUS_LOCAL:/app/local_files"
 fi
 
 
@@ -74,7 +75,6 @@ _run () {
   then
     $DOCKER image rm "$REPOSITORY:$TAG" 2>/dev/null
   fi
-  mkdir local_files 2> /dev/null
   $DOCKER run -d -it --rm \
     --name "$CONTAINER" -p "$PORT:$SERVER_PORT" \
     -v "$TERMINUS_STORAGE:$STORAGE_VOLUME:rw" \
