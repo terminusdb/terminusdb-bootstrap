@@ -4,7 +4,7 @@
 # CONFIG
 #
 
-# Contianer
+# Container
 CONTAINER=${TERMINUS_CONTAINER:-terminus-server}
 REPOSITORY=${TERMINUS_REPOSITORY:-terminusdb/terminus-server}
 TAG=${TERMINUS_TAG:-latest} 
@@ -31,11 +31,19 @@ else
   DOCKER=${TERMINUS_DOCKER:-docker}
 fi
 
-if [ -z $TERMINUS_LOCAL ];
+if [ -z "$TERMINUS_INGRESS_URL" ];
 then
-  MOUNTLOCAL=""
+  SET_INGRESS=""
  else
-  MOUNTLOCAL="-v $TERMINUS_LOCAL:/app/local_files"
+  SET_INGRESS="-e INGRESS_URL=\"$TERMINUS_INGRESS_URL\""
+fi
+
+if [ -z "$TERMINUS_LOCAL" ];
+then
+  MOUNT_LOCAL=""
+ else
+  MOUNT_LOCAL="-v \"$TERMINUS_LOCAL\":/app/local_files"
+  printf "\nMOUNT \"%s\" \nTO \"/app/local_files\"\n" "$TERMINUS_LOCAL"
 fi
 
 
@@ -75,11 +83,12 @@ _run () {
   then
     $DOCKER image rm "$REPOSITORY:$TAG" 2>/dev/null
   fi
-  $DOCKER run -d -it --rm \
+  eval "$DOCKER" run -d -it --rm \
     --name "$CONTAINER" -p "$PORT:$SERVER_PORT" \
     -v "$TERMINUS_STORAGE:$STORAGE_VOLUME:rw" \
     -v "$TERMINUS_CONFIG:$CONFIG_VOLUME:rw" \
-    $MOUNTLOCAL \
+    "$MOUNT_LOCAL" \
+    "$SET_INGRESS" \
     -e SERVER_NAME="$SERVER" \
     -e SERVER_PORT="$SERVER_PORT" \
     -e WORKERS="$WORKERS" \
@@ -124,9 +133,6 @@ fi
 _serve () {
 if command -v python >/dev/null;
 then
-  mkdir local_files
-  cd local_files
-
   python -m http.server 8888
 else
   printf "\npython is require for this feature\n"
