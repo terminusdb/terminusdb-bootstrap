@@ -31,11 +31,11 @@ else
   DOCKER=${TERMINUS_DOCKER:-docker}
 fi
 
-if [ -z "$TERMINUS_INGRESS_URL" ];
+if [ -z "$TERMINUS_PUBLIC_URL" ];
 then
-  SET_INGRESS=""
+  SET_PUBLIC=""
  else
-  SET_INGRESS="-e INGRESS_URL=\"$TERMINUS_INGRESS_URL\""
+  SET_PUBLIC="-e PUBLIC_URL=\"$TERMINUS_PUBLIC_URL\""
 fi
 
 if [ -z "$TERMINUS_LOCAL" ];
@@ -88,7 +88,7 @@ _run () {
     -v "$TERMINUS_STORAGE:$STORAGE_VOLUME:rw" \
     -v "$TERMINUS_CONFIG:$CONFIG_VOLUME:rw" \
     "$MOUNT_LOCAL" \
-    "$SET_INGRESS" \
+    "$SET_PUBLIC" \
     -e SERVER_NAME="$SERVER" \
     -e SERVER_PORT="$SERVER_PORT" \
     -e WORKERS="$WORKERS" \
