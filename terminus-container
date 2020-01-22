@@ -135,7 +135,7 @@ if command -v python >/dev/null;
 then
   python -m http.server 8888
 else
-  printf "\npython is require for this feature\n"
+  printf "\npython is required for this feature\n"
 fi
 }
 
