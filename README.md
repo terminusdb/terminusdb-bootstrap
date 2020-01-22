@@ -128,6 +128,11 @@ done by setting enviroment variables.
 
 ## Examples
 
+### Mount a local directory inside the container
+```
+TERMINUS_LOCAL=/path/to/dir ./terminus-container [COMMAND]
+```
+
 ### Not using sudo even when sudo is available
 ```
 TERMINUS_DOCKER=docker ./terminus-container [COMMAND]
