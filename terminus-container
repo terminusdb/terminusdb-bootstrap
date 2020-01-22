@@ -116,7 +116,7 @@ _rm () {
  if _confirm
  then
    $DOCKER volume rm "$TERMINUS_STORAGE" \
-   && $DOCKER volume rm "$TERMINUS_CONFIG"
+     && $DOCKER volume rm "$TERMINUS_CONFIG"
  fi
 }
 
