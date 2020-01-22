@@ -56,13 +56,15 @@ _usage () {
 USAGE:
   terminus-container [COMMAND]
 
-  help      show usage
-  run       run container
-  stop      stop container
-  console   launch console in web browser
-  attach    attach to prolog shell
-  stats     show container stats
-  rm        remove volumes\n"
+  help        show usage
+  run         run container
+  stop        stop container
+  console     launch console in web browser
+  attach      attach to prolog shell
+  stats       show container stats
+  rm-config   remove config volumes
+  rm-storage  remove storage volumes
+  rm          remove volumes\n"
 }
 
 _confirm() {
@@ -110,6 +112,20 @@ _attach () {
 
 _stats () {
   $DOCKER stats "$CONTAINER"
+}
+
+_rm-config () {
+ if _confirm
+ then
+    $DOCKER volume rm "$TERMINUS_CONFIG"
+ fi
+}
+
+_rm-storage () {
+ if _confirm
+ then
+    $DOCKER volume rm "$TERMINUS_STORAGE"
+ fi
 }
 
 _rm () {
@@ -170,8 +186,18 @@ if [ -n "$1" ]; then
       _stats \
         || printf "\nIs the container running?\n"
     ;;
+    "rm-config")
+      printf "This will delete config volume\n"
+      _rm-config \
+        || printf "\nIs the container stopped?\n"
+    ;;
+    "rm-storage")
+      printf "This will delete storage volume\n"
+      _rm-storage \
+        || printf "\nIs the container stopped?\n"
+    ;;
     "rm")
-      printf "removing will delete storage and config volumes\n"
+      printf "This will delete storage and config volumes\n"
       _rm \
         || printf "\nIs the container stopped?\n"
     ;;
