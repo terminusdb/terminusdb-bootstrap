@@ -84,15 +84,15 @@ _run () {
     $DOCKER image rm "$REPOSITORY:$TAG" 2>/dev/null
   fi
   eval "$DOCKER" run -d -it --rm \
-    --name "$CONTAINER" -p "$PORT:$SERVER_PORT" \
-    -v "$TERMINUS_STORAGE:$STORAGE_VOLUME:rw" \
-    -v "$TERMINUS_CONFIG:$CONFIG_VOLUME:rw" \
+    "--name \"$CONTAINER\" -p \"$PORT:$SERVER_PORT\"" \
+    "-v \"$TERMINUS_STORAGE:$STORAGE_VOLUME:rw\"" \
+    "-v \"$TERMINUS_CONFIG:$CONFIG_VOLUME:rw\"" \
     "$MOUNT_LOCAL" \
     "$SET_PUBLIC" \
-    -e SERVER_NAME="$SERVER" \
-    -e SERVER_PORT="$SERVER_PORT" \
-    -e WORKERS="$WORKERS" \
-    -e ADMIN_PASS="$PASS" \
+    "-e SERVER_NAME=\"$SERVER\"" \
+    "-e SERVER_PORT=\"$SERVER_PORT\"" \
+    "-e WORKERS=\"$WORKERS\"" \
+    "-e ADMIN_PASS=\"$PASS\"" \
     "$REPOSITORY:$TAG"
 }
 
