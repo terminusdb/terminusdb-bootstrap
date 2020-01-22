@@ -148,7 +148,7 @@ TERMINUS_TAG=v1.1.1 ./terminus-container [COMMAND]
 TERMINUS_DOCKER=docker ./terminus-container [COMMAND]
 ```
 
-### Use podman instead of docker command
+### Using podman instead of docker command
 ```
 TERMINUS_DOCKER="sudo podman" ./terminus-container [COMMAND]
 ```
