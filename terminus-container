@@ -31,14 +31,14 @@ else
   DOCKER=${TERMINUS_DOCKER:-docker}
 fi
 
-if [ -z "$TERMINUS_INGRESS_URL" ];
+if [[ -z "$TERMINUS_INGRESS_URL" ]];
 then
   SET_INGRESS=""
  else
   SET_INGRESS="-e INGRESS_URL=\"$TERMINUS_INGRESS_URL\""
 fi
 
-if [ -z "$TERMINUS_LOCAL" ];
+if [[ -z "$TERMINUS_LOCAL" ]];
 then
   MOUNT_LOCAL=""
  else
@@ -79,7 +79,7 @@ _confirm() {
 }
 
 _run () {
-  if [[ $TAG == latest ]];
+  if [[ $TAG == "latest" || $TAG == "dev" ]];
   then
     $DOCKER image rm "$REPOSITORY:$TAG" 2>/dev/null
   fi
