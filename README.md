@@ -112,7 +112,7 @@ USAGE:
   console   launch console in web browser
   attach    attach to prolog shell
   stats     show container stats
-  rm        remove container and volumes
+  rm        remove storage and config volumes
 ```
 
 That's it! You're ready to go!
