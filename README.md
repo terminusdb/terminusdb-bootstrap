@@ -133,11 +133,6 @@ done by setting enviroment variables.
 TERMINUS_LOCAL=/path/to/dir ./terminus-container [COMMAND]
 ```
 
-### Not using sudo even when sudo is available
-```
-TERMINUS_DOCKER=docker ./terminus-container [COMMAND]
-```
-
 ### Using the development release instead of latest realease
 ```
 TERMINUS_TAG=dev ./terminus-container [COMMAND]
@@ -146,6 +141,11 @@ TERMINUS_TAG=dev ./terminus-container [COMMAND]
 ### Using a specific release instead of latest realease
 ```
 TERMINUS_TAG=v1.1.1 ./terminus-container [COMMAND]
+```
+
+### Not using sudo even when sudo is available
+```
+TERMINUS_DOCKER=docker ./terminus-container [COMMAND]
 ```
 
 ### Use podman instead of docker command
