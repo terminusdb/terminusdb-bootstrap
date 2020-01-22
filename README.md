@@ -150,7 +150,7 @@ TERMINUS_DOCKER=docker ./terminus-container [COMMAND]
 
 ### Using podman instead of docker command
 ```
-TERMINUS_DOCKER="sudo podman" ./terminus-container [COMMAND]
+TERMINUS_DOCKER="podman" ./terminus-container [COMMAND]
 ```
 
 See the source code to find the other environment variables that can be set.
