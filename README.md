@@ -86,7 +86,7 @@ Warning: This will lead to losing local data.
 removing will delete storage and config volumes
 Are you sure? [y/N] y
 terminus_storage
-terminus_config
+terminus-config
 ```
 
 ## Using the console
@@ -94,7 +94,7 @@ terminus_config
 Ready to terminate? Open the TerminusDB Console in your web browser.
 
 ```
-./terminus_container console
+./terminus-container console
 ```
 
 Or go here: http://localhost:6363/console
