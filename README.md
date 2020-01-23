@@ -147,7 +147,7 @@ TERMINUS_TAG=dev ./terminus-container [COMMAND]
 
 ### Using a specific release instead of latest realease
 ```
-TERMINUS_TAG=v1.1.1 ./terminus-container [COMMAND]
+TERMINUS_TAG=v1.1.2 ./terminus-container [COMMAND]
 ```
 
 ### Not using sudo even when sudo is available
