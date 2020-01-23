@@ -106,13 +106,15 @@ Or go here: http://localhost:6363/console
 USAGE:
   terminus-container [COMMAND]
 
-  help      show usage
-  run       run container
-  stop      stop container
-  console   launch console in web browser
-  attach    attach to prolog shell
-  stats     show container stats
-  rm        remove storage and config volumes
+  help        show usage
+  run         run container
+  stop        stop container
+  console     launch console in web browser
+  attach      attach to prolog shell
+  stats       show container stats
+  rm-config   remove config volume
+  rm-storage  remove storage volume
+  rm          remove volumes
 ```
 
 That's it! You're ready to go!

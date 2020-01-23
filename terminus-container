@@ -62,8 +62,8 @@ USAGE:
   console     launch console in web browser
   attach      attach to prolog shell
   stats       show container stats
-  rm-config   remove config volumes
-  rm-storage  remove storage volumes
+  rm-config   remove config volume
+  rm-storage  remove storage volume
   rm          remove volumes\n"
 }
 
