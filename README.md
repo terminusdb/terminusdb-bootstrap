@@ -135,7 +135,12 @@ done by setting enviroment variables.
 TERMINUS_LOCAL=/path/to/dir ./terminus-container [COMMAND]
 ```
 
-### Using the development release instead of latest realease
+### Using the latest release
+```
+TERMINUS_TAG=latest ./terminus-container [COMMAND]
+```
+
+### Using the development release
 ```
 TERMINUS_TAG=dev ./terminus-container [COMMAND]
 ```
