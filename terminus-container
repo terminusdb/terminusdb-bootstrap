@@ -7,7 +7,7 @@
 # Container
 CONTAINER=${TERMINUS_CONTAINER:-terminus-server}
 REPOSITORY=${TERMINUS_REPOSITORY:-terminusdb/terminus-server}
-TAG=${TERMINUS_TAG:-v1.1.3} 
+TAG=${TERMINUS_TAG:-v1.1.4} 
 
 # Volumes
 TERMINUS_STORAGE=${TERINUS_TERMINUS_STORAGE:-terminus_storage}
