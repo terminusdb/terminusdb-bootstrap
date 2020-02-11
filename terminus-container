@@ -6,14 +6,8 @@
 
 # Container
 CONTAINER=${TERMINUS_CONTAINER:-terminus-server}
-REPOSITORY=${TERMINUS_REPOSITORY:-terminusdb/terminus-server}
+REPOSITORY=${TERMINUS_REPOSITORY:-terminusdb/$CONTAINER}
 TAG=${TERMINUS_TAG:-v1.1.3} 
-
-# Volumes
-TERMINUS_STORAGE=${TERINUS_TERMINUS_STORAGE:-terminus_storage}
-TERMINUS_CONFIG=${TERMINUS_TERMINUS_CONFIG:-terminus_config}
-STORAGE_VOLUME=${TERMINUS_STORAGE_VOLUME:-/app/terminusdb/storage}
-CONFIG_VOLUME=${TERMINUS_CONFIG_VOLUME:-/app/terminusdb/config}
 
 # Server
 SCHEME=${TERMINUS_SCHEME:-http}
@@ -46,6 +40,13 @@ then
   printf "\nMOUNT \"%s\" \nTO \"/app/local_files\"\n" "$TERMINUS_LOCAL"
 fi
 
+# CONSTANTS
+
+# Volumes
+readonly TERMINUS_STORAGE=${TERINUS_TERMINUS_STORAGE:-terminus_storage}
+readonly TERMINUS_CONFIG=${TERMINUS_TERMINUS_CONFIG:-terminus_config}
+readonly STORAGE_VOLUME=${TERMINUS_STORAGE_VOLUME:-/app/terminusdb/storage}
+readonly CONFIG_VOLUME=${TERMINUS_CONFIG_VOLUME:-/app/terminusdb/config}
 
 #
 # FUNCTIONS
