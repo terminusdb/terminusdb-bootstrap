@@ -128,6 +128,9 @@ This script is designed to "work out of the box," however, there may be
 situations where advanced users want to override some of it's defaults, this is
 done by setting enviroment variables.
 
+Ths script will read enviroment variables from a file called ENV if present, see ENV.example for an example.
+
+
 ## Examples
 
 ### Mount a local directory inside the container
