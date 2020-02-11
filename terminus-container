@@ -1,8 +1,18 @@
 #!/bin/bash
 
+set +o allexport
+
 #
 # CONFIG
 #
+
+# Load ENV file
+
+if [ -f ENV ]; then
+  set -o allexport
+  source ENV
+  set +o allexport
+fi
 
 # Container
 CONTAINER=${TERMINUS_CONTAINER:-terminus-server}
