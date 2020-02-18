@@ -27,6 +27,7 @@ PORT=${TERMINUS_PORT:-6363}
 WORKERS=${TERMINUS_WORKERS:-8}
 PASS=${TERMINUS_PASS:-root}
 CONSOLE=${TERMINUS_CONSOLE:-$SCHEME://$SERVER:$PORT/console}
+AUTOLOGIN=${TERMINUS_AUTOLOGIN:-$false}
 
 if command -v sudo >/dev/null;
 then
@@ -106,6 +107,7 @@ _run () {
     "-e SERVER_PORT=\"$SERVER_PORT\"" \
     "-e WORKERS=\"$WORKERS\"" \
     "-e ADMIN_PASS=\"$PASS\"" \
+    "-e AUTOLOGIN=\"$AUTOLOGIN\"" \
     "$REPOSITORY:$TAG"
 }
 
