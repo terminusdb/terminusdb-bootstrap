@@ -10,6 +10,7 @@ set +o allexport
 
 if [ -f ENV ]; then
   set -o allexport
+  # shellcheck disable=SC1091
   source ENV
   set +o allexport
 fi
@@ -29,12 +30,17 @@ PASS=${TERMINUS_PASS:-root}
 CONSOLE=${TERMINUS_CONSOLE:-$SCHEME://$SERVER:$PORT/console}
 AUTOLOGIN=${TERMINUS_AUTOLOGIN:-true}
 
-if command -v sudo >/dev/null;
+if [[ "$OSTYPE" == "darwin" ]];
 then
-  DOCKER=${TERMINUS_DOCKER:-sudo docker}
+  DOCKER_DEFAULT="docker"
+elif command -v sudo >/dev/null;
+then
+  DOCKER_DEFAULT="sudo docker"
 else
-  DOCKER=${TERMINUS_DOCKER:-docker}
+  DOCKER_DEFAULT="docker"
 fi
+
+DOCKER=${TERMINUS_DOCKER:-$DOCKER_DEFAULT}
 
 if [[ -z "$TERMINUS_PUBLIC_URL" ]];
 then
