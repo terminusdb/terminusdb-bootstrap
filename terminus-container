@@ -11,7 +11,7 @@ set +o allexport
 if [ -f ENV ]; then
   set -o allexport
   # shellcheck disable=SC1091
-  source ENV
+ source "$(pwd)/ENV"
   set +o allexport
 fi
 
@@ -28,6 +28,7 @@ PORT=${TERMINUS_PORT:-6363}
 WORKERS=${TERMINUS_WORKERS:-8}
 PASS=${TERMINUS_PASS:-root}
 CONSOLE=${TERMINUS_CONSOLE:-$SCHEME://$SERVER:$PORT/console}
+AUTOATTACH=${TERMINUS_AUTOATTACH:-true}
 AUTOLOGIN=${TERMINUS_AUTOLOGIN:-true}
 
 if [[ "$OSTYPE" == "darwin" ]];
@@ -113,6 +114,7 @@ _run () {
     "-e SERVER_PORT=\"$SERVER_PORT\"" \
     "-e WORKERS=\"$WORKERS\"" \
     "-e ADMIN_PASS=\"$PASS\"" \
+    "-e AUTOATTACH=\"$AUTOATTACH\"" \
     "-e AUTOLOGIN=\"$AUTOLOGIN\"" \
     "$REPOSITORY:$TAG"
 }
