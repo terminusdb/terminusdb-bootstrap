@@ -11,7 +11,8 @@ set +o allexport
 if [ -f ENV ]; then
   set -o allexport
   # shellcheck disable=SC1091
- source "$(pwd)/ENV"
+  # shellcheck source=ENV
+  source "$(pwd)/ENV"
   set +o allexport
 fi
 
@@ -31,7 +32,7 @@ CONSOLE=${TERMINUS_CONSOLE:-$SCHEME://$SERVER:$PORT/console}
 AUTOATTACH=${TERMINUS_AUTOATTACH:-true}
 AUTOLOGIN=${TERMINUS_AUTOLOGIN:-true}
 
-if [[ "$OSTYPE" == "darwin" ]];
+if [[ "$OSTYPE" == "darwin" || "$TERM_PROGRAM" == "Apple_Terminal" ]];
 then
   DOCKER_DEFAULT="docker"
 elif command -v sudo >/dev/null;
