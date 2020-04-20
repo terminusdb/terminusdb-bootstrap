@@ -19,7 +19,7 @@ fi
 # Container
 CONTAINER=${TERMINUS_CONTAINER:-terminus-server}
 REPOSITORY=${TERMINUS_REPOSITORY:-terminusdb/$CONTAINER}
-TAG=${TERMINUS_TAG:-v1.1.9} 
+TAG=${TERMINUS_TAG:-hub} 
 
 # Server
 SCHEME=${TERMINUS_SCHEME:-http}
@@ -111,12 +111,11 @@ _run () {
     "-v \"$TERMINUS_CONFIG:$CONFIG_VOLUME:rw\"" \
     "$MOUNT_LOCAL" \
     "$SET_PUBLIC" \
-    "-e SERVER_NAME=\"$SERVER\"" \
-    "-e SERVER_PORT=\"$SERVER_PORT\"" \
-    "-e WORKERS=\"$WORKERS\"" \
-    "-e ADMIN_PASS=\"$PASS\"" \
-    "-e AUTOATTACH=\"$AUTOATTACH\"" \
-    "-e AUTOLOGIN=\"$AUTOLOGIN\"" \
+    "-e TERMINUS_SERVER_NAME=\"$SERVER\"" \
+    "-e TERMINUS_SERVER_PORT=\"$SERVER_PORT\"" \
+    "-e TERMINUS_ADMIN_PASS=\"$PASS\"" \
+    "-e TERMINUS_AUTOATTACH=\"$AUTOATTACH\"" \
+    "-e TERMINUS_AUTOLOGIN=\"$AUTOLOGIN\"" \
     "$REPOSITORY:$TAG"
 }
 
