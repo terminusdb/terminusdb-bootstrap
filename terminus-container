@@ -51,6 +51,13 @@ then
   SET_PUBLIC="-e PUBLIC_URL=\"$TERMINUS_PUBLIC_URL\""
 fi
 
+if [[ -z "$TERMINUS_LABEL" ]];
+then
+  SET_LABEL=""
+ else
+  SET_LABEL="--label \"$TERMINUS_LABEL\""
+fi
+
 if [[ -z "$TERMINUS_LOCAL" ]];
 then
   MOUNT_LOCAL=""
@@ -111,6 +118,7 @@ _run () {
     "-v \"$TERMINUS_CONFIG:$CONFIG_VOLUME:rw\"" \
     "$MOUNT_LOCAL" \
     "$SET_PUBLIC" \
+    "$SET_LABEL" \
     "-e SERVER_NAME=\"$SERVER\"" \
     "-e SERVER_PORT=\"$SERVER_PORT\"" \
     "-e WORKERS=\"$WORKERS\"" \
