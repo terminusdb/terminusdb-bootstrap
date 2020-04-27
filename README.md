@@ -128,8 +128,18 @@ This script is designed to "work out of the box," however, there may be
 situations where advanced users want to override some of it's defaults, this is
 done by setting enviroment variables.
 
-Ths script will read enviroment variables from a file called ENV if present, see ENV.example for an example.
+## `ENV` File
 
+The script sources a file called `ENV` if it is found in the current directory.
+See [`ENV.example`] for examples of the environment variables that can be set.
+
+[`ENV.example`]: ./ENV.example
+
+To have environment variables set every time you run `./terminus-container`,
+follow these steps:
+
+1. Copy `ENV.example` to `ENV`.
+2. Edit `ENV`: uncomment the lines you want to change and set the values.
 
 ## Examples
 
