@@ -133,6 +133,9 @@ Ths script will read enviroment variables from a file called ENV if present, see
 
 ## Examples
 
+These are examples of environment variables you can set when running
+`./terminus-container`.
+
 ### Mount a local directory inside the container
 ```
 TERMINUS_LOCAL=/path/to/dir ./terminus-container [COMMAND]
