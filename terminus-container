@@ -64,9 +64,9 @@ function version_check {
   # has deleted the config volumes themselves already.
   if $DOCKER volume inspect terminus_config > /dev/null 2>&1; then
       printf "\
-You are running an old version of terminus-server. The new $TAG version
+You are running an old version of terminus-server. The new %s version
 uses a very different data structure which breaks backwards compatibility.
-Continuing will remove your existing databases.\n"
+Continuing will remove your existing databases.\n" "$TAG"
       remove_old_volumes
   fi
 }
