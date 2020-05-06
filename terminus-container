@@ -43,6 +43,34 @@ fi
 
 DOCKER=${TERMINUS_DOCKER:-$DOCKER_DEFAULT}
 
+function remove_old_volumes {
+  read -p "Are you sure? [y/N] " -r -n 1
+  printf "\n"    # (optional) move to a new line
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+      $DOCKER volume rm terminus_config terminus_storage
+  else
+      exit 2
+  fi
+}
+
+function version_check {
+  # The old TerminusDB had a config volume needed, the new one
+  # can be completed completely with ENV variables alone.
+  # Therefore, checking if a config volume exists is a valid
+  # way of checking whether a user uses an old version.
+  #
+  # Can be improved, as we are not sure whether the user
+  # has deleted the config volumes themselves already.
+  if $DOCKER volume inspect terminus_config > /dev/null 2>&1; then
+      printf "\
+You are running an old version of terminus-server. The new $TAG version
+uses a very different data structure which breaks backwards compatibility.
+Continuing will remove your existing databases.\n"
+      remove_old_volumes
+  fi
+}
+
 if [[ -z "$TERMINUS_PUBLIC_URL" ]];
 then
   SET_PUBLIC=""
@@ -62,9 +90,7 @@ fi
 
 # Volumes
 readonly TERMINUS_STORAGE=${TERINUS_TERMINUS_STORAGE:-terminus_storage}
-readonly TERMINUS_CONFIG=${TERMINUS_TERMINUS_CONFIG:-terminus_config}
 readonly STORAGE_VOLUME=${TERMINUS_STORAGE_VOLUME:-/app/terminusdb/storage}
-readonly CONFIG_VOLUME=${TERMINUS_CONFIG_VOLUME:-/app/terminusdb/config}
 
 #
 # FUNCTIONS
@@ -81,7 +107,6 @@ USAGE:
   console     launch console in web browser
   attach      attach to prolog shell
   stats       show container stats
-  rm-config   remove config volume
   rm-storage  remove storage volume
   rm          remove volumes\n"
 }
@@ -107,7 +132,6 @@ _run () {
   eval "$DOCKER" run -d -it --rm \
     "--name \"$CONTAINER\" -p \"$PORT:$SERVER_PORT\"" \
     "-v \"$TERMINUS_STORAGE:$STORAGE_VOLUME:rw\"" \
-    "-v \"$TERMINUS_CONFIG:$CONFIG_VOLUME:rw\"" \
     "$MOUNT_LOCAL" \
     "$SET_PUBLIC" \
     "-e TERMINUS_SERVER_NAME=\"$SERVER\"" \
@@ -134,13 +158,6 @@ _stats () {
   $DOCKER stats "$CONTAINER"
 }
 
-_rm-config () {
- if _confirm
- then
-    $DOCKER volume rm "$TERMINUS_CONFIG"
- fi
-}
-
 _rm-storage () {
  if _confirm
  then
@@ -151,8 +168,7 @@ _rm-storage () {
 _rm () {
  if _confirm
  then
-   $DOCKER volume rm "$TERMINUS_STORAGE" \
-     && $DOCKER volume rm "$TERMINUS_CONFIG"
+   $DOCKER volume rm "$TERMINUS_STORAGE"
  fi
 }
 
@@ -185,6 +201,7 @@ if [ -n "$1" ]; then
   case "$1" in
     "run")
       # _build
+      version_check
       _run > /dev/null \
         && printf "terminus-server container started %s\n" "$CONSOLE" \
         || printf "\nIs the container already running?\n"
@@ -206,18 +223,13 @@ if [ -n "$1" ]; then
       _stats \
         || printf "\nIs the container running?\n"
     ;;
-    "rm-config")
-      printf "This will delete config volume\n"
-      _rm-config \
-        || printf "\nIs the container stopped?\n"
-    ;;
     "rm-storage")
       printf "This will delete storage volume\n"
       _rm-storage \
         || printf "\nIs the container stopped?\n"
     ;;
     "rm")
-      printf "This will delete storage and config volumes\n"
+      printf "This will delete storage volume\n"
       _rm \
         || printf "\nIs the container stopped?\n"
     ;;
