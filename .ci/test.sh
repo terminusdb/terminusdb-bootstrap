@@ -1,9 +1,9 @@
 #!/bin/bash
-shellcheck terminus-container
-./terminus-container help
-./terminus-container run
-nohup ./terminus-container console
-nohup ./terminus-container attach
-./terminus-container stop
-yes | ./terminus-container rm
-./terminus-container test
+shellcheck terminusdb-container
+./terminusdb-container help
+./terminusdb-container run
+nohup ./terminusdb-container console
+nohup ./terminusdb-container attach
+./terminusdb-container stop
+yes | ./terminusdb-container rm
+./terminusdb-container test
