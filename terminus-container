@@ -112,7 +112,7 @@ USAGE:
   stats       show container stats
   rm-storage  remove storage volume
   rm          remove volumes
-  tests       run the unit tests on terminus-server\n"
+  test        run the unit tests on terminus-server\n"
 }
 
 _confirm() {
@@ -249,7 +249,7 @@ if [ -n "$1" ]; then
       _rm \
         || printf "\nIs the container stopped?\n"
     ;;
-    "tests")
+    "test")
       printf "This will run the tests on terminus-server\n"
       _tests \
     ;;
