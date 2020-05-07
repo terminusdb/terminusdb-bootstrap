@@ -4,12 +4,5 @@ services:
   - docker
 
 script:
-  - shellcheck terminus-container
-  - ./terminus-container help
-  - ./terminus-container run
-  - nohup ./terminus-container console
-  - nohup ./terminus-container attach
-  - ./terminus-container stop
-  - ./terminus-container rm
-  - ./terminus-container test
-
+  - shellcheck .ci/test.sh
+  - bash .ci/test/sh
