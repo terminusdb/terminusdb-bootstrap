@@ -49,6 +49,9 @@ function remove_old_volumes {
   if [[ $REPLY =~ ^[Yy]$ ]]
   then
       $DOCKER volume rm terminus_config terminus_storage
+      if [ $? -ne 0 ]; then
+          printf "Could not remove volumes. Are you running an existing container of TerminusDB? Stop it first.\n"
+      fi
   else
       exit 2
   fi
