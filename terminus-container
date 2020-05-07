@@ -111,7 +111,8 @@ USAGE:
   attach      attach to prolog shell
   stats       show container stats
   rm-storage  remove storage volume
-  rm          remove volumes\n"
+  rm          remove volumes
+  tests       run the unit tests on terminus-server\n"
 }
 
 _confirm() {
@@ -166,6 +167,18 @@ _rm-storage () {
  then
     $DOCKER volume rm "$TERMINUS_STORAGE"
  fi
+}
+
+_tests () {
+ eval $DOCKER run -it --rm \
+    "--name \"$CONTAINER\" -p \"$PORT:$SERVER_PORT\"" \
+    "$SET_PUBLIC" \
+    "-e TERMINUS_SERVER_NAME=\"http://$SERVER\"" \
+    "-e TERMINUS_SERVER_PORT=\"$SERVER_PORT\"" \
+    "-e TERMINUS_ADMIN_PASS=\"$PASS\"" \
+    "-e TERMINUS_AUTOATTACH=\"$AUTOATTACH\"" \
+    "-e TERMINUS_AUTOLOGIN=\"$AUTOLOGIN\"" \
+    "$REPOSITORY:$TAG" "bash -c './utils/db_util -k root -s localhost && swipl -g run_tests -g halt ./start.pl'"
 }
 
 _rm () {
@@ -235,6 +248,10 @@ if [ -n "$1" ]; then
       printf "This will delete storage volume\n"
       _rm \
         || printf "\nIs the container stopped?\n"
+    ;;
+    "tests")
+      printf "This will run the tests on terminus-server\n"
+      _tests \
     ;;
     "help")
       _usage
