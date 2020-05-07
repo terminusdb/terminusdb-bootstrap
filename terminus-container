@@ -58,17 +58,11 @@ function remove_old_volumes {
 }
 
 function version_check {
-  # The old TerminusDB had a config volume needed, the new one
-  # can be completed completely with ENV variables alone.
-  # Therefore, checking if a config volume exists is a valid
-  # way of checking whether a user uses an old version.
-  #
-  # Can be improved, as we are not sure whether the user
-  # has deleted the config volumes themselves already.
-  $DOCKER volume inspect terminus_storage > /dev/null 2>&1
-  # If the storage volume does not exist, then we can proceed as no old data
-  # will need to be deleted
-  if [ $? -ne 0 ]; then
+  # The old TerminusDB had a prefix.db file needed, the new one
+  # does not as prefixes are handled in a different way. Therefore
+  # it is safe to assume that an existing storage volume with the
+  # prefix.db is a user running an old version of TerminusDB
+  if ! $DOCKER volume inspect terminus_storage > /dev/null 2>&1; then
       return 0
   fi
 
