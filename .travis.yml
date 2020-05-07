@@ -5,4 +5,12 @@ services:
 
 script:
   - shellcheck terminus-container
-  - ./terminus-container tests
+  - ./terminus-container help
+  - ./terminus-container run
+  - ./terminus-container console
+  - nohup ./terminus-container stats
+  - nohup ./terminus-container attach
+  - ./terminus-container stop
+  - ./terminus-container rm
+  - ./terminus-container test
+
