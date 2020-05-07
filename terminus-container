@@ -137,7 +137,7 @@ _run () {
     "-v \"$TERMINUS_STORAGE:$STORAGE_VOLUME:rw\"" \
     "$MOUNT_LOCAL" \
     "$SET_PUBLIC" \
-    "-e TERMINUS_SERVER_NAME=\"$SERVER\"" \
+    "-e TERMINUS_SERVER_NAME=\"http://$SERVER\"" \
     "-e TERMINUS_SERVER_PORT=\"$SERVER_PORT\"" \
     "-e TERMINUS_ADMIN_PASS=\"$PASS\"" \
     "-e TERMINUS_AUTOATTACH=\"$AUTOATTACH\"" \
