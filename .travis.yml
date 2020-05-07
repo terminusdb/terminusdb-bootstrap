@@ -5,4 +5,4 @@ services:
 
 script:
   - shellcheck .ci/test.sh
-  - bash .ci/test/sh
+  - bash .ci/test.sh
