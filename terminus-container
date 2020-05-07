@@ -17,38 +17,38 @@ if [ -f ENV ]; then
 fi
 
 # Container
-CONTAINER=${TERMINUS_CONTAINER:-terminus-server}
-REPOSITORY=${TERMINUS_REPOSITORY:-terminusdb/$CONTAINER}
-TAG=${TERMINUS_TAG:-dev} 
+TERMINUSDB_QUICKSTART_CONTAINER=${TERMINUSDB_CONTAINER:-terminus-server}
+TERMINUSDB_QUICKSTART_REPOSITORY=${TERMINUSDB_REPOSITORY:-terminusdb/$TERMINUSDB_QUICKSTART_CONTAINER}
+TERMINUSDB_QUICKSTART_TAG=${TERMINUSDB_TAG:-dev} 
 
 # Server
-SCHEME=${TERMINUS_SCHEME:-http}
-SERVER=${TERMINUS_SERVER:-localhost}
-SERVER_PORT=${TERMINUS_SERVER_PORT:-6363}
-PORT=${TERMINUS_PORT:-6363}
-PASS=${TERMINUS_PASS:-root}
-CONSOLE=${TERMINUS_CONSOLE:-$SCHEME://$SERVER:$PORT/console}
-AUTOATTACH=${TERMINUS_AUTOATTACH:-true}
-AUTOLOGIN=${TERMINUS_AUTOLOGIN:-true}
+TERMINUSDB_QUICKSTART_SCHEME=${TERMINUSDB_SCHEME:-http}
+TERMINUSDB_QUICKSTART_SERVER=${TERMINUSDB_SERVER:-localhost}
+TERMINUSDB_QUICKSTART_SERVER_PORT=${TERMINUSDB_SERVER_PORT:-6363}
+TERMINUSDB_QUICKSTART_PORT=${TERMINUSDB_PORT:-6363}
+TERMINUSDB_QUICKSTART_PASS=${TERMINUSDB_PASS:-root}
+TERMINUSDB_QUICKSTART_CONSOLE=${TERMINUSDB_CONSOLE:-$TERMINUSDB_QUICKSTART_SCHEME://$TERMINUSDB_QUICKSTART_SERVER:$TERMINUSDB_QUICKSTART_PORT/console}
+TERMINUSDB_QUICKSTART_AUTOATTACH=${TERMINUSDB_AUTOATTACH:-true}
+TERMINUSDB_QUICKSTART_AUTOLOGIN=${TERMINUSDB_AUTOLOGIN:-true}
 
 if [[ "$OSTYPE" == "darwin" || "$TERM_PROGRAM" == "Apple_Terminal" ]];
 then
-  DOCKER_DEFAULT="docker"
+  TERMINUSDB_QUICKSTART_DOCKER_DEFAULT="docker"
 elif command -v sudo >/dev/null;
 then
-  DOCKER_DEFAULT="sudo docker"
+  TERMINUSDB_QUICKSTART_DOCKER_DEFAULT="sudo docker"
 else
-  DOCKER_DEFAULT="docker"
+  TERMINUSDB_QUICKSTART_DOCKER_DEFAULT="docker"
 fi
 
-DOCKER=${TERMINUS_DOCKER:-$DOCKER_DEFAULT}
+TERMINUSDB_QUICKSTART_DOCKER=${TERMINUSDB_DOCKER:-$TERMINUSDB_QUICKSTART_DOCKER_DEFAULT}
 
 function remove_old_volumes {
   read -p "Are you sure? [y/N] " -r -n 1
   printf "\n"    # (optional) move to a new line
   if [[ $REPLY =~ ^[Yy]$ ]]
   then
-      if ! $DOCKER volume rm terminus_config terminus_storage; then
+      if ! $TERMINUSDB_QUICKSTART_DOCKER volume rm terminus_config terminus_storage; then
           printf "Could not remove volumes. Are you running an existing container of TerminusDB? Stop it first.\n"
       fi
   else
@@ -61,39 +61,39 @@ function version_check {
   # does not as prefixes are handled in a different way. Therefore
   # it is safe to assume that an existing storage volume with the
   # prefix.db is a user running an old version of TerminusDB
-  if ! $DOCKER volume inspect terminus_storage > /dev/null 2>&1; then
+  if ! $TERMINUSDB_QUICKSTART_DOCKER volume inspect terminus_storage > /dev/null 2>&1; then
       return 0
   fi
 
-  if $DOCKER run --rm -v terminus_storage:/home/ alpine cat /home/prefix.db > /dev/null 2>&1; then
+  if $TERMINUSDB_QUICKSTART_DOCKER run --rm -v terminus_storage:/home/ alpine cat /home/prefix.db > /dev/null 2>&1; then
       printf "\
 You are running an old version of terminus-server. The new %s version
 uses a very different data structure which breaks backwards compatibility.
-Continuing will remove your existing databases.\n" "$TAG"
+Continuing will remove your existing databases.\n" "$TERMINUSDB_QUICKSTART_TAG"
       remove_old_volumes
   fi
 }
 
-if [[ -z "$TERMINUS_PUBLIC_URL" ]];
+if [[ -z "$TERMINUSDB_PUBLIC_URL" ]];
 then
-  SET_PUBLIC=""
+  TERMINUSDB_QUICKSTART_SET_PUBLIC=""
  else
-  SET_PUBLIC="-e PUBLIC_URL=\"$TERMINUS_PUBLIC_URL\""
+  TERMINUSDB_QUICKSTART_SET_PUBLIC="-e TERMINUSDB_PUBLIC_URL=\"$TERMINUSDB_PUBLIC_URL\""
 fi
 
-if [[ -z "$TERMINUS_LOCAL" ]];
+if [[ -z "$TERMINUSDB_LOCAL" ]];
 then
-  MOUNT_LOCAL=""
+  TERMINUSDB_QUICKSTART_MOUNT_LOCAL=""
  else
-  MOUNT_LOCAL="-v \"$TERMINUS_LOCAL\":/app/local_files"
-  printf "\nMOUNT \"%s\" \nTO \"/app/local_files\"\n" "$TERMINUS_LOCAL"
+  TERMINUSDB_QUICKSTART_MOUNT_LOCAL="-v \"$TERMINUSDB_LOCAL\":/app/local_files"
+  printf "\nMOUNT \"%s\" \nTO \"/app/local_files\"\n" "$TERMINUSDB_LOCAL"
 fi
 
 # CONSTANTS
 
 # Volumes
-readonly TERMINUS_STORAGE=${TERINUS_TERMINUS_STORAGE:-terminus_storage}
-readonly STORAGE_VOLUME=${TERMINUS_STORAGE_VOLUME:-/app/terminusdb/storage}
+readonly TERMINUSDB_STORAGE=${TERINUS_TERMINUSDB_STORAGE:-terminus_storage}
+readonly STORAGE_VOLUME=${TERMINUSDB_STORAGE_VOLUME:-/app/terminusdb/storage}
 
 #
 # FUNCTIONS
@@ -129,62 +129,62 @@ _confirm() {
 }
 
 _run () {
-  if [[ $TAG == "latest" || $TAG == "dev" ]];
+  if [[ $TERMINUSDB_QUICKSTART_TAG == "latest" || $TERMINUSDB_QUICKSTART_TAG == "dev" ]];
   then
-    $DOCKER image rm "$REPOSITORY:$TAG" 2>/dev/null
+    $TERMINUSDB_QUICKSTART_DOCKER image rm "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" 2>/dev/null
   fi
-  eval "$DOCKER" run -d -it --rm \
-    "--name \"$CONTAINER\" -p \"$PORT:$SERVER_PORT\"" \
-    "-v \"$TERMINUS_STORAGE:$STORAGE_VOLUME:rw\"" \
-    "$MOUNT_LOCAL" \
-    "$SET_PUBLIC" \
-    "-e TERMINUS_SERVER_NAME=\"http://$SERVER\"" \
-    "-e TERMINUS_SERVER_PORT=\"$SERVER_PORT\"" \
-    "-e TERMINUS_ADMIN_PASS=\"$PASS\"" \
-    "-e TERMINUS_AUTOATTACH=\"$AUTOATTACH\"" \
-    "-e TERMINUS_AUTOLOGIN=\"$AUTOLOGIN\"" \
-    "$REPOSITORY:$TAG"
+  eval "$TERMINUSDB_QUICKSTART_DOCKER" run -d -it --rm \
+    "--name \"$TERMINUSDB_QUICKSTART_CONTAINER\" -p \"$TERMINUSDB_QUICKSTART_PORT:$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
+    "-v \"$TERMINUSDB_STORAGE:$STORAGE_VOLUME:rw\"" \
+    "$TERMINUSDB_QUICKSTART_MOUNT_LOCAL" \
+    "$TERMINUSDB_QUICKSTART_SET_PUBLIC" \
+    "-e TERMINUSDB_SERVER_NAME=\"http://$TERMINUSDB_QUICKSTART_SERVER\"" \
+    "-e TERMINUSDB_SERVER_PORT=\"$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
+    "-e TERMINUSDB_ADMIN_PASS=\"$TERMINUSDB_QUICKSTART_PASS\"" \
+    "-e TERMINUSDB_AUTOATTACH=\"$TERMINUSDB_QUICKSTART_AUTOATTACH\"" \
+    "-e TERMINUSDB_AUTOLOGIN=\"$TERMINUSDB_QUICKSTART_AUTOLOGIN\"" \
+    "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG"
 }
 
 _stop () {
-  $DOCKER stop "$CONTAINER"
+  $TERMINUSDB_QUICKSTART_DOCKER stop "$TERMINUSDB_QUICKSTART_CONTAINER"
 }
 
 _restart () {
-  $DOCKER stop "$CONTAINER"
+  $TERMINUSDB_QUICKSTART_DOCKER stop "$TERMINUSDB_QUICKSTART_CONTAINER"
 }
 
 _attach () {
-  $DOCKER attach "$CONTAINER"
+  $TERMINUSDB_QUICKSTART_DOCKER attach "$TERMINUSDB_QUICKSTART_CONTAINER"
 }
 
 _stats () {
-  $DOCKER stats "$CONTAINER"
+  $TERMINUSDB_QUICKSTART_DOCKER stats "$TERMINUSDB_QUICKSTART_CONTAINER"
 }
 
 _rm-storage () {
  if _confirm
  then
-    $DOCKER volume rm "$TERMINUS_STORAGE"
+    $TERMINUSDB_QUICKSTART_DOCKER volume rm "$TERMINUSDB_STORAGE"
  fi
 }
 
 _tests () {
- eval "$DOCKER" run -it --rm \
-    "--name \"$CONTAINER\" -p \"$PORT:$SERVER_PORT\"" \
-    "$SET_PUBLIC" \
-    "-e TERMINUS_SERVER_NAME=\"http://$SERVER\"" \
-    "-e TERMINUS_SERVER_PORT=\"$SERVER_PORT\"" \
-    "-e TERMINUS_ADMIN_PASS=\"$PASS\"" \
-    "-e TERMINUS_AUTOATTACH=\"$AUTOATTACH\"" \
-    "-e TERMINUS_AUTOLOGIN=\"$AUTOLOGIN\"" \
-    "$REPOSITORY:$TAG" "bash -c './utils/db_util -k root -s localhost && swipl -g run_tests -g halt ./start.pl'"
+ eval "$TERMINUSDB_QUICKSTART_DOCKER" run -it --rm \
+    "--name \"$TERMINUSDB_QUICKSTART_CONTAINER\" -p \"$TERMINUSDB_QUICKSTART_PORT:$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
+    "$TERMINUSDB_QUICKSTART_SET_PUBLIC" \
+    "-e TERMINUSDB_SERVER_NAME=\"http://$TERMINUSDB_QUICKSTART_SERVER\"" \
+    "-e TERMINUSDB_SERVER_PORT=\"$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
+    "-e TERMINUSDB_ADMIN_PASS=\"$TERMINUSDB_QUICKSTART_PASS\"" \
+    "-e TERMINUSDB_AUTOATTACH=\"$TERMINUSDB_QUICKSTART_AUTOATTACH\"" \
+    "-e TERMINUSDB_AUTOLOGIN=\"$TERMINUSDB_QUICKSTART_AUTOLOGIN\"" \
+    "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" "bash -c './utils/db_util -k root -s localhost && swipl -g run_tests -g halt ./start.pl'"
 }
 
 _rm () {
  if _confirm
  then
-   $DOCKER volume rm "$TERMINUS_STORAGE"
+   $TERMINUSDB_QUICKSTART_DOCKER volume rm "$TERMINUSDB_STORAGE"
  fi
 }
 
@@ -192,9 +192,9 @@ _console () {
 
 if command -v python >/dev/null;
 then
-  python -m webbrowser "$CONSOLE"
+  python -m webbrowser "$TERMINUSDB_QUICKSTART_CONSOLE"
 else
-  printf "\nopen %s in your browser\n" "$CONSOLE"
+  printf "\nopen %s in your browser\n" "$TERMINUSDB_QUICKSTART_CONSOLE"
 fi
 }
 
@@ -219,7 +219,7 @@ if [ -n "$1" ]; then
       # _build
       version_check
       _run > /dev/null \
-        && printf "terminus-server container started %s\n" "$CONSOLE" \
+        && printf "terminus-server container started %s\n" "$TERMINUSDB_QUICKSTART_CONSOLE" \
         || printf "\nIs the container already running?\n"
     ;;
     "stop")
