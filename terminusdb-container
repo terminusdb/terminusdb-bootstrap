@@ -116,7 +116,7 @@ readonly TERMINUSDB_STORAGE_VOLUME=${TERMINUSDB_STORAGE_VOLUME:-/app/terminusdb/
 _usage () {
   printf "\
 USAGE:
-  terminus-container [COMMAND]
+  terminusdb-container [COMMAND]
 
   help        show usage
   run         run container
