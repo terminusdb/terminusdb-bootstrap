@@ -170,7 +170,7 @@ _rm-storage () {
 }
 
 _tests () {
- eval $DOCKER run -it --rm \
+ eval "$DOCKER" run -it --rm \
     "--name \"$CONTAINER\" -p \"$PORT:$SERVER_PORT\"" \
     "$SET_PUBLIC" \
     "-e TERMINUS_SERVER_NAME=\"http://$SERVER\"" \
