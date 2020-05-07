@@ -124,7 +124,6 @@ USAGE:
   console     launch console in web browser
   attach      attach to prolog shell
   stats       show container stats
-  rm-storage  remove storage volume
   rm          remove volumes
   test        run the unit tests on terminus-server\n"
 }
@@ -178,7 +177,7 @@ _stats () {
   $TERMINUSDB_QUICKSTART_DOCKER stats "$TERMINUSDB_QUICKSTART_CONTAINER"
 }
 
-_rm-storage () {
+_rm () {
  if _confirm
  then
     $TERMINUSDB_QUICKSTART_DOCKER volume rm "$TERMINUSDB_STORAGE"
@@ -254,11 +253,6 @@ if [ -n "$1" ]; then
     "stats")
       _stats \
         || printf "\nIs the container running?\n"
-    ;;
-    "rm-storage")
-      printf "This will delete storage volume\n"
-      _rm-storage \
-        || printf "\nIs the container stopped?\n"
     ;;
     "rm")
       printf "This will delete storage volume\n"
