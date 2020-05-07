@@ -62,7 +62,14 @@ function version_check {
   #
   # Can be improved, as we are not sure whether the user
   # has deleted the config volumes themselves already.
-  if $DOCKER volume inspect terminus_config > /dev/null 2>&1; then
+  $DOCKER volume inspect terminus_storage > /dev/null 2>&1
+  # If the storage volume does not exist, then we can proceed as no old data
+  # will need to be deleted
+  if [ $? -ne 0 ]; then
+      return 0
+  fi
+
+  if $DOCKER run --rm -v terminus_storage:/home/ alpine cat /home/prefix.db > /dev/null 2>&1; then
       printf "\
 You are running an old version of terminus-server. The new %s version
 uses a very different data structure which breaks backwards compatibility.
