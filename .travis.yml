@@ -11,5 +11,5 @@ services:
 
 script:
   - shellcheck ./terminusdb-container
-  - bats .ci/test/basic.bats -p
+  - bats .ci/test/basic.bats
   - ./terminusdb-container test
