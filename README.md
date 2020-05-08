@@ -1,11 +1,12 @@
 ```
-████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗██╗   ██╗███████╗
-╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██║   ██║██╔════╝
-   ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║██║   ██║███████╗
-   ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██║   ██║╚════██║
-   ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝███████║
-   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
-                                                                  
+
+████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗██╗   ██╗███████╗██████╗ ██████╗ 
+╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██║   ██║██╔════╝██╔══██╗██╔══██╗
+   ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║██║   ██║███████╗██║  ██║██████╔╝
+   ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██║   ██║╚════██║██║  ██║██╔══██╗
+   ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝███████║██████╔╝██████╔╝
+   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝╚═════╝ ╚═════╝ 
+
 ```
 
 # TerminusDB Server Container Control
@@ -59,7 +60,7 @@ cd terminus-quickstart
 ## Run the container (the first time)
 
 ```
-./terminus-container run
+./terminusdb-container run
 
 Unable to find image 'terminusdb/terminus-server:latest' locally
 latest: Pulling from terminusdb/terminus-server
@@ -81,7 +82,7 @@ the old console.
 Warning: This will lead to losing local data.
 
 ```
- ./terminus-container rm
+ ./terminusdb-container rm
 
 removing will delete storage and config volumes
 Are you sure? [y/N] y
@@ -94,17 +95,17 @@ terminus-config
 Ready to terminate? Open the TerminusDB Console in your web browser.
 
 ```
-./terminus-container console
+./terminusdb-container console
 ```
 
 Or go here: http://localhost:6363/console
 
 ## To stop, attach, etc, see usage
 ```
-./terminus-container 
+./terminusdb-container 
 
 USAGE:
-  terminus-container [COMMAND]
+  terminusdb-container [COMMAND]
 
   help        show usage
   run         run container
@@ -135,7 +136,7 @@ See [`ENV.example`] for examples of the environment variables that can be set.
 
 [`ENV.example`]: ./ENV.example
 
-To have environment variables set every time you run `./terminus-container`,
+To have environment variables set every time you run `./terminusdb-container`,
 follow these steps:
 
 1. Copy `ENV.example` to `ENV`.
@@ -144,36 +145,36 @@ follow these steps:
 ## Examples
 
 These are examples of environment variables you can set when running
-`./terminus-container`.
+`./terminusdb-container`.
 
 ### Mount a local directory inside the container
 ```
-TERMINUS_LOCAL=/path/to/dir ./terminus-container [COMMAND]
+TERMINUS_LOCAL=/path/to/dir ./terminusdb-container [COMMAND]
 ```
 
 ### Using the latest release
 ```
-TERMINUS_TAG=latest ./terminus-container [COMMAND]
+TERMINUS_TAG=latest ./terminusdb-container [COMMAND]
 ```
 
 ### Using the development release
 ```
-TERMINUS_TAG=dev ./terminus-container [COMMAND]
+TERMINUS_TAG=dev ./terminusdb-container [COMMAND]
 ```
 
 ### Using a specific release instead of latest realease
 ```
-TERMINUS_TAG=v1.1.2 ./terminus-container [COMMAND]
+TERMINUS_TAG=v1.1.2 ./terminusdb-container [COMMAND]
 ```
 
 ### Not using sudo even when sudo is available
 ```
-TERMINUS_DOCKER=docker ./terminus-container [COMMAND]
+TERMINUS_DOCKER=docker ./terminusdb-container [COMMAND]
 ```
 
 ### Using podman instead of docker command
 ```
-TERMINUS_DOCKER="podman" ./terminus-container [COMMAND]
+TERMINUS_DOCKER="podman" ./terminusdb-container [COMMAND]
 ```
 
 See the source code to find the other environment variables that can be set.
