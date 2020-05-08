@@ -10,5 +10,6 @@ services:
   - docker
 
 script:
-  - shellcheck .ci/test.sh
-  - bash .ci/test.sh
+  - shellcheck ./terminusdb-container
+  - bats .ci/test/basic.bats -p
+  - ./terminusdb-container test
