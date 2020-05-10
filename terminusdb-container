@@ -113,6 +113,20 @@ readonly TERMINUSDB_STORAGE_VOLUME=${TERMINUSDB_STORAGE_VOLUME:-/app/terminusdb/
 # FUNCTIONS
 #
 
+# Run platform check
+function _platform_check {
+  PLATFORM_ARCHITECTURE=$(uname -m)
+  if [[ $PLATFORM_ARCHITECTURE != "x86_64" ]]; then
+      printf "\
+There are no Docker images for other CPU architectures than x86_64 yet.
+You can try to manually compile the components of TerminusDB by following the
+instructions on the terminus-server repository although other architectures are not
+officially supported yet.
+https://github.com/terminusdb/terminus-server/blob/master/docs/BUILD.md \n"
+      exit 4
+  fi
+}
+
 _usage () {
   printf "\
 USAGE:
@@ -222,6 +236,7 @@ else
 fi
 }
 
+_platform_check
 #
 # PROCESS ARGS
 #
