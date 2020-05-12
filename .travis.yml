@@ -1,7 +1,7 @@
 language: node_js
 
 before_install:
-  - sudo pkg install expect
+  - sudo apt-get install expect
   - npm install -g bats
 
 services:
