@@ -1,7 +1,7 @@
 language: node_js
 
 before_install:
-  - sudo npm install -g bats
+  - npm install -g bats
 
 services:
   - docker
