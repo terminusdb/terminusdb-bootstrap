@@ -211,7 +211,7 @@ _tests () {
     "-e TERMINUSDB_ADMIN_PASS=\"$TERMINUSDB_QUICKSTART_PASS\"" \
     "-e TERMINUSDB_AUTOATTACH=\"$TERMINUSDB_QUICKSTART_AUTOATTACH\"" \
     "-e TERMINUSDB_AUTOLOGIN=\"$TERMINUSDB_QUICKSTART_AUTOLOGIN\"" \
-    "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" "bash -c './utils/db_util -k root -s localhost && swipl -g run_tests -g halt ./start.pl'"
+    "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" "bash -c './utils/db_init -k root -s localhost && swipl -g run_tests -g halt ./start.pl'"
 }
 
 _rm () {
