@@ -1,5 +1,16 @@
+# Load ENV file
+
+if [ -f ENV ]; then
+  set -o allexport
+  # shellcheck disable=SC1091
+  # shellcheck source=ENV
+  source "$(pwd)/ENV"
+  set +o allexport
+fi
+
 PATH="${BATS_TEST_DIRNAME}/stubs:$PATH"
-TERMINUSDB_CONTAINER=${TERMINUSDB_CONTAINER:-terminus-server}
+TERMINUSDB_CONTAINER=${TERMINUSDB_CONTAINER:-terminusdb-server}
+TERMINUSDB_STORAGE=${TERMINUSDB_STORAGE:-terminusdb_storage}
 
 container() {
   yes | ./terminusdb-container "$1"
@@ -10,7 +21,7 @@ inspect() {
 }
 
 inspect_volume() {
-  sudo docker volume inspect -f '{{.Name}}' terminus_storage
+  sudo docker volume inspect -f '{{.Name}}' "$TERMINUSDB_STORAGE"
 }
 
 @test "container run" {
