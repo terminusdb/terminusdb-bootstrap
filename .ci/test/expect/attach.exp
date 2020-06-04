@@ -1,0 +1,9 @@
+spawn ./terminusdb-container attach
+expect -exact "\r
+Ctrl+p Ctrl+q to detach\r
+\r
+"
+send -- "\r"
+expect -exact "\r|    \r
+|    "
+send -- ""

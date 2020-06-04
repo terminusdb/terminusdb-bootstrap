@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - lts/* 
+
+before_install:
+  - sudo apt-get install expect
+  - npm install -g bats
+
+services:
+  - docker
+
+script:
+  - shellcheck ./terminusdb-container
+  - bats .ci/test/basic.bats
+  - ./terminusdb-container test
