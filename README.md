@@ -149,32 +149,37 @@ These are examples of environment variables you can set when running
 
 ### Mount a local directory inside the container
 ```
-TERMINUS_LOCAL=/path/to/dir ./terminusdb-container [COMMAND]
+TERMINUSDB_LOCAL=/path/to/dir ./terminusdb-container [COMMAND]
+```
+
+### Set the Docker Volume name
+```
+TERMINUSDB_STORAGE=terminus_storage_local ./terminusdb-container [COMMAND]
 ```
 
 ### Using the latest release
 ```
-TERMINUS_TAG=latest ./terminusdb-container [COMMAND]
+TERMINUSDB_TAG=latest ./terminusdb-container [COMMAND]
 ```
 
 ### Using the development release
 ```
-TERMINUS_TAG=dev ./terminusdb-container [COMMAND]
+TERMINUSDB_TAG=dev ./terminusdb-container [COMMAND]
 ```
 
 ### Using a specific release instead of latest realease
 ```
-TERMINUS_TAG=v1.1.2 ./terminusdb-container [COMMAND]
+TERMINUSDB_TAG=v1.1.2 ./terminusdb-container [COMMAND]
 ```
 
 ### Not using sudo even when sudo is available
 ```
-TERMINUS_DOCKER=docker ./terminusdb-container [COMMAND]
+TERMINUSDB_DOCKER=docker ./terminusdb-container [COMMAND]
 ```
 
 ### Using podman instead of docker command
 ```
-TERMINUS_DOCKER="podman" ./terminusdb-container [COMMAND]
+TERMINUSDB_DOCKER="podman" ./terminusdb-container [COMMAND]
 ```
 
 See the source code to find the other environment variables that can be set.
