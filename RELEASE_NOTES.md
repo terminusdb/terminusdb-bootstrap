@@ -6,4 +6,4 @@ TerminusDB Quickstart 2.0 is updated for use with TerminusDB Server 2.0, see rel
 
 ## Backwards-Incompatible Changes
 
-There has been a lot of clean up of Environment variables, so if you have an old ENV file or are setting the variables by some other means, see [ENV.example](ENV.example) to find the correct names
+There has been a lot of clean up of environment variables, so if you have an old `ENV` file or are setting the variables by some other means, see [ENV.example](ENV.example) to find the correct names
