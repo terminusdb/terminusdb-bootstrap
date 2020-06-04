@@ -2,10 +2,7 @@ TerminusDB Quickstart Version 2.0 Release Notes
 
 ## New
 
-TerminusDB Quickstart 2.0 is updated for use with TerminusDB Server 2.0, see release notes in [TerminusDB Server] for details.
-
-[TerminusDB Sever]: https://github.com/terminusdb/terminusdb-server
-
+TerminusDB Quickstart 2.0 is updated for use with TerminusDB Server 2.0, see release notes in [TerminusDB Server](https://github.com/terminusdb/terminusdb-server) for details.
 
 ## Backwards-Incompatible Changes
 
