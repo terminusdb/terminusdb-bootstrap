@@ -21,7 +21,7 @@ TERMINUSDB_QUICKSTART_CONTAINER=${TERMINUSDB_CONTAINER:-terminusdb-server}
 TERMINUSDB_QUICKSTART_REPOSITORY=${TERMINUSDB_REPOSITORY:-terminusdb/$TERMINUSDB_QUICKSTART_CONTAINER}
 
 # Version
-TERMINUSDB_QUICKSTART_TAG=${TERMINUSDB_TAG:-canary} 
+TERMINUSDB_QUICKSTART_TAG=${TERMINUSDB_TAG:-v2.0.0} 
 
 # Volumes
 TERMINUSDB_QUICKSTART_STORAGE=${TERMINUSDB_STORAGE:-terminusdb_storage}
@@ -41,10 +41,10 @@ case "$TERMINUSDB_QUICKSTART_TAG" in
     TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/canary"
   ;;
   "dev")
-    TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/2.0.0"
+    TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/2.0.2"
   ;;
   *)
-    TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@2.0.0/console/dist/"
+    TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@2.0.2/console/dist/"
   ;;
 esac
 
