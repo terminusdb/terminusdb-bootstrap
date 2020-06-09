@@ -47,7 +47,7 @@ case "$TERMINUSDB_QUICKSTART_TAG" in
     TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/canary"
   ;;
   "dev")
-    TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/2.0.2"
+    TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/dev"
   ;;
   *)
     TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@2.0.2/console/dist/"
@@ -91,7 +91,7 @@ function version_check {
 
   if $TERMINUSDB_QUICKSTART_DOCKER run --rm -v terminus_storage:/home/ alpine cat /home/prefix.db > /dev/null 2>&1; then
       printf "\
-You are running an old version of terminus-server. The new %s version
+You are running an old version of terminusdb-server. The new %s version
 uses a very different data structure which breaks backwards compatibility.
 Continuing will remove your existing databases.\n" "$TERMINUSDB_QUICKSTART_TAG"
       remove_old_volumes
@@ -138,9 +138,9 @@ function _platform_check {
       printf "\
 There are no Docker images for other CPU architectures than x86_64 yet.
 You can try to manually compile the components of TerminusDB by following the
-instructions on the terminus-server repository although other architectures are not
+instructions on the terminusdb-server repository although other architectures are not
 officially supported yet.
-https://github.com/terminusdb/terminus-server/blob/master/docs/BUILD.md \n"
+https://github.com/terminusdb/terminusdb-server/blob/master/docs/BUILD.md \n"
       exit 4
   fi
 }
@@ -157,7 +157,7 @@ USAGE:
   attach      attach to prolog shell
   stats       show container stats
   rm          remove volumes
-  test        run the unit tests on terminus-server\n"
+  test        run the unit tests on terminusdb-server\n"
 }
 
 _confirm() {
@@ -272,12 +272,12 @@ if [ -n "$1" ]; then
       # _build
       version_check
       _run > /dev/null \
-        && printf "terminus-server container started %s\n" "$TERMINUSDB_QUICKSTART_CONSOLE" \
+        && printf "terminusdb-server container started %s\n" "$TERMINUSDB_QUICKSTART_CONSOLE" \
         || printf "\nIs the container already running?\n"
     ;;
     "stop")
       _stop > /dev/null \
-        && printf "terminus-server container stopped\n" \
+        && printf "terminusdb-server container stopped\n" \
         || printf "\nIs the container running?\n"
     ;;
     "console")
@@ -298,7 +298,7 @@ if [ -n "$1" ]; then
         || printf "\nIs the container stopped?\n"
     ;;
     "test")
-      printf "This will run the tests on terminus-server\n"
+      printf "This will run the tests on terminusdb-server\n"
       _tests \
     ;;
     "help")
