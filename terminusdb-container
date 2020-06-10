@@ -53,17 +53,21 @@ fi
 
 TERMINUSDB_QUICKSTART_CONSOLE=${TERMINUSDB_CONSOLE:-$TERMINUSDB_QUICKSTART_SCHEME://$TERMINUSDB_QUICKSTART_SERVER:$TERMINUSDB_QUICKSTART_PORT/console}
 
-case "$TERMINUSDB_QUICKSTART_TAG" in
-  "canary")
-    TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/canary"
-  ;;
-  "dev")
-    TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/dev"
-  ;;
-  *)
-    TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@2.0.2/console/dist/"
-  ;;
-esac
+if [[ -n $TERMINUSDB_CONSOLE_BASE_URL ]]; then
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="$TERMINUSDB_CONSOLE_BASE_URL"
+else
+  case "$TERMINUSDB_QUICKSTART_TAG" in
+    "canary")
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/canary"
+    ;;
+    "dev")
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/dev"
+    ;;
+    *)
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@2.0.2/console/dist/"
+    ;;
+  esac
+fi
 
 if [[ "$OSTYPE" == "darwin" || "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
   TERMINUSDB_QUICKSTART_DOCKER_DEFAULT="docker"
