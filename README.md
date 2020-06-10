@@ -139,10 +139,10 @@ To prevent accidental insecure deployments, the Docker container binds to the
 IP 127.0.0.1 and therefor the server will only be accessible on the local
 machine, and not from any other machine over the network.
 
-If you would like to use this script on a server, you will need to enable
-HTTPS, and then accept the browser security warning about the self signed cert.
+If you would like to deploy to a server, you will need to enable HTTPS, and
+then accept the browser security warning about the self signed cert.
 
-This is done by enabling HTTPS with the `TERMINUSDB_HTTPS_ENABLED` environment
+You can enable HTTPS with the `TERMINUSDB_HTTPS_ENABLED` environment
 variable.
 
 ```
