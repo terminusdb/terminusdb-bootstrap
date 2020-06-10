@@ -207,7 +207,7 @@ TERMINUSDB_TAG=dev ./terminusdb-container [COMMAND]
 TERMINUSDB_TAG=v1.1.2 ./terminusdb-container [COMMAND]
 ```
 
-### Using a local version of the [TerminusDB Console] instead of the published version
+### Using a local version of  TerminusDB Console instead of the published version
 ```
 TERMINUSDB_CONSOLE_BASE_URL=//127.0.0.1:3005 ./terminusdb-container [COMMAND]
 ```
