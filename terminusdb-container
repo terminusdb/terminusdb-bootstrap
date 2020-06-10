@@ -8,7 +8,7 @@ set +o allexport
 
 # Load ENV file
 
-if [ -f ENV ]; then
+if [[ -f ENV ]]; then
   set -o allexport
   # shellcheck disable=SC1091
   # shellcheck source=ENV
@@ -28,18 +28,28 @@ TERMINUSDB_QUICKSTART_STORAGE=${TERMINUSDB_STORAGE:-terminusdb_storage}
 TERMINUSDB_QUICKSTART_STORAGE_VOLUME=/app/terminusdb/storage
 
 # Server
-TERMINUSDB_QUICKSTART_SCHEME=${TERMINUSDB_SCHEME:-http}
-TERMINUSDB_QUICKSTART_SERVER=${TERMINUSDB_SERVER:-localhost}
+TERMINUSDB_QUICKSTART_SERVER=${TERMINUSDB_SERVER:-127.0.0.1}
 TERMINUSDB_QUICKSTART_SERVER_PORT=${TERMINUSDB_SERVER_PORT:-6363}
 TERMINUSDB_QUICKSTART_PORT=${TERMINUSDB_PORT:-6363}
 TERMINUSDB_QUICKSTART_PASS=${TERMINUSDB_PASS:-root}
-TERMINUSDB_QUICKSTART_CONSOLE=${TERMINUSDB_CONSOLE:-$TERMINUSDB_QUICKSTART_SCHEME://$TERMINUSDB_QUICKSTART_SERVER:$TERMINUSDB_QUICKSTART_PORT/console}
 TERMINUSDB_QUICKSTART_AUTOLOGIN=${TERMINUSDB_AUTOLOGIN:-true}
 
 # HTTPS
 TERMINUSDB_QUICKSTART_HTTPS_ENABLED=${TERMINUSDB_HTTPS_ENABLED:-false}
-#TERMINUSDB_QUICKSTART_SSL_CERT=$TERMINUSDB_SSL_CERT
-#TERMINUSDB_QUICKSTART_SSL_CERT_KEY=$TERMINUSDB_SSL_CERT_KEY
+TERMINUSDB_QUICKSTART_SET_HTTPS="-e TERMINUSDB_HTTPS_ENABLED=\"$TERMINUSDB_QUICKSTART_HTTPS_ENABLED\""
+if [[ $TERMINUSDB_QUICKSTART_HTTPS_ENABLED == true ]]; then
+  TERMINUSDB_QUICKSTART_SCHEME="https"
+  if [[ -n $TERMINUSDB_SSL_CERT ]]; then
+    TERMINUSDB_QUICKSTART_SET_HTTPS+=$'\n'"-e TERMINUSDB_SSL_CERT=\"$TERMINUSDB_SSL_CERT\""
+  fi
+  if [[ -n $TERMINUSDB_SSL_CERT_KEY ]]; then
+    TERMINUSDB_QUICKSTART_SET_HTTPS+=$'\n'"-e TERMINUSDB_SSL_CERT_KEY=\"$TERMINUSDB_SSL_CERT_KEY\""
+  fi
+else
+  TERMINUSDB_QUICKSTART_SCHEME="http"
+fi
+
+TERMINUSDB_QUICKSTART_CONSOLE=${TERMINUSDB_CONSOLE:-$TERMINUSDB_QUICKSTART_SCHEME://$TERMINUSDB_QUICKSTART_SERVER:$TERMINUSDB_QUICKSTART_PORT/console}
 
 case "$TERMINUSDB_QUICKSTART_TAG" in
   "canary")
@@ -53,12 +63,9 @@ case "$TERMINUSDB_QUICKSTART_TAG" in
   ;;
 esac
 
-
-if [[ "$OSTYPE" == "darwin" || "$TERM_PROGRAM" == "Apple_Terminal" ]];
-then
+if [[ "$OSTYPE" == "darwin" || "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
   TERMINUSDB_QUICKSTART_DOCKER_DEFAULT="docker"
-elif command -v sudo >/dev/null;
-then
+elif command -v sudo >/dev/null; then
   TERMINUSDB_QUICKSTART_DOCKER_DEFAULT="sudo docker"
 else
   TERMINUSDB_QUICKSTART_DOCKER_DEFAULT="docker"
@@ -69,8 +76,7 @@ TERMINUSDB_QUICKSTART_DOCKER=${TERMINUSDB_DOCKER:-$TERMINUSDB_QUICKSTART_DOCKER_
 function remove_old_volumes {
   read -p "Are you sure? [y/N] " -r -n 1
   printf "\n"    # (optional) move to a new line
-  if [[ $REPLY =~ ^[Yy]$ ]]
-  then
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
       if ! $TERMINUSDB_QUICKSTART_DOCKER volume rm terminus_config terminus_storage; then
           printf "Could not remove volumes. Are you running an existing container of TerminusDB? Stop it first.\n"
       fi
@@ -97,29 +103,25 @@ Continuing will remove your existing databases.\n" "$TERMINUSDB_QUICKSTART_TAG"
   fi
 }
 
-if [[ -z "$TERMINUSDB_PUBLIC_URL" ]];
-then
+if [[ -z "$TERMINUSDB_PUBLIC_URL" ]]; then
   TERMINUSDB_QUICKSTART_SET_PUBLIC=""
  else
   TERMINUSDB_QUICKSTART_SET_PUBLIC="-e TERMINUSDB_PUBLIC_URL=\"$TERMINUSDB_PUBLIC_URL\""
 fi
 
-if [[ -z "$TERMINUSDB_LABEL_FILE" ]];
-then
+if [[ -z "$TERMINUSDB_LABEL_FILE" ]]; then
   TERMINUSDB_QUICKSTART_SET_LABEL_FILE=""
  else
   TERMINUSDB_QUICKSTART_SET_LABEL_FILE="--label-file \"$TERMINUSDB_LABEL_FILE\""
 fi
 
-if [[ -z "$TERMINUSDB_NETWORK" ]];
-then
+if [[ -z "$TERMINUSDB_NETWORK" ]]; then
   TERMINUSDB_QUICKSTART_SET_NETWORK=""
  else
   TERMINUSDB_QUICKSTART_SET_NETWORK="--network \"$TERMINUSDB_NETWORK\""
 fi
 
-if [[ -z "$TERMINUSDB_LOCAL" ]];
-then
+if [[ -z "$TERMINUSDB_LOCAL" ]]; then
   TERMINUSDB_QUICKSTART_MOUNT_LOCAL=""
  else
   TERMINUSDB_QUICKSTART_MOUNT_LOCAL="-v \"$TERMINUSDB_LOCAL\":/app/local_files"
@@ -131,7 +133,7 @@ fi
 #
 
 # Run platform check
-function _platform_check {
+_platform_check {
   PLATFORM_ARCHITECTURE=$(uname -m)
   if [[ $PLATFORM_ARCHITECTURE != "x86_64" ]]; then
       printf "\
@@ -175,14 +177,14 @@ _confirm() {
 _run () {
   if [[ $TERMINUSDB_QUICKSTART_TAG == "latest" \
         || $TERMINUSDB_QUICKSTART_TAG == "dev" \
-        || $TERMINUSDB_QUICKSTART_TAG == "canary" ]];
-  then
+        || $TERMINUSDB_QUICKSTART_TAG == "canary" ]]; then
     $TERMINUSDB_QUICKSTART_DOCKER image rm "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" 2>/dev/null
   fi
   eval "$TERMINUSDB_QUICKSTART_DOCKER" run -d -it --rm \
     "--name \"$TERMINUSDB_QUICKSTART_CONTAINER\" -p \"$TERMINUSDB_QUICKSTART_PORT:$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
     "-v \"$TERMINUSDB_QUICKSTART_STORAGE:$TERMINUSDB_QUICKSTART_STORAGE_VOLUME:rw\"" \
     "$TERMINUSDB_QUICKSTART_MOUNT_LOCAL" \
+    "$TERMINUSDB_QUICKSTART_SET_HTTPS" \
     "$TERMINUSDB_QUICKSTART_SET_PUBLIC" \
     "$TERMINUSDB_QUICKSTART_SET_LABEL_FILE" \
     "$TERMINUSDB_QUICKSTART_SET_NETWORK" \
@@ -191,7 +193,6 @@ _run () {
     "-e TERMINUSDB_SERVER_PORT=\"$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
     "-e TERMINUSDB_ADMIN_PASS=\"$TERMINUSDB_QUICKSTART_PASS\"" \
     "-e TERMINUSDB_AUTOLOGIN=\"$TERMINUSDB_QUICKSTART_AUTOLOGIN\"" \
-    "-e TERMINUSDB_HTTPS_ENABLED=\"$TERMINUSDB_QUICKSTART_HTTPS_ENABLED\"" \
     "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG"
 }
 
@@ -212,8 +213,7 @@ _stats () {
 }
 
 _rm () {
- if _confirm
- then
+ if _confirm; then
     $TERMINUSDB_QUICKSTART_DOCKER volume rm "$TERMINUSDB_QUICKSTART_STORAGE"
  fi
 }
@@ -231,16 +231,14 @@ _tests () {
 }
 
 _rm () {
- if _confirm
- then
+ if _confirm; then
    $TERMINUSDB_QUICKSTART_DOCKER volume rm "$TERMINUSDB_QUICKSTART_STORAGE"
  fi
 }
 
 _console () {
 
-if command -v python >/dev/null;
-then
+if command -v python >/dev/null; then
   python -m webbrowser "$TERMINUSDB_QUICKSTART_CONSOLE"
 else
   printf "\nopen %s in your browser\n" "$TERMINUSDB_QUICKSTART_CONSOLE"
@@ -248,8 +246,7 @@ fi
 }
 
 _serve () {
-if command -v python >/dev/null;
-then
+if command -v python >/dev/null; then
   python -m http.server 8888
 else
   printf "\npython is required for this feature\n"
@@ -263,7 +260,7 @@ _platform_check
 
 printf "\n"
 
-if [ -n "$1" ]; then
+if [[ -n "$1" ]]; then
   case "$1" in
     "run")
       # _build
