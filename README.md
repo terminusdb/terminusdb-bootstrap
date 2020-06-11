@@ -161,6 +161,11 @@ TERMINUSDB_SSL_CERT=/etc/letsencrypt/live/example.com/fullchain.pem
 TERMINUSDB_SSL_CERT_KEY=/etc/letsencrypt/live/example.com/privkey.pem
 ```
 
+To make your server available across the network you will also need to set `TERMINUSDB_AUTOLOGIN` to false
+
+```
+TERMINUSDB_AUTOLOGIN=false
+```
 
 ## `ENV` File
 
