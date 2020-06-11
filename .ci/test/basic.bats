@@ -1,16 +1,19 @@
 # Load ENV file
 
+set +o allexport
+
+TERMINUSDB_CONTAINER=${TERMINUSDB_CONTAINER:-terminusdb-server}
+TERMINUSDB_STORAGE=${TERMINUSDB_STORAGE:-terminusdb_storage}
+
 if [ -f ENV ]; then
   set -o allexport
   # shellcheck disable=SC1091
   # shellcheck source=ENV
-  source "$(pwd)/ENV"
+  source "$(pwd)/terminusdb-container" > /dev/null
   set +o allexport
 fi
 
 PATH="${BATS_TEST_DIRNAME}/stubs:$PATH"
-TERMINUSDB_CONTAINER=${TERMINUSDB_CONTAINER:-terminusdb-server}
-TERMINUSDB_STORAGE=${TERMINUSDB_STORAGE:-terminusdb_storage}
 
 container() {
   yes | ./terminusdb-container "$1"
