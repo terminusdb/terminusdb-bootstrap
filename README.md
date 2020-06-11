@@ -11,7 +11,7 @@
 
 # TerminusDB Server Container Control
 
-This is a simple convenience script to run terminus-server as a docker
+This is a simple convenience script to run terminusdb-server as a docker
 container.
 
 What the heck is TerminusDB? See here: https://terminusdb.com
@@ -53,8 +53,8 @@ Windows users do not need to do anything here.
 ## Get this script, cd to it
 
 ```
-git clone https://github.com/terminusdb/terminus-quickstart
-cd terminus-quickstart
+git clone https://github.com/terminusdb/terminusdb-quickstart
+cd terminusdb-quickstart
 ```
 
 ## Run the container (the first time)
@@ -62,8 +62,8 @@ cd terminus-quickstart
 ```
 ./terminusdb-container run
 
-Unable to find image 'terminusdb/terminus-server:latest' locally
-latest: Pulling from terminusdb/terminus-server
+Unable to find image 'terminusdb/terminusdb-server:latest' locally
+latest: Pulling from terminusdb/terminusdb-server
 8f91359f1fff: Pulling fs layer
 939634dec138: Pulling fs layer
 f30474226dd6: Pulling fs layer
@@ -84,10 +84,8 @@ Warning: This will lead to losing local data.
 ```
  ./terminusdb-container rm
 
-removing will delete storage and config volumes
+This will delete storage volume
 Are you sure? [y/N] y
-terminus_storage
-terminus-config
 ```
 
 ## Using the console
@@ -121,13 +119,53 @@ USAGE:
 That's it! You're ready to go!
 
 Oh, and flattery motivates us, please give us a star here:
-https://github.com/terminusdb/terminus-server
+https://github.com/terminusdb/terminusdb-server
 
 # Using The Enviroment
 
 This script is designed to "work out of the box," however, there may be
 situations where advanced users want to override some of it's defaults, this is
 done by setting enviroment variables.
+
+## Security
+
+TerminusDB Quickstart has HTTPS turned off by default to avoid scary security
+warnings since it's impossible to responsibly provide a valid SSL certificate
+for localhost.
+
+To prevent accidental insecure deployments, the Docker container binds to the
+IP 127.0.0.1 and therefor the server will only be accessible on the local
+machine, and not from any other machine over the network.
+
+If you would like to deploy to a server, you will need to enable HTTPS, and
+then accept the browser security warning about the self signed cert.
+
+You can enable HTTPS with the `TERMINUSDB_HTTPS_ENABLED` environment
+variable.
+
+```
+TERMINUSDB_HTTPS_ENABLED=true ./terminusdb-container run
+```
+
+This will work out of the box using the self-signed cert that ships with
+TerminusDB Server. However, this certificate will require that you accept the
+certificate as it is considered insecure by your browser.
+
+To eliminate the browser security warning so that you do not need to accept the
+certificate, simply provide a valid certificate and set the path to the cert
+and key with environment variables like in this example:
+
+```
+TERMINUSDB_HTTPS_ENABLED=true
+TERMINUSDB_SSL_CERT=/etc/letsencrypt/live/example.com/fullchain.pem
+TERMINUSDB_SSL_CERT_KEY=/etc/letsencrypt/live/example.com/privkey.pem
+```
+
+To make your server available across the network you will also need to set `TERMINUSDB_AUTOLOGIN` to false
+
+```
+TERMINUSDB_AUTOLOGIN=false
+```
 
 ## `ENV` File
 
@@ -172,6 +210,11 @@ TERMINUSDB_TAG=dev ./terminusdb-container [COMMAND]
 TERMINUSDB_TAG=v1.1.2 ./terminusdb-container [COMMAND]
 ```
 
+### Using a local version of  TerminusDB Console instead of the published version
+```
+TERMINUSDB_CONSOLE_BASE_URL=//127.0.0.1:3005 ./terminusdb-container [COMMAND]
+```
+
 ### Not using sudo even when sudo is available
 ```
 TERMINUSDB_DOCKER=docker ./terminusdb-container [COMMAND]
@@ -183,6 +226,4 @@ TERMINUSDB_DOCKER="podman" ./terminusdb-container [COMMAND]
 ```
 
 See the source code to find the other environment variables that can be set.
-
-
 
