@@ -11,7 +11,7 @@
 
 # TerminusDB Server Container Control
 
-This is a simple convenience script to run terminus-server as a docker
+This is a simple convenience script to run terminusdb-server as a docker
 container.
 
 What the heck is TerminusDB? See here: https://terminusdb.com
@@ -53,8 +53,8 @@ Windows users do not need to do anything here.
 ## Get this script, cd to it
 
 ```
-git clone https://github.com/terminusdb/terminus-quickstart
-cd terminus-quickstart
+git clone https://github.com/terminusdb/terminusdb-quickstart
+cd terminusdb-quickstart
 ```
 
 ## Run the container (the first time)
@@ -62,8 +62,8 @@ cd terminus-quickstart
 ```
 ./terminusdb-container run
 
-Unable to find image 'terminusdb/terminus-server:latest' locally
-latest: Pulling from terminusdb/terminus-server
+Unable to find image 'terminusdb/terminusdb-server:latest' locally
+latest: Pulling from terminusdb/terminusdb-server
 8f91359f1fff: Pulling fs layer
 939634dec138: Pulling fs layer
 f30474226dd6: Pulling fs layer
@@ -84,10 +84,8 @@ Warning: This will lead to losing local data.
 ```
  ./terminusdb-container rm
 
-removing will delete storage and config volumes
+This will delete storage volume
 Are you sure? [y/N] y
-terminus_storage
-terminus-config
 ```
 
 ## Using the console
@@ -121,7 +119,7 @@ USAGE:
 That's it! You're ready to go!
 
 Oh, and flattery motivates us, please give us a star here:
-https://github.com/terminusdb/terminus-server
+https://github.com/terminusdb/terminusdb-server
 
 # Using The Enviroment
 
