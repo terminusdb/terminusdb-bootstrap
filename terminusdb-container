@@ -265,7 +265,9 @@ _platform_check
 # PROCESS ARGS
 #
 
-printf "\n"
+if [[ $1 != "nop" ]]; then
+  printf "\n"
+fi
 
 if [[ -n "$1" ]]; then
   case "$1" in
@@ -317,6 +319,9 @@ else
   _usage
 fi
 
-printf "\n"
+if [[ $1 != "nop" ]]; then
+  printf "\n"
+fi
+
 
 # vim:ft=sh
