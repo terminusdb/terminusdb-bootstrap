@@ -1,2 +1,4 @@
 ENV
 _bats_log
+.ci/build
+package-lock.json

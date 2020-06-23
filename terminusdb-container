@@ -8,7 +8,7 @@ set +o allexport
 
 # Load ENV file
 
-if [[ -f ENV ]]; then
+if [[ $1 != "nop" && -f ENV ]]; then
   set -o allexport
   # shellcheck disable=SC1091
   # shellcheck source=ENV
