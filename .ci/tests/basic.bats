@@ -5,6 +5,7 @@ set -o allexport
 source "$(pwd)/terminusdb-container" nop 
 set +o allexport
 
+TERMINUSDB_CONSOLE_BASE_URL=//127.0.0.1:3005
 
 echo "start" >&3
 _log() {
@@ -79,8 +80,9 @@ inspect_volume() {
   npm run build
   cd console/dist
   npx http-server -p 3005 &
-  sleep 5
+  sleep 10
   cd "$TERMINUSDB_BATS_CONSOLE_REPO"
+  export CYPRESS_BASE_URL="$TERMINUSDB_QUICKSTART_CONSOLE/"
   npx cypress run >&3
 }
 
