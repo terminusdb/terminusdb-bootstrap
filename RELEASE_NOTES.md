@@ -4,9 +4,10 @@ TerminusDB Quickstart Version 2.0.1 Release Notes
 
 See release notes in [TerminusDB Console](https://github.com/terminusdb/terminusdb-console) for details.
 
-- Added exec feature to run commands inside container, this is used by tests to run TerminusDB server tests.
-- Add build and end to end tests for TerminusdB console
-- Add improved importing of environment variables in tests
+- Added exec feature to run commands inside container.
+- Add build and end-to-end tests for TerminusdB console.
+- Add improved importing of environment variables in tests.
+- run TerminusDB server tests from bats tests.
 
 TerminusDB Quickstart Version 2.0 Release Notes
 
