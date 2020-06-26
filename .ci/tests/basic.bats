@@ -107,8 +107,10 @@ inspect_volume() {
   fuser -k 3005/tcp || true
 }
 
+
+
 @test "terminusdb server tests" {
-  container exec swipl -g run_tests -g halt ./start.pl >&3
+  $TERMINUSDB_QUICKSTART_DOCKER run -it --rm "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" swipl -g run_tests -g halt ./start.pl
 }
 
 @test "quickstart stop" {
@@ -117,6 +119,7 @@ inspect_volume() {
   run inspect
   [ "${status}" -ne 0 ]
 }
+
 
 @test "quickstart rm" {
   run yes_container rm
