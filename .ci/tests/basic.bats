@@ -1,6 +1,6 @@
 # SET TEST ENV
 TERMINUSDB_AUTOLOGIN=false
-TERMINUSDB_CONSOLE_BASE_URL=//127.0.0.1:3005
+#TERMINUSDB_CONSOLE_BASE_URL=//127.0.0.1:3005
 TERMINUSDB_BATS_CONSOLE_REPO="${BATS_TEST_DIRNAME}/../build/terminusdb-console"
 
 # LOAD QUICKSTART ENV
@@ -19,8 +19,12 @@ PATH="${BATS_TEST_DIRNAME}/stubs:$PATH"
 
 _log date +%s
 
+yes_container() {
+  yes | container $@
+}
+
 container() {
-  yes | "${BATS_TEST_DIRNAME}/../../terminusdb-container" "$1"
+  "${BATS_TEST_DIRNAME}/../../terminusdb-container" "${@}"
 }
 
 inspect() {
@@ -41,7 +45,6 @@ inspect_volume() {
 }
 
 @test "docker volume exists" {
-  _log "hello?"
   run inspect_volume
   [ "${status}" -eq 0 ]
 }
@@ -92,15 +95,20 @@ inspect_volume() {
   [ "${status}" -eq 0 ]
 }
 
-@test "terminusdb console cypress tests" {
+@test "terminusdb console tests" {
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
   cd console/dist
+  fuser -k 3005/tcp || true
   npx http-server -p 3005 &
-  TERMINUSDB_BATS_HTTP_SERVER_PID=$!
+  sleep 10
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
   export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
   npx cypress run --reporter tap --spec 'cypress/integration/tests/login.spec.js' >&3
-  kill "${TERMINUSDB_BATS_HTTP_SERVER_PID}"
+  fuser -k 3005/tcp || true
+}
+
+@test "terminusdb server tests" {
+  container exec swipl -g run_tests -g halt ./start.pl >&3
 }
 
 @test "quickstart stop" {
@@ -111,7 +119,7 @@ inspect_volume() {
 }
 
 @test "quickstart rm" {
-  run container rm
+  run yes_container rm
   [ "${status}" -eq 0 ]
   run inspect_volume
   [ "${status}" -ne 0 ]

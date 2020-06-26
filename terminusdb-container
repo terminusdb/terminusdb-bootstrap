@@ -161,8 +161,7 @@ USAGE:
   console     launch console in web browser
   attach      attach to prolog shell
   stats       show container stats
-  rm          remove volumes
-  test        run the unit tests on terminusdb-server\n"
+  rm          remove volumes\n"
 }
 
 _confirm() {
@@ -221,20 +220,13 @@ _rm () {
  fi
 }
 
-_tests () {
- if eval "$TERMINUSDB_QUICKSTART_DOCKER" run -it --rm \
-    "--name \"$TERMINUSDB_QUICKSTART_CONTAINER\" -p \"$TERMINUSDB_QUICKSTART_PORT:$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
-    "-e TERMINUSDB_HTTPS_ENABLED=\"false\"" \
-    "-e TERMINUSDB_SERVER_NAME=\"http://$TERMINUSDB_QUICKSTART_SERVER\"" \
-    "-e TERMINUSDB_SERVER_PORT=\"$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
-    "-e TERMINUSDB_ADMIN_PASS=\"$TERMINUSDB_QUICKSTART_PASS\"" \
-    "-e TERMINUSDB_AUTOATTACH=\"$TERMINUSDB_QUICKSTART_AUTOATTACH\"" \
-    "-e TERMINUSDB_AUTOLOGIN=\"$TERMINUSDB_QUICKSTART_AUTOLOGIN\"" \
-    "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" "bash -c './utils/db_init -k root -s localhost && swipl -g run_tests -g halt ./start.pl'"; then
-     exit 0
- else
-     exit 1
- fi
+_exec () {
+  if [[ -n "$TERMINUSDB_RUN_CMD" ]]; then
+    printf "# Run CMD $TERMINUSDB_RUN_CMD\n"
+    eval "$TERMINUSDB_QUICKSTART_DOCKER" exec -it \
+      "$TERMINUSDB_QUICKSTART_CONTAINER" \
+      "$TERMINUSDB_RUN_CMD"
+  fi
 }
 
 _rm () {
@@ -300,9 +292,13 @@ if [[ -n "$1" ]]; then
       _rm \
         || printf "\nIs the container stopped?\n"
     ;;
-    "test")
-      printf "This will run the tests on terminusdb-server\n"
-      _tests \
+    "exec")
+      if [[ -n "$2" ]]; then
+        TERMINUSDB_RUN_CMD="${@:2}"
+      fi
+      printf "This will exec a command on terminusdb-server\n"
+      _exec \
+        || printf "\nIs the container stopped?\n"
     ;;
     "nop")
       true
