@@ -110,7 +110,7 @@ inspect_volume() {
 
 
 @test "terminusdb server tests" {
-  $TERMINUSDB_QUICKSTART_DOCKER run -it --rm "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" swipl -g run_tests -g halt ./start.pl
+  $TERMINUSDB_QUICKSTART_DOCKER run -it --rm -e TERMINUSDB_HTTPS_ENABLED=false "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" swipl -g run_tests -g halt ./start.pl
 }
 
 @test "quickstart stop" {
