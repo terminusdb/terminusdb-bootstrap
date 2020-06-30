@@ -56,11 +56,6 @@ inspect_volume() {
   [ "${status}" -eq 0 ]
 }
 
-@test "quickstart stats" {
-  run expect "${BATS_TEST_DIRNAME}/expect/stats.exp"
-  [ "${status}" -eq 0 ]
-}
-
 @test "terminusdb console build" {
   mkdir -p "${TERMINUSDB_BATS_CONSOLE_REPO}"
   if [[ ! -d "${TERMINUSDB_BATS_CONSOLE_REPO}" ]]; then

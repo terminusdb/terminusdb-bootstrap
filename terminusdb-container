@@ -160,7 +160,6 @@ USAGE:
   stop        stop container
   console     launch console in web browser
   attach      attach to prolog shell
-  stats       show container stats
   rm          remove volumes\n"
 }
 
@@ -208,10 +207,6 @@ _restart () {
 
 _attach () {
   $TERMINUSDB_QUICKSTART_DOCKER attach "$TERMINUSDB_QUICKSTART_CONTAINER"
-}
-
-_stats () {
-  $TERMINUSDB_QUICKSTART_DOCKER stats "$TERMINUSDB_QUICKSTART_CONTAINER"
 }
 
 _rm () {
@@ -282,10 +277,6 @@ if [[ -n "$1" ]]; then
     "attach")
       printf "Ctrl+p Ctrl+q to detach\n\n"
       _attach
-    ;;
-    "stats")
-      _stats \
-        || printf "\nIs the container running?\n"
     ;;
     "rm")
       printf "This will delete storage volume\n"
