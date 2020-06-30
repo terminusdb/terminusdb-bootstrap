@@ -10,14 +10,7 @@ set -o allexport
 source "$(pwd)/terminusdb-container" nop 
 set +o allexport
 
-_log() {
-  echo "$1" >> _bats_log 
-}
-
 PATH="${BATS_TEST_DIRNAME}/stubs:$PATH"
-
-
-_log date +%s
 
 yes_container() {
   yes | container $@
@@ -28,13 +21,11 @@ container() {
 }
 
 inspect() {
-  _log "inspect ${TERMINUSDB_QUICKSTART_CONTAINER}"
-  sudo docker inspect -f '{{.State.Running}}' "${TERMINUSDB_QUICKSTART_CONTAINER}"
+  [[ $($TERMINUSDB_QUICKSTART_DOCKER inspect -f '{{.State.Running}}' "${TERMINUSDB_QUICKSTART_CONTAINER}") == "true" ]]
 }
 
 inspect_volume() {
-  _log "inspect volume ${TERMINUSDB_QUICKSTART_STORAGE}"
-  sudo docker volume inspect -f '{{.Name}}' "${TERMINUSDB_QUICKSTART_STORAGE}"
+  $TERMINUSDB_QUICKSTART_DOCKER volume inspect -f '{{.Name}}' "${TERMINUSDB_QUICKSTART_STORAGE}"
 }
 
 @test "quickstart run" {
@@ -107,24 +98,22 @@ inspect_volume() {
   fuser -k 3005/tcp || true
 }
 
+@test "quickstart stop" {
+  run container stop >&3
+  [[ "${status}" == "0" ]]
+  run inspect
+  [ "${status}" != "0" ]
+}
 
 
 @test "terminusdb server tests" {
-  $TERMINUSDB_QUICKSTART_DOCKER run -it --rm -e TERMINUSDB_HTTPS_ENABLED=false "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" bash -c "./utils/db_init -s localhost -k root && swipl -g run_tests -g halt ./start.pl" >%3
-}
-
-@test "quickstart stop" {
-  run container stop
-  [ "${status}" -eq 0 ]
-  run inspect
-  [ "${status}" -ne 0 ]
+  $TERMINUSDB_QUICKSTART_DOCKER run -it --rm -e TERMINUSDB_HTTPS_ENABLED=false "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" bash -c "./utils/db_init -s localhost -k root && swipl -g run_tests -g halt ./start.pl"
 }
 
 
 @test "quickstart rm" {
-  run yes_container rm
+  run yes_container rm >&3
   [ "${status}" -eq 0 ]
   run inspect_volume
   [ "${status}" -ne 0 ]
 }
-
