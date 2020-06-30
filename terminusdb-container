@@ -160,7 +160,6 @@ USAGE:
   stop        stop container
   console     launch console in web browser
   attach      attach to prolog shell
-  stats       show container stats
   rm          remove volumes\n"
 }
 
@@ -210,10 +209,6 @@ _attach () {
   $TERMINUSDB_QUICKSTART_DOCKER attach "$TERMINUSDB_QUICKSTART_CONTAINER"
 }
 
-_stats () {
-  $TERMINUSDB_QUICKSTART_DOCKER stats "$TERMINUSDB_QUICKSTART_CONTAINER"
-}
-
 _rm () {
  if _confirm; then
     $TERMINUSDB_QUICKSTART_DOCKER volume rm "$TERMINUSDB_QUICKSTART_STORAGE"
@@ -222,7 +217,6 @@ _rm () {
 
 _exec () {
   if [[ -n "$TERMINUSDB_RUN_CMD" ]]; then
-    printf "# Run CMD $TERMINUSDB_RUN_CMD\n"
     eval "$TERMINUSDB_QUICKSTART_DOCKER" exec -it \
       "$TERMINUSDB_QUICKSTART_CONTAINER" \
       "$TERMINUSDB_RUN_CMD"
@@ -283,10 +277,6 @@ if [[ -n "$1" ]]; then
       printf "Ctrl+p Ctrl+q to detach\n\n"
       _attach
     ;;
-    "stats")
-      _stats \
-        || printf "\nIs the container running?\n"
-    ;;
     "rm")
       printf "This will delete storage volume\n"
       _rm \
@@ -294,6 +284,7 @@ if [[ -n "$1" ]]; then
     ;;
     "exec")
       if [[ -n "$2" ]]; then
+        # shellcheck disable=SC2124
         TERMINUSDB_RUN_CMD="${@:2}"
       fi
       printf "This will exec a command on terminusdb-server\n"

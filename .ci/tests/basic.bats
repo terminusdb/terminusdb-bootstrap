@@ -10,14 +10,7 @@ set -o allexport
 source "$(pwd)/terminusdb-container" nop 
 set +o allexport
 
-_log() {
-  echo "$1" >> _bats_log 
-}
-
 PATH="${BATS_TEST_DIRNAME}/stubs:$PATH"
-
-
-_log date +%s
 
 yes_container() {
   yes | container $@
@@ -28,55 +21,49 @@ container() {
 }
 
 inspect() {
-  _log "inspect ${TERMINUSDB_QUICKSTART_CONTAINER}"
-  sudo docker inspect -f '{{.State.Running}}' "${TERMINUSDB_QUICKSTART_CONTAINER}"
+  [[ $($TERMINUSDB_QUICKSTART_DOCKER inspect -f '{{.State.Running}}' "${TERMINUSDB_QUICKSTART_CONTAINER}") == "true" ]]
 }
 
 inspect_volume() {
-  _log "inspect volume ${TERMINUSDB_QUICKSTART_STORAGE}"
-  sudo docker volume inspect -f '{{.Name}}' "${TERMINUSDB_QUICKSTART_STORAGE}"
+  $TERMINUSDB_QUICKSTART_DOCKER volume inspect -f '{{.Name}}' "${TERMINUSDB_QUICKSTART_STORAGE}"
 }
 
 @test "quickstart run" {
   run container run
-  [ "${status}" -eq 0 ]
+  [[ "${status}" == 0 ]]
   run inspect
-  [ "${status}" -eq 0 ]
+  [[ "${status}" == 0 ]]
 }
 
 @test "docker volume exists" {
   run inspect_volume
-  [ "${status}" -eq 0 ]
+  [[ "${status}" == 0 ]]
 }
 
 @test "quickstart help" {
   run container help
-  [ "${status}" -eq 0 ]
+  [[ "${status}" == 0 ]]
 }
 
 @test "quickstart console" {
   run container console
-  [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "python" ]
+  [[ "${status}" == 0 ]]
+  [[ "${lines[0]}" == "python" ]]
 }
 
 @test "quickstart attach" {
   run expect "${BATS_TEST_DIRNAME}/expect/attach.exp"
-  [ "${status}" -eq 0 ]
-}
-
-@test "quickstart stats" {
-  run expect "${BATS_TEST_DIRNAME}/expect/stats.exp"
-  [ "${status}" -eq 0 ]
+  [[ "${status}" == 0 ]]
 }
 
 @test "terminusdb console build" {
-  mkdir -p "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  TERMINUSDB_QUICKSTART_BRANCH=$(git rev-parse --abbrev-ref HEAD)
   if [[ ! -d "${TERMINUSDB_BATS_CONSOLE_REPO}" ]]; then
     git clone https://github.com/terminusdb/terminusdb-console.git "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  else
+    mkdir -p "${TERMINUSDB_BATS_CONSOLE_REPO}"
   fi
-  cd "${BATS_TEST_DIRNAME}/../.."
-  TERMINUSDB_QUICKSTART_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
   case "${TERMINUSDB_QUICKSTART_BRANCH}" in
     dev)
       TERMINUSDB_CONSOLE_BRANCH=dev
@@ -87,12 +74,11 @@ inspect_volume() {
     *)
       TERMINUSDB_CONSOLE_BRANCH=master
   esac
-  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
   git checkout "${TERMINUSDB_CONSOLE_BRANCH}"
   git pull
   npm install
   run npm run build
-  [ "${status}" -eq 0 ]
+  [[ "${status}" == 0 ]]
 }
 
 @test "terminusdb console tests" {
@@ -107,24 +93,20 @@ inspect_volume() {
   fuser -k 3005/tcp || true
 }
 
-
+@test "quickstart stop" {
+  run container stop >&3
+  [[ "${status}" == "0" ]]
+  run inspect
+  [[ "${status}" != "0" ]]
+}
 
 @test "terminusdb server tests" {
-  $TERMINUSDB_QUICKSTART_DOCKER run -it --rm -e TERMINUSDB_HTTPS_ENABLED=false "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" swipl -g run_tests -g halt ./start.pl
+  $TERMINUSDB_QUICKSTART_DOCKER run -it --rm -e TERMINUSDB_HTTPS_ENABLED=false "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" bash -c "./utils/db_init -s localhost -k root && swipl -g run_tests -g halt ./start.pl"
 }
-
-@test "quickstart stop" {
-  run container stop
-  [ "${status}" -eq 0 ]
-  run inspect
-  [ "${status}" -ne 0 ]
-}
-
 
 @test "quickstart rm" {
-  run yes_container rm
-  [ "${status}" -eq 0 ]
+  run yes_container rm >&3
+  [[ "${status}" == 0 ]]
   run inspect_volume
-  [ "${status}" -ne 0 ]
+  [[ "${status}" != 0 ]]
 }
-
