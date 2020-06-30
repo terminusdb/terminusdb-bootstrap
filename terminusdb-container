@@ -284,6 +284,7 @@ if [[ -n "$1" ]]; then
     ;;
     "exec")
       if [[ -n "$2" ]]; then
+        # shellcheck disable=SC2124
         TERMINUSDB_RUN_CMD="${@:2}"
       fi
       printf "This will exec a command on terminusdb-server\n"
