@@ -68,7 +68,7 @@ else
       TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/dev"
     ;;
     *)
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@2.0.4/console/dist/"
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@2.0.5/console/dist/"
     ;;
   esac
 fi
