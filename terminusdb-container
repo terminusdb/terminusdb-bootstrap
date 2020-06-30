@@ -217,7 +217,6 @@ _rm () {
 
 _exec () {
   if [[ -n "$TERMINUSDB_RUN_CMD" ]]; then
-    printf "# Run CMD $TERMINUSDB_RUN_CMD\n"
     eval "$TERMINUSDB_QUICKSTART_DOCKER" exec -it \
       "$TERMINUSDB_QUICKSTART_CONTAINER" \
       "$TERMINUSDB_RUN_CMD"
