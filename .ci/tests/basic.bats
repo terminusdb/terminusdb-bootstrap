@@ -1,10 +1,13 @@
+set -o allexport
 # SET TEST ENV
 TERMINUSDB_AUTOLOGIN=false
-TERMINUSDB_CONSOLE_BASE_URL=//127.0.0.1:53005
 TERMINUSDB_BATS_CONSOLE_REPO="${BATS_TEST_DIRNAME}/../build/terminusdb-console"
+TERMINUSDB_CONSOLE_BASE_URL=//127.0.0.1:53005
+TERMINUSDB_PORT=56363
+TERMINUSDB_CONTAINER="terminusdb-server-bats-test"
+TERMINUSDB_STORAGE=terminusdb-server-bats-test
 
 # LOAD QUICKSTART ENV
-set -o allexport
 # shellcheck disable=SC1091
 # shellcheck source=$(pwd)/terminusdb-container 
 source "$(pwd)/terminusdb-container" nop 
