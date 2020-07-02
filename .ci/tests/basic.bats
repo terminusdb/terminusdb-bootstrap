@@ -96,6 +96,11 @@ inspect_volume() {
   fuser -k 53005/tcp || true
 }
 
+@test "quickstart exec" {
+  run container exec echo "quickstart" | grep "quickstart" 
+  [[ "${status}" == "0" ]]
+}
+
 @test "quickstart stop" {
   run container stop >&3
   [[ "${status}" == "0" ]]
