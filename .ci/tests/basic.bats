@@ -1,10 +1,13 @@
+set -o allexport
 # SET TEST ENV
 TERMINUSDB_AUTOLOGIN=false
-#TERMINUSDB_CONSOLE_BASE_URL=//127.0.0.1:3005
 TERMINUSDB_BATS_CONSOLE_REPO="${BATS_TEST_DIRNAME}/../build/terminusdb-console"
+TERMINUSDB_CONSOLE_BASE_URL=//127.0.0.1:53005
+TERMINUSDB_PORT=56363
+TERMINUSDB_CONTAINER="terminusdb-server-bats-test"
+TERMINUSDB_STORAGE=terminusdb-server-bats-test
 
 # LOAD QUICKSTART ENV
-set -o allexport
 # shellcheck disable=SC1091
 # shellcheck source=$(pwd)/terminusdb-container 
 source "$(pwd)/terminusdb-container" nop 
@@ -84,13 +87,13 @@ inspect_volume() {
 @test "terminusdb console tests" {
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
   cd console/dist
-  fuser -k 3005/tcp || true
-  npx http-server -p 3005 &
+  fuser -k 53005/tcp || true
+  npx http-server -p 53005 &
   sleep 10
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
   export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
   npx cypress run --reporter tap --spec 'cypress/integration/tests/login.spec.js' >&3
-  fuser -k 3005/tcp || true
+  fuser -k 53005/tcp || true
 }
 
 @test "quickstart stop" {
