@@ -16,6 +16,25 @@ container.
 
 What the heck is TerminusDB? See here: https://terminusdb.com
 
+## Table of Contents
+
+* [Prerequisites](#Prerequisites)
+  * [Docker](#Docker)
+  * [Git](#Git)
+  * [Sudo](#Sudo)
+  * [Docker Compose](#Docker-Compose) (optional)
+* [Installing](#Installing)
+  * [Get the repo](#Get-this-repo-cd-to-it)
+  * [Run the container by using the script (the first time)](#Run-the-container-by-using-the-script-the-first-time)
+    * OR [Install when you have a previous installation](#If-youve-installed-before)
+    * OR [Installing with Docker Compose instead](#Installing-with-Docker-Compose)
+  * [Using the console](#Using-the-console)
+  * [To stop, attach, etc, see usage](#To-stop-attach-etc-see-usage)
+* [Using The Enviroment](#Using-The-Enviroment)
+  * [Security](#Security)
+  * [`ENV` File](#ENV-file)
+  * [`ENV` Examples](#ENV-Examples)
+
 ## Prerequisites
 
 ### Docker
