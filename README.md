@@ -50,14 +50,22 @@ install sudo and confugure their sudoers file accordingly.
 
 Windows users do not need to do anything here.
 
-## Get this script, cd to it
+### Docker Compose
+
+You may choose to deploy using [`Docker Compose`](https://docs.docker.com/compose/).
+If you do, you will need to install the `docker-compose` command, which you can 
+learn about here: https://docs.docker.com/compose/install/#install-compose
+
+## Installing
+
+### Get this repo, cd to it
 
 ```
 git clone https://github.com/terminusdb/terminusdb-quickstart
 cd terminusdb-quickstart
 ```
 
-## Run the container (the first time)
+### Run the container by using the script (the first time)
 
 ```
 ./terminusdb-container run
@@ -74,7 +82,7 @@ d9fa4a1acf93: Pulling fs layer
 [ ... ]
 ```
 
-## If you've installed before 
+#### If you've installed before
 
 You may need to move or remove previous volumes or you may encounter bugs or
 the old console.
@@ -88,7 +96,14 @@ This will delete storage volume
 Are you sure? [y/N] y
 ```
 
-## Using the console
+#### Installing with Docker Compose
+
+Run `docker-compose up -d` in the `terminusdb-quickstart` repo to deploy the
+`terminusdb-server` container. Run `docker-compose down` to remove the container
+while preserving the named data volume, or `docker-compose down -v` to also
+destroy the data volume.
+
+### Using the console
 
 Ready to terminate? Open the TerminusDB Console in your web browser.
 
@@ -98,7 +113,7 @@ Ready to terminate? Open the TerminusDB Console in your web browser.
 
 Or go here: http://localhost:6363/console
 
-## To stop, attach, etc, see usage
+### To stop, attach, etc, see usage
 ```
 ./terminusdb-container 
 
@@ -180,7 +195,7 @@ follow these steps:
 1. Copy `ENV.example` to `ENV`.
 2. Edit `ENV`: uncomment the lines you want to change and set the values.
 
-## Examples
+## `ENV` Examples
 
 These are examples of environment variables you can set when running
 `./terminusdb-container`.
