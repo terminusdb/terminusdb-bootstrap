@@ -25,15 +25,14 @@ What the heck is TerminusDB? See here: https://terminusdb.com
   * [Docker Compose](#Docker-Compose) (optional)
 * [Installing](#Installing)
   * [Get the repo](#Get-this-repo-cd-to-it)
-  * [Run the container by using the script (the first time)](#Run-the-container-by-using-the-script-the-first-time)
-    * OR [Install when you have a previous installation](#If-youve-installed-before)
-    * OR [Installing with Docker Compose instead](#Installing-with-Docker-Compose)
+  * [Run the container by using the script](#Run-the-container-by-using-the-script-the-first-time)
   * [Using the console](#Using-the-console)
   * [To stop, attach, etc, see usage](#To-stop-attach-etc-see-usage)
 * [Using The Enviroment](#Using-The-Enviroment)
   * [Security](#Security)
   * [`ENV` File](#ENV-file)
   * [`ENV` Examples](#ENV-Examples)
+* [Using Docker Compose](#Using-Docker-Compose)
 
 ## Prerequisites
 
@@ -103,7 +102,7 @@ d9fa4a1acf93: Pulling fs layer
 
 #### If you've installed before
 
-You may need to move or remove previous volumes or you may encounter bugs or
+You may need to remove previous volumes or you may encounter bugs or
 the old console.
 
 Warning: This will lead to losing local data.
@@ -114,13 +113,6 @@ Warning: This will lead to losing local data.
 This will delete storage volume
 Are you sure? [y/N] y
 ```
-
-#### Installing with Docker Compose
-
-Run `docker-compose up -d` in the `terminusdb-quickstart` repo to deploy the
-`terminusdb-server` container. Run `docker-compose down` to remove the container
-while preserving the named data volume, or `docker-compose down -v` to also
-destroy the data volume.
 
 ### Using the console
 
@@ -260,4 +252,15 @@ TERMINUSDB_DOCKER="podman" ./terminusdb-container [COMMAND]
 ```
 
 See the source code to find the other environment variables that can be set.
+
+## Using Docker Compose
+
+As an alternative to using the terminusdb-countainer script, you could use Docker Compose instead, using the example [docker-compose.yml](./docker-compose.yml)
+
+Install [Docker Compose](https://docs.docker.com/compose/install/).
+
+Run `docker-compose up -d` in the `terminusdb-quickstart` repo to deploy the
+`terminusdb-server` container. Run `docker-compose down` to remove the container
+while preserving the named data volume, or `docker-compose down -v` to also
+destroy the data volume.
 
