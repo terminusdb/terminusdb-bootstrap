@@ -1,4 +1,6 @@
-TerminusDB Quickstart Version 2.0.1 Release Notes
+# TerminusDB Quickstart Version 2.0.1 Release Notes
+
+## New
 
 - Updated version of TerminusDB console.
 
@@ -9,11 +11,11 @@ See release notes in [TerminusDB Console](https://github.com/terminusdb/terminus
 - Add improved importing of environment variables in tests.
 - run TerminusDB server tests from bats tests.
 
-TerminusDB Quickstart Version 2.0 Release Notes
+# TerminusDB Quickstart Version 2.0 Release Notes
 
 ## New
 
-TerminusDB Quickstart 2.0 is updated for use with TerminusDB Server 2.0, see release notes in [TerminusDB Server](https://github.com/terminusdb/terminusdb-server) for details.
+# TerminusDB Quickstart 2.0 is updated for use with TerminusDB Server 2.0, see release notes in [TerminusDB Server](https://github.com/terminusdb/terminusdb-server) for details.
 
 ## Backwards-Incompatible Changes
 
