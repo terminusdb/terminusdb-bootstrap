@@ -8,7 +8,7 @@ set +o allexport
 
 # Load ENV file
 
-if [[ -f ENV ]]; then
+if [[ $1 != "nop" && -f ENV ]]; then
   set -o allexport
   # shellcheck disable=SC1091
   # shellcheck source=ENV
@@ -18,18 +18,16 @@ fi
 
 # Container
 TERMINUSDB_QUICKSTART_CONTAINER=${TERMINUSDB_CONTAINER:-terminusdb-server}
-TERMINUSDB_QUICKSTART_REPOSITORY=${TERMINUSDB_REPOSITORY:-terminusdb/$TERMINUSDB_QUICKSTART_CONTAINER}
+TERMINUSDB_QUICKSTART_REPOSITORY=${TERMINUSDB_REPOSITORY:-terminusdb/terminusdb-server}
 
 # Version
-TERMINUSDB_QUICKSTART_TAG=${TERMINUSDB_TAG:-v2.0.4}
+TERMINUSDB_QUICKSTART_TAG=${TERMINUSDB_TAG:-v2.0.5}
 
 # Volumes
 TERMINUSDB_QUICKSTART_STORAGE=${TERMINUSDB_STORAGE:-terminusdb_storage}
 TERMINUSDB_QUICKSTART_STORAGE_VOLUME=/app/terminusdb/storage
 
 # Server
-TERMINUSDB_QUICKSTART_SERVER=${TERMINUSDB_SERVER:-127.0.0.1}
-TERMINUSDB_QUICKSTART_SERVER_PORT=${TERMINUSDB_SERVER_PORT:-6363}
 TERMINUSDB_QUICKSTART_PORT=${TERMINUSDB_PORT:-6363}
 TERMINUSDB_QUICKSTART_PASS=${TERMINUSDB_PASS:-root}
 TERMINUSDB_QUICKSTART_AUTOLOGIN=${TERMINUSDB_AUTOLOGIN:-true}
@@ -55,7 +53,7 @@ else
   TERMINUSDB_QUICKSTART_SERVER_IP="127.0.0.1"
 fi
 
-TERMINUSDB_QUICKSTART_CONSOLE=${TERMINUSDB_CONSOLE:-$TERMINUSDB_QUICKSTART_SCHEME://$TERMINUSDB_QUICKSTART_SERVER:$TERMINUSDB_QUICKSTART_PORT/console}
+TERMINUSDB_QUICKSTART_CONSOLE=${TERMINUSDB_CONSOLE:-$TERMINUSDB_QUICKSTART_SCHEME://127.0.0.1:$TERMINUSDB_QUICKSTART_PORT/console}
 
 if [[ -n $TERMINUSDB_CONSOLE_BASE_URL ]]; then
       TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="$TERMINUSDB_CONSOLE_BASE_URL"
@@ -68,7 +66,7 @@ else
       TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/dev"
     ;;
     *)
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@2.0.4/console/dist/"
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@2.0.6/console/dist/"
     ;;
   esac
 fi
@@ -160,9 +158,8 @@ USAGE:
   stop        stop container
   console     launch console in web browser
   attach      attach to prolog shell
-  stats       show container stats
-  rm          remove volumes
-  test        run the unit tests on terminusdb-server\n"
+  exec        execeute a command inside the container
+  rm          remove volumes\n"
 }
 
 _confirm() {
@@ -185,15 +182,14 @@ _run () {
     $TERMINUSDB_QUICKSTART_DOCKER image rm "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" 2>/dev/null
   fi
   eval "$TERMINUSDB_QUICKSTART_DOCKER" run -d -it --rm \
-    "--name \"$TERMINUSDB_QUICKSTART_CONTAINER\" -p \"$TERMINUSDB_QUICKSTART_SERVER_IP:$TERMINUSDB_QUICKSTART_PORT:$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
+    "--name \"$TERMINUSDB_QUICKSTART_CONTAINER\" -p \"$TERMINUSDB_QUICKSTART_SERVER_IP:$TERMINUSDB_QUICKSTART_PORT:6363\"" \
     "-v \"$TERMINUSDB_QUICKSTART_STORAGE:$TERMINUSDB_QUICKSTART_STORAGE_VOLUME:rw\"" \
     "$TERMINUSDB_QUICKSTART_MOUNT_LOCAL" \
     "$TERMINUSDB_QUICKSTART_SET_HTTPS" \
     "$TERMINUSDB_QUICKSTART_SET_LABEL_FILE" \
     "$TERMINUSDB_QUICKSTART_SET_NETWORK" \
+    "-e TERMINUSDB_SERVER_PORT=6363" \
     "-e TERMINUSDB_CONSOLE_BASE_URL=\"$TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL\"" \
-    "-e TERMINUSDB_SERVER_NAME=\"http://$TERMINUSDB_QUICKSTART_SERVER\"" \
-    "-e TERMINUSDB_SERVER_PORT=\"$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
     "-e TERMINUSDB_ADMIN_PASS=\"$TERMINUSDB_QUICKSTART_PASS\"" \
     "-e TERMINUSDB_AUTOLOGIN=\"$TERMINUSDB_QUICKSTART_AUTOLOGIN\"" \
     "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG"
@@ -211,30 +207,18 @@ _attach () {
   $TERMINUSDB_QUICKSTART_DOCKER attach "$TERMINUSDB_QUICKSTART_CONTAINER"
 }
 
-_stats () {
-  $TERMINUSDB_QUICKSTART_DOCKER stats "$TERMINUSDB_QUICKSTART_CONTAINER"
-}
-
 _rm () {
  if _confirm; then
     $TERMINUSDB_QUICKSTART_DOCKER volume rm "$TERMINUSDB_QUICKSTART_STORAGE"
  fi
 }
 
-_tests () {
- if eval "$TERMINUSDB_QUICKSTART_DOCKER" run -it --rm \
-    "--name \"$TERMINUSDB_QUICKSTART_CONTAINER\" -p \"$TERMINUSDB_QUICKSTART_PORT:$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
-    "-e TERMINUSDB_HTTPS_ENABLED=\"false\"" \
-    "-e TERMINUSDB_SERVER_NAME=\"http://$TERMINUSDB_QUICKSTART_SERVER\"" \
-    "-e TERMINUSDB_SERVER_PORT=\"$TERMINUSDB_QUICKSTART_SERVER_PORT\"" \
-    "-e TERMINUSDB_ADMIN_PASS=\"$TERMINUSDB_QUICKSTART_PASS\"" \
-    "-e TERMINUSDB_AUTOATTACH=\"$TERMINUSDB_QUICKSTART_AUTOATTACH\"" \
-    "-e TERMINUSDB_AUTOLOGIN=\"$TERMINUSDB_QUICKSTART_AUTOLOGIN\"" \
-    "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" "bash -c './utils/db_init -k root -s localhost && swipl -g run_tests -g halt ./start.pl'"; then
-     exit 0
- else
-     exit 1
- fi
+_exec () {
+  if [[ -n "$TERMINUSDB_RUN_CMD" ]]; then
+    eval "$TERMINUSDB_QUICKSTART_DOCKER" exec -it \
+      "$TERMINUSDB_QUICKSTART_CONTAINER" \
+      "$TERMINUSDB_RUN_CMD"
+  fi
 }
 
 _rm () {
@@ -265,7 +249,9 @@ _platform_check
 # PROCESS ARGS
 #
 
-printf "\n"
+if [[ $1 != "nop" ]]; then
+  printf "\n"
+fi
 
 if [[ -n "$1" ]]; then
   case "$1" in
@@ -289,18 +275,19 @@ if [[ -n "$1" ]]; then
       printf "Ctrl+p Ctrl+q to detach\n\n"
       _attach
     ;;
-    "stats")
-      _stats \
-        || printf "\nIs the container running?\n"
-    ;;
     "rm")
       printf "This will delete storage volume\n"
       _rm \
         || printf "\nIs the container stopped?\n"
     ;;
-    "test")
-      printf "This will run the tests on terminusdb-server\n"
-      _tests \
+    "exec")
+      if [[ -n "$2" ]]; then
+        # shellcheck disable=SC2124
+        TERMINUSDB_RUN_CMD="${@:2}"
+      fi
+      printf "This will exec a command on terminusdb-server\n"
+      _exec \
+        || printf "\nIs the container stopped?\n"
     ;;
     "nop")
       true
@@ -317,6 +304,9 @@ else
   _usage
 fi
 
-printf "\n"
+if [[ $1 != "nop" ]]; then
+  printf "\n"
+fi
+
 
 # vim:ft=sh
