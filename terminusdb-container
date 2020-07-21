@@ -69,7 +69,7 @@ else
       TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@v2.0.6/console/dist/"
     ;;
     *)
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@2.0.6/console/dist/"
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@${TERMINUSDB_QUICKSTART_TAG}/console/dist/"
     ;;
   esac
 fi
