@@ -258,6 +258,9 @@ fi
 
 if [[ -n "$1" ]]; then
   case "$1" in
+    "help")
+      _usage
+    ;;
     "run")
       # _build
       version_check
