@@ -59,6 +59,9 @@ if [[ -n $TERMINUSDB_CONSOLE_BASE_URL ]]; then
       TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="$TERMINUSDB_CONSOLE_BASE_URL"
 else
   case "$TERMINUSDB_QUICKSTART_TAG" in
+    "rc")
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/rc"
+    ;;
     "canary")
       TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/canary"
     ;;
