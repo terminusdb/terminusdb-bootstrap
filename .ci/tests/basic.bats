@@ -10,8 +10,8 @@ TERMINUSDB_STORAGE=terminusdb-server-bats-test
 
 # LOAD QUICKSTART ENV
 # shellcheck disable=SC1091
-# shellcheck source=$(pwd)/terminusdb-container 
-source "$(pwd)/terminusdb-container" nop 
+# shellcheck source=$(pwd)/terminusdb-container
+source "$(pwd)/terminusdb-container" nop
 set +o allexport
 
 PATH="${BATS_TEST_DIRNAME}/stubs:$PATH"
@@ -93,7 +93,7 @@ inspect_volume() {
   sleep 10
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
   export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
-  npx cypress run --reporter tap --spec 'cypress/integration/tests/login.spec.js' >&3
+  npx cypress run >&3
   fuser -k 53005/tcp || true
 }
 
