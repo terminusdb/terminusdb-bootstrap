@@ -56,6 +56,7 @@ inspect_volume() {
 }
 
 @test "quickstart attach" {
+  command -v expect || skip
   run expect "${BATS_TEST_DIRNAME}/expect/attach.exp"
   [[ "${status}" == 0 ]]
 }
@@ -71,12 +72,15 @@ inspect_volume() {
   case "${TERMINUSDB_QUICKSTART_BRANCH}" in
     dev)
       TERMINUSDB_CONSOLE_BRANCH=dev
+      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-dev" > .npmrc
     ;;
     canary)
       TERMINUSDB_CONSOLE_BRANCH=canary
+      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-canary" > .npmrc
     ;;
     *)
       TERMINUSDB_CONSOLE_BRANCH=master
+      rm .npmrc || true
   esac
   git checkout "${TERMINUSDB_CONSOLE_BRANCH}"
   git pull
@@ -87,14 +91,8 @@ inspect_volume() {
 
 @test "terminusdb console tests" {
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
-  cd console/dist
-  fuser -k 53005/tcp || true
-  npx http-server -p 53005 &
-  sleep 10
-  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
   export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
-  npx cypress run >&3
-  fuser -k 53005/tcp || true
+  npx cypress run --reporter=tap --config video=false >&3
 }
 
 @test "quickstart stop" {
