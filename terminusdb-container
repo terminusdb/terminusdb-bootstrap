@@ -133,7 +133,6 @@ if [[ -z "$TERMINUSDB_LOCAL" ]]; then
   TERMINUSDB_QUICKSTART_MOUNT_LOCAL=""
  else
   TERMINUSDB_QUICKSTART_MOUNT_LOCAL="-v \"$TERMINUSDB_LOCAL\":/app/local_files"
-  printf "\nMOUNT \"%s\" \nTO \"/app/local_files\"\n" "$TERMINUSDB_LOCAL"
 fi
 
 #

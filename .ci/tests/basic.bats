@@ -78,6 +78,9 @@ inspect_volume() {
       TERMINUSDB_CONSOLE_BRANCH=canary
       echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-canary" > .npmrc
     ;;
+    rc)
+      TERMINUSDB_CONSOLE_BRANCH=rc
+      rm .npmrc || true
     *)
       TERMINUSDB_CONSOLE_BRANCH=master
       rm .npmrc || true
