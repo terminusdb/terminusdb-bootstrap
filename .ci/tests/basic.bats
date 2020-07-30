@@ -7,6 +7,9 @@ TERMINUSDB_BATS_CONSOLE_REPO="${BATS_TEST_DIRNAME}/../build/terminusdb-console"
 TERMINUSDB_PORT=56363
 TERMINUSDB_CONTAINER="terminusdb-server-bats-test"
 TERMINUSDB_STORAGE=terminusdb-server-bats-test
+TERMINUSDB_LOCAL="${TERMINUSDB_BATS_CONSOLE_REPO}/csvs"
+
+mkdir -p "$TERMINUSDB_LOCAL" || true
 
 # LOAD QUICKSTART ENV
 # shellcheck disable=SC1091
@@ -81,10 +84,12 @@ inspect_volume() {
     rc)
       TERMINUSDB_CONSOLE_BRANCH=rc
       rm .npmrc || true
+    ;;
     *)
       TERMINUSDB_CONSOLE_BRANCH=master
       rm .npmrc || true
   esac
+  git stash || true
   git checkout "${TERMINUSDB_CONSOLE_BRANCH}"
   git pull
   npm install
