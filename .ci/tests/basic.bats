@@ -1,4 +1,5 @@
 set -o allexport
+
 # SET TEST ENV
 TERMINUSDB_IGNORE_ENV=true
 TERMINUSDB_HTTPS_ENABLED=true
@@ -15,6 +16,7 @@ mkdir -p "$TERMINUSDB_LOCAL" || true
 # shellcheck disable=SC1091
 # shellcheck source=$(pwd)/terminusdb-container
 source "$(pwd)/terminusdb-container" nop
+
 set +o allexport
 
 PATH="${BATS_TEST_DIRNAME}/stubs:$PATH"
@@ -83,7 +85,7 @@ inspect_volume() {
     ;;
     rc)
       TERMINUSDB_CONSOLE_BRANCH=rc
-      rm .npmrc || true
+      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-rc" > .npmrc
     ;;
     *)
       TERMINUSDB_CONSOLE_BRANCH=master
@@ -97,10 +99,71 @@ inspect_volume() {
   [[ "${status}" == 0 ]]
 }
 
-@test "terminusdb console tests" {
+@test "terminusdb console login" {
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
   export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
-  npx cypress run --reporter=tap --config video=false >&3
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/login.spec.js
+}
+
+@test "terminusdb console hub login" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  npx cypress run --reporter=tap --config video=false >&3 --env \
+    baseUrl="${TERMINUSDB_QUICKSTART_CONSOLE}/" \
+    password=root \
+	  userName=Sarah \
+    userNamePassword= \
+	  auth0Url=https://terminushub.eu.auth0.com/oauth/token \
+	  role=https://hub-dev.dcm.ist/api/role \
+    tests/loginAuth0.spec.js
+}
+
+@test "terminusdb console branching" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_branching.spec.js
+}
+
+@test "terminusdb console clone local" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_clone_a_local_db.spec.js
+}
+
+@test "terminusdb console db life cycle" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_db_life_cycle.spec.js
+}
+
+@test "terminusdb acceptance episode 1" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_episode_1.spec.js
+}
+
+@test "terminusdb acceptance episode 2 part 1" {
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_episode_2_part_1.spec.js
+}
+
+@test "terminusdb acceptance episode 2 part 2" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_episode_2_part_1.spec.js
 }
 
 @test "quickstart stop" {
