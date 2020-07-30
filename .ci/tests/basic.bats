@@ -1,17 +1,22 @@
 set -o allexport
+
 # SET TEST ENV
 TERMINUSDB_IGNORE_ENV=true
+TERMINUSDB_HTTPS_ENABLED=true
 TERMINUSDB_AUTOLOGIN=false
 TERMINUSDB_BATS_CONSOLE_REPO="${BATS_TEST_DIRNAME}/../build/terminusdb-console"
-TERMINUSDB_CONSOLE_BASE_URL=//127.0.0.1:53005
 TERMINUSDB_PORT=56363
 TERMINUSDB_CONTAINER="terminusdb-server-bats-test"
 TERMINUSDB_STORAGE=terminusdb-server-bats-test
+TERMINUSDB_LOCAL="${TERMINUSDB_BATS_CONSOLE_REPO}/csvs"
+
+mkdir -p "$TERMINUSDB_LOCAL" || true
 
 # LOAD QUICKSTART ENV
 # shellcheck disable=SC1091
 # shellcheck source=$(pwd)/terminusdb-container
 source "$(pwd)/terminusdb-container" nop
+
 set +o allexport
 
 PATH="${BATS_TEST_DIRNAME}/stubs:$PATH"
@@ -56,6 +61,7 @@ inspect_volume() {
 }
 
 @test "quickstart attach" {
+  command -v expect || skip
   run expect "${BATS_TEST_DIRNAME}/expect/attach.exp"
   [[ "${status}" == 0 ]]
 }
@@ -71,13 +77,21 @@ inspect_volume() {
   case "${TERMINUSDB_QUICKSTART_BRANCH}" in
     dev)
       TERMINUSDB_CONSOLE_BRANCH=dev
+      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-dev" > .npmrc
     ;;
     canary)
       TERMINUSDB_CONSOLE_BRANCH=canary
+      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-canary" > .npmrc
+    ;;
+    rc)
+      TERMINUSDB_CONSOLE_BRANCH=rc
+      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-rc" > .npmrc
     ;;
     *)
       TERMINUSDB_CONSOLE_BRANCH=master
+      rm .npmrc || true
   esac
+  git stash || true
   git checkout "${TERMINUSDB_CONSOLE_BRANCH}"
   git pull
   npm install
@@ -85,16 +99,71 @@ inspect_volume() {
   [[ "${status}" == 0 ]]
 }
 
-@test "terminusdb console tests" {
-  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
-  cd console/dist
-  fuser -k 53005/tcp || true
-  npx http-server -p 53005 &
-  sleep 10
+@test "terminusdb console login" {
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
   export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
-  npx cypress run >&3
-  fuser -k 53005/tcp || true
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/login.spec.js
+}
+
+@test "terminusdb console hub login" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  npx cypress run --reporter=tap --config video=false >&3 --env \
+    baseUrl="${TERMINUSDB_QUICKSTART_CONSOLE}/" \
+    password=root \
+	  userName=Sarah \
+    userNamePassword= \
+	  auth0Url=https://terminushub.eu.auth0.com/oauth/token \
+	  role=https://hub-dev.dcm.ist/api/role \
+    tests/loginAuth0.spec.js
+}
+
+@test "terminusdb console branching" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_branching.spec.js
+}
+
+@test "terminusdb console clone local" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_clone_a_local_db.spec.js
+}
+
+@test "terminusdb console db life cycle" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_db_life_cycle.spec.js
+}
+
+@test "terminusdb acceptance episode 1" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_episode_1.spec.js
+}
+
+@test "terminusdb acceptance episode 2 part 1" {
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_episode_2_part_1.spec.js
+}
+
+@test "terminusdb acceptance episode 2 part 2" {
+  skip
+  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
+  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
+  npx cypress run --reporter=tap --config video=false >&3 \
+    --spec cypress/integration/tests/test_episode_2_part_1.spec.js
 }
 
 @test "quickstart stop" {
