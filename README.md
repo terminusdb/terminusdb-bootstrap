@@ -122,7 +122,7 @@ Ready to terminate? Open the TerminusDB Console in your web browser.
 ./terminusdb-container console
 ```
 
-Or go here: http://localhost:6363/console
+Or go here: http://localhost:6363/
 
 ### To stop, attach, etc, see usage
 ```
@@ -136,9 +136,7 @@ USAGE:
   stop        stop container
   console     launch console in web browser
   attach      attach to prolog shell
-  stats       show container stats
-  rm-config   remove config volume
-  rm-storage  remove storage volume
+  exec        execeute a command inside the container
   rm          remove volumes
 ```
 
@@ -276,7 +274,7 @@ See the source code to find the other environment variables that can be set.
 
 ## Using Docker Compose
 
-As an alternative to using the terminusdb-countainer script, you could use Docker Compose instead, using the example [docker-compose.yml](./docker-compose.yml)
+As an alternative to using the terminusdb-countainer script, you could use Docker Compose instead, using the example [docker-compose.yml](./docker-compose.example.yml)
 
 Install [Docker Compose](https://docs.docker.com/compose/install/).
 
