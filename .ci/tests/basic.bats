@@ -78,7 +78,7 @@ inspect_volume() {
     git checkout -b "${TERMINUSDB_QUICKSTART_BRANCH}" --track origin/"${TERMINUSDB_QUICKSTART_BRANCH}"
   else
     cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
-    git checkout "${TERMINUSDB_CONSOLE_BRANCH}" || true
+    git checkout "${TERMINUSDB_QUICKSTART_BRANCH}" || true
     git pull || true
   fi
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
