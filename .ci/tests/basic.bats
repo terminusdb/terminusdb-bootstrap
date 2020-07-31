@@ -105,7 +105,6 @@ inspect_volume() {
 }
 
 @test "terminusdb console login" {
-  skip
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
   export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
   npx cypress run --reporter=tap --config video=false >&3 \
@@ -155,22 +154,6 @@ inspect_volume() {
   export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
   npx cypress run --reporter=tap --config video=false >&3 \
     --spec cypress/integration/tests/test_episode_1.spec.js
-}
-
-@test "terminusdb acceptance episode 2 part 1" {
-  skip
-  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
-  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
-  npx cypress run --reporter=tap --config video=false >&3 \
-    --spec cypress/integration/tests/test_episode_2_part_1.spec.js
-}
-
-@test "terminusdb acceptance episode 2 part 2" {
-  skip
-  cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
-  export CYPRESS_BASE_URL="${TERMINUSDB_QUICKSTART_CONSOLE}/"
-  npx cypress run --reporter=tap --config video=false >&3 \
-    --spec cypress/integration/tests/test_episode_2_part_1.spec.js
 }
 
 @test "quickstart stop" {
