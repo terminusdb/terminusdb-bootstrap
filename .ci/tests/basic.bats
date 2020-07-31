@@ -67,7 +67,12 @@ inspect_volume() {
 }
 
 @test "terminusdb console build" {
-  TERMINUSDB_QUICKSTART_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  if [[ -z "$TRAVIS_BRANCH" ]]; then
+    TERMINUSDB_QUICKSTART_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  else
+    TERMINUSDB_QUICKSTART_BRANCH="$TRAVIS_BRANCH"
+  fi
+
   if [[ ! -d "${TERMINUSDB_BATS_CONSOLE_REPO}/cypress" ]]; then
     mkdir -p "${TERMINUSDB_BATS_CONSOLE_REPO}" || true
     cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
