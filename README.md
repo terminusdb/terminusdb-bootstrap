@@ -274,7 +274,7 @@ See the source code to find the other environment variables that can be set.
 
 ## Using Docker Compose
 
-As an alternative to using the terminusdb-countainer script, you could use Docker Compose instead, using the example [docker-compose.yml](./docker-compose.yml)
+As an alternative to using the terminusdb-countainer script, you could use Docker Compose instead, using the example [docker-compose.yml](./docker-compose.example.yml)
 
 Install [Docker Compose](https://docs.docker.com/compose/install/).
 
