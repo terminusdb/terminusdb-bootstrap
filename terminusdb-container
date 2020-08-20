@@ -74,7 +74,7 @@ else
   esac
 fi
 
-if [[ "$OSTYPE" == "darwin" || "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
+if [[  "$(uname)" == "Darwin" || "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
   TERMINUSDB_QUICKSTART_DOCKER_DEFAULT="docker"
 elif command -v sudo >/dev/null; then
   TERMINUSDB_QUICKSTART_DOCKER_DEFAULT="sudo docker"
