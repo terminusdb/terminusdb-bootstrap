@@ -10,6 +10,7 @@ See release notes in [TerminusDB Console](https://github.com/terminusdb/terminus
 - Add build and end-to-end tests for TerminusdB console.
 - Add improved importing of environment variables in tests.
 - run TerminusDB server tests from bats tests.
+- run cypress tests in bats
 
 # TerminusDB Quickstart Version 2.0 Release Notes
 
