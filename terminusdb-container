@@ -70,7 +70,7 @@ else
       TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@v2.0.6/console/dist/"
     ;;
     "v3.0.0")
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@v3.0.1/console/dist/"
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@v3.0.0/console/dist/"
     ;;
     *)
       TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@${TERMINUSDB_QUICKSTART_TAG}/console/dist/"
