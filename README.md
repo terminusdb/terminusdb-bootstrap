@@ -67,12 +67,6 @@ install sudo and confugure their sudoers file accordingly.
 
 Windows users do not need to do anything here.
 
-### Docker Compose
-
-You may choose to deploy using [`Docker Compose`](https://docs.docker.com/compose/).
-If you do, you will need to install the `docker-compose` command, which you can 
-learn about here: https://docs.docker.com/compose/install/#install-compose
-
 ## Installing
 
 ### Get this repo, cd to it
