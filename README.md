@@ -22,7 +22,6 @@ What the heck is TerminusDB? See here: https://terminusdb.com
   * [Docker](#Docker)
   * [Git](#Git)
   * [Sudo](#Sudo)
-  * [Docker Compose](#Docker-Compose) (optional)
 * [Installing](#Installing)
   * [Get the repo](#Get-this-repo-cd-to-it)
   * [Run the container by using the script](#Run-the-container-by-using-the-script-the-first-time)
@@ -79,8 +78,8 @@ learn about here: https://docs.docker.com/compose/install/#install-compose
 ### Get this repo, cd to it
 
 ```
-git clone https://github.com/terminusdb/terminusdb-quickstart
-cd terminusdb-quickstart
+git clone https://github.com/terminusdb/terminusdb-bootstrap
+cd terminusdb-bootstrap
 ```
 
 ### Run the container by using the script (the first time)
@@ -153,7 +152,7 @@ done by setting enviroment variables.
 
 ## Security
 
-TerminusDB Quickstart has HTTPS turned off by default to avoid scary security
+TerminusDB Bootstrap has HTTPS turned off by default to avoid scary security
 warnings since it's impossible to responsibly provide a valid SSL certificate
 for localhost.
 
@@ -278,7 +277,7 @@ As an alternative to using the terminusdb-countainer script, you could use Docke
 
 Install [Docker Compose](https://docs.docker.com/compose/install/).
 
-Run `docker-compose up -d` in the `terminusdb-quickstart` repo to deploy the
+Run `docker-compose up -d` in the `terminusdb-bootstrap` repo to deploy the
 `terminusdb-server` container. Run `docker-compose down` to remove the container
 while preserving the named data volume, or `docker-compose down -v` to also
 destroy the data volume.
