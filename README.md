@@ -43,6 +43,11 @@ running.
 On Windows and Mac, Docker Desktop can be downloaded here:
 https://www.docker.com/products/docker-desktop
 
+Note that on Windows, the default memory allowed for Docker is 2GB. Since this
+is an in-memory database, bigger databases require more memory. Therefore
+raise the default allowed memory usage to a higher value in the Docker Desktop
+settings.
+
 On Linux, use your distro's package manager, or find more information here:
 https://www.docker.com/products/container-runtime
 
