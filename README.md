@@ -270,14 +270,3 @@ TERMINUSDB_DOCKER="podman" ./terminusdb-container [COMMAND]
 
 See the source code to find the other environment variables that can be set.
 
-## Using Docker Compose
-
-As an alternative to using the terminusdb-countainer script, you could use Docker Compose instead, using the example [docker-compose.yml](./docker-compose.example.yml)
-
-Install [Docker Compose](https://docs.docker.com/compose/install/).
-
-Run `docker-compose up -d` in the `terminusdb-bootstrap` repo to deploy the
-`terminusdb-server` container. Run `docker-compose down` to remove the container
-while preserving the named data volume, or `docker-compose down -v` to also
-destroy the data volume.
-
