@@ -31,7 +31,6 @@ What the heck is TerminusDB? See here: https://terminusdb.com
   * [Security](#Security)
   * [`ENV` File](#ENV-file)
   * [`ENV` Examples](#ENV-Examples)
-* [Using Docker Compose](#Using-Docker-Compose)
 
 ## Prerequisites
 
