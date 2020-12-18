@@ -119,7 +119,7 @@ Ready to terminate? Open the TerminusDB Console in your web browser.
 ./terminusdb-container console
 ```
 
-Or go here: http://localhost:6363/
+Or go here: https://127.0.0.1:6363/
 
 ### To stop, attach, etc, see usage
 ```
@@ -140,7 +140,7 @@ USAGE:
 That's it! You're ready to go!
 
 Oh, and flattery motivates us, please give us a star here:
-https://github.com/terminusdb/terminusdb-server
+https://github.com/terminusdb/terminusdb
 
 # Using The Enviroment
 
