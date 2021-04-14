@@ -133,7 +133,7 @@ USAGE:
   stop        stop container
   console     launch console in web browser
   attach      attach to prolog shell
-  exec        execeute a command inside the container
+  exec        execute a command inside the container
   rm          remove volumes
 ```
 
