@@ -87,23 +87,6 @@ inspect_volume() {
     git pull || true
   fi
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
-  case "${TERMINUSDB_QUICKSTART_BRANCH}" in
-    dev)
-      TERMINUSDB_CONSOLE_BRANCH=dev
-      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-dev" > .npmrc
-    ;;
-    canary)
-      TERMINUSDB_CONSOLE_BRANCH=canary
-      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-canary" > .npmrc
-    ;;
-    rc)
-      TERMINUSDB_CONSOLE_BRANCH=rc
-      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-rc" > .npmrc
-    ;;
-    *)
-      TERMINUSDB_CONSOLE_BRANCH=master
-      rm .npmrc || true
-  esac
   npm install
   run npm run build
   [[ "${status}" == 0 ]]
