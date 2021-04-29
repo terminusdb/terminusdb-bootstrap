@@ -19,7 +19,7 @@ TERMINUSDB_QUICKSTART_CONTAINER=${TERMINUSDB_CONTAINER:-terminusdb-server}
 TERMINUSDB_QUICKSTART_REPOSITORY=${TERMINUSDB_REPOSITORY:-terminusdb/terminusdb-server}
 
 # Version
-TERMINUSDB_QUICKSTART_TAG=${TERMINUSDB_TAG:-dev}
+TERMINUSDB_QUICKSTART_TAG=${TERMINUSDB_TAG:-canary}
 
 # Volumes
 TERMINUSDB_QUICKSTART_STORAGE=${TERMINUSDB_STORAGE:-terminusdb_storage}
@@ -58,13 +58,13 @@ if [[ -n $TERMINUSDB_CONSOLE_BASE_URL ]]; then
 else
   case "$TERMINUSDB_QUICKSTART_TAG" in
     "rc")
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/rc"
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://cdn.terminusdb.com/js_libs/terminusdb_console/rc"
     ;;
     "canary")
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/canary"
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://cdn.terminusdb.com/js_libs/terminusdb_console/canary"
     ;;
     "dev")
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dl.bintray.com/terminusdb/terminusdb/dev"
+      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://cdn.terminusdb.com/js_libs/terminusdb_console/dev"
     ;;
     *)
       TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://unpkg.com/@terminusdb/terminusdb-console@${TERMINUSDB_QUICKSTART_TAG}/console/dist/"
