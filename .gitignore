@@ -1,4 +1,7 @@
 ENV
+.ENV.swp
+local_file
+ENV.old
 _bats_log
 .ci/build
 package-lock.json
