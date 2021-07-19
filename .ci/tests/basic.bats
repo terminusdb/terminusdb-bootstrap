@@ -2,7 +2,6 @@ set -o allexport
 
 # SET TEST ENV
 TERMINUSDB_IGNORE_ENV=true
-TERMINUSDB_HTTPS_ENABLED=true
 TERMINUSDB_AUTOLOGIN_ENABLED=false
 TERMINUSDB_BATS_CONSOLE_REPO="${BATS_TEST_DIRNAME}/../build/terminusdb-console"
 TERMINUSDB_PORT=56363
@@ -152,7 +151,7 @@ inspect_volume() {
 }
 
 @test "terminusdb server tests" {
-  $TERMINUSDB_QUICKSTART_DOCKER run --rm -e TERMINUSDB_HTTPS_ENABLED=false "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" bash -c "./terminusdb store init --key root && ./terminusdb test"
+  $TERMINUSDB_QUICKSTART_DOCKER run --rm "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" bash -c "./terminusdb store init --key root && ./terminusdb test"
 }
 
 @test "quickstart rm" {

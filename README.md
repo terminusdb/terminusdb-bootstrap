@@ -151,37 +151,12 @@ done by setting enviroment variables.
 
 ## Security
 
-TerminusDB Bootstrap has HTTPS turned off by default to avoid scary security
-warnings since it's impossible to responsibly provide a valid SSL certificate
-for localhost.
-
 To prevent accidental insecure deployments, the Docker container binds to the
 IP 127.0.0.1 and therefore the server will only be accessible on the local
 machine, and not from any other machine over the network.
 
-If you would like to deploy to a server, you will need to enable HTTPS, and
-then accept the browser security warning about the self signed cert.
-
-You can enable HTTPS with the `TERMINUSDB_HTTPS_ENABLED` environment
-variable.
-
-```
-TERMINUSDB_HTTPS_ENABLED=true ./terminusdb-container run
-```
-
-This will work out of the box using the self-signed cert that ships with
-TerminusDB Server. However, this certificate will require that you accept the
-certificate as it is considered insecure by your browser.
-
-To eliminate the browser security warning so that you do not need to accept the
-certificate, simply provide a valid certificate and set the path to the cert
-and key with environment variables like in this example:
-
-```
-TERMINUSDB_HTTPS_ENABLED=true
-TERMINUSDB_SSL_CERT=/etc/letsencrypt/live/example.com/fullchain.pem
-TERMINUSDB_SSL_CERT_KEY=/etc/letsencrypt/live/example.com/privkey.pem
-```
+If you would like to deploy to a server, you will need to enable HTTPS by
+putting TerminusDB behind a reverse proxy.
 
 To make your server available across the network you will also need to set `TERMINUSDB_AUTOLOGIN` to false
 
@@ -219,9 +194,6 @@ follow these steps:
 | TERMINUSDB_AUTOLOGIN        | false                                                                       | Whether the administration console should automatically login |
 | TERMINUSDB_CONSOLE          | http://127.0.0.1/console                                                    | URL for browser top open console                              |
 | TERMINUSDB_CONSOLE_BASE_URL | https://unpkg.com/@terminusdb/terminusdb-console@SOME_VERSION/console/dist/ | URL to hosted console                                         |
-| TERMINUSDB_HTTPS_ENABLED    | false                                                                       | Enable HTTPS                                                  |
-| TERMINUSDB_SSL_CERT         | A self signed cert                                                          | Path to SSL cert inside terminusdb-server container           |
-| TERMINUSDB_SSL_CERT_KEY     | A self-created private key                                                  | Path to private key for SSL cert inside container             |
 
 ## Examples
 
