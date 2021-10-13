@@ -2,7 +2,6 @@ set -o allexport
 
 # SET TEST ENV
 TERMINUSDB_IGNORE_ENV=true
-TERMINUSDB_HTTPS_ENABLED=true
 TERMINUSDB_AUTOLOGIN_ENABLED=false
 TERMINUSDB_BATS_CONSOLE_REPO="${BATS_TEST_DIRNAME}/../build/terminusdb-console"
 TERMINUSDB_PORT=56363
@@ -87,23 +86,6 @@ inspect_volume() {
     git pull || true
   fi
   cd "${TERMINUSDB_BATS_CONSOLE_REPO}"
-  case "${TERMINUSDB_QUICKSTART_BRANCH}" in
-    dev)
-      TERMINUSDB_CONSOLE_BRANCH=dev
-      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-dev" > .npmrc
-    ;;
-    canary)
-      TERMINUSDB_CONSOLE_BRANCH=canary
-      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-canary" > .npmrc
-    ;;
-    rc)
-      TERMINUSDB_CONSOLE_BRANCH=rc
-      echo "@terminusdb:registry=https://api.bintray.com/npm/terminusdb/npm-rc" > .npmrc
-    ;;
-    *)
-      TERMINUSDB_CONSOLE_BRANCH=master
-      rm .npmrc || true
-  esac
   npm install
   run npm run build
   [[ "${status}" == 0 ]]
@@ -169,7 +151,7 @@ inspect_volume() {
 }
 
 @test "terminusdb server tests" {
-  $TERMINUSDB_QUICKSTART_DOCKER run --rm -e TERMINUSDB_HTTPS_ENABLED=false "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" bash -c "./terminusdb store init --key root && swipl -g run_tests -g halt ./start.pl"
+  $TERMINUSDB_QUICKSTART_DOCKER run --rm "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" bash -c "./terminusdb store init --key root && ./terminusdb test"
 }
 
 @test "quickstart rm" {
