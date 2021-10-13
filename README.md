@@ -111,16 +111,6 @@ This will delete storage volume
 Are you sure? [y/N] y
 ```
 
-### Using the console
-
-Ready to terminate? Open the TerminusDB Console in your web browser.
-
-```
-./terminusdb-container console
-```
-
-Or go here: https://127.0.0.1:6363/
-
 ### To stop, attach, etc, see usage
 ```
 ./terminusdb-container 
@@ -131,7 +121,6 @@ USAGE:
   help        show usage
   run         run container
   stop        stop container
-  console     launch console in web browser
   attach      attach to prolog shell
   exec        execute a command inside the container
   rm          remove volumes
@@ -156,12 +145,6 @@ machine, and not from any other machine over the network.
 
 If you would like to deploy to a server, you will need to enable HTTPS by
 putting TerminusDB behind a reverse proxy.
-
-To make your server available across the network you will also need to set `TERMINUSDB_AUTOLOGIN` to false
-
-```
-TERMINUSDB_AUTOLOGIN=false
-```
 
 ## `ENV` File
 
@@ -190,9 +173,6 @@ follow these steps:
 | TERMINUSDB_LOCAL            |                                                                             | Local folder to mount inside container                        |
 | TERMINUSDB_SERVER           | 127.0.0.1                                                                   | Server on which TerminusDB will run                           |
 | TERMINUSDB_PASS             | root                                                                        | Password for accessing TerminusDB                             |
-| TERMINUSDB_AUTOLOGIN        | false                                                                       | Whether the administration console should automatically login |
-| TERMINUSDB_CONSOLE          | http://127.0.0.1/console                                                    | URL for browser top open console                              |
-| TERMINUSDB_CONSOLE_BASE_URL | https://unpkg.com/@terminusdb/terminusdb-console@SOME_VERSION/console/dist/ | URL to hosted console                                         |
 
 ## Examples
 
@@ -222,11 +202,6 @@ TERMINUSDB_TAG=dev ./terminusdb-container [COMMAND]
 ### Using a specific release instead of latest realease
 ```
 TERMINUSDB_TAG=v1.1.2 ./terminusdb-container [COMMAND]
-```
-
-### Using a local version of  TerminusDB Console instead of the published version
-```
-TERMINUSDB_CONSOLE_BASE_URL=//127.0.0.1:3005 ./terminusdb-container [COMMAND]
 ```
 
 ### Not using sudo even when sudo is available

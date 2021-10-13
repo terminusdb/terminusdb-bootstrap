@@ -41,26 +41,7 @@ else
   TERMINUSDB_QUICKSTART_SERVER_IP="127.0.0.1"
 fi
 
-TERMINUSDB_QUICKSTART_CONSOLE=${TERMINUSDB_CONSOLE:-$TERMINUSDB_QUICKSTART_SCHEME://127.0.0.1:$TERMINUSDB_QUICKSTART_PORT/}
-
-if [[ -n $TERMINUSDB_CONSOLE_BASE_URL ]]; then
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="$TERMINUSDB_CONSOLE_BASE_URL"
-else
-  case "$TERMINUSDB_QUICKSTART_TAG" in
-    "rc")
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://cdn.terminusdb.com/js_libs/terminusdb_console/rc"
-    ;;
-    "canary")
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://cdn.terminusdb.com/js_libs/terminusdb_console/canary"
-    ;;
-    "dev")
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://cdn.terminusdb.com/js_libs/terminusdb_console/dev"
-    ;;
-    *)
-      TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL="https://dcm.ist/console/${TERMINUSDB_QUICKSTART_TAG}"
-    ;;
-  esac
-fi
+TERMINUSDB_URL="$TERMINUSDB_QUICKSTART_SCHEME://127.0.0.1:$TERMINUSDB_QUICKSTART_PORT/"
 
 if [[  "$(uname)" == "Darwin" || "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
   TERMINUSDB_QUICKSTART_DOCKER_DEFAULT="docker"
@@ -146,7 +127,6 @@ USAGE:
   help        show usage
   run         run container
   stop        stop container
-  console     launch console in web browser
   attach      attach to prolog shell
   exec        execeute a command inside the container
   rm          remove volumes\n"
@@ -185,7 +165,6 @@ _run () {
     "$TERMINUSDB_QUICKSTART_SET_NETWORK" \
     "-e TERMINUSDB_SERVER_PORT=6363" \
     "$TERMINUSDB_QUICKSTART_JWKS_ENV" \
-    "-e TERMINUSDB_CONSOLE_BASE_URL=\"$TERMINUSDB_QUICKSTART_CONSOLE_BASE_URL\"" \
     "-e TERMINUSDB_ADMIN_PASS=\"$TERMINUSDB_QUICKSTART_PASS\"" \
     "-e TERMINUSDB_AUTOLOGIN_ENABLED=\"$TERMINUSDB_QUICKSTART_AUTOLOGIN\"" \
     "-e TERMINUSDB_JWT_ENABLED=\"$TERMINUSDB_QUICKSTART_JWT_ENABLED\"" \
@@ -224,15 +203,6 @@ _rm () {
  fi
 }
 
-_console () {
-
-if command -v python >/dev/null; then
-  python -m webbrowser "$TERMINUSDB_QUICKSTART_CONSOLE"
-else
-  printf "\nopen %s in your browser\n" "$TERMINUSDB_QUICKSTART_CONSOLE"
-fi
-}
-
 _serve () {
 if command -v python >/dev/null; then
   python -m http.server 8888
@@ -259,17 +229,13 @@ if [[ -n "$1" ]]; then
       # _build
       version_check
       _run > /dev/null \
-        && printf "terminusdb-server container started %s\n" "$TERMINUSDB_QUICKSTART_CONSOLE" \
+        && printf "terminusdb-server container started %s\n" "$TERMINUSDB_URL" \
         || printf "\nIs the container already running?\n"
     ;;
     "stop")
       _stop > /dev/null \
         && printf "terminusdb-server container stopped\n" \
         || printf "\nIs the container running?\n"
-    ;;
-    "console")
-      _console \
-        || printf "this command requires python\n"
     ;;
     "attach")
       printf "Ctrl+p Ctrl+q to detach\n\n"
