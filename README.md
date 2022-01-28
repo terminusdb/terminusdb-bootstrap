@@ -1,20 +1,29 @@
-```
+[![TerminusDB Bootstrap](https://assets.terminusdb.com/readmes/terminusdb-bootstrap/header.gif)][terminusdb]
 
-████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗██╗   ██╗███████╗██████╗ ██████╗ 
-╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██║   ██║██╔════╝██╔══██╗██╔══██╗
-   ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║██║   ██║███████╗██║  ██║██████╔╝
-   ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██║   ██║╚════██║██║  ██║██╔══██╗
-   ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝███████║██████╔╝██████╔╝
-   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝╚═════╝ ╚═════╝ 
+---
 
-```
+[![Discord](https://img.shields.io/discord/689805612053168129?label=Discord&logo=Discord&style=plastic)](https://discord.gg/yTJKAma)
+[![Discourse](https://img.shields.io/discourse/topics?color=yellow&logo=Discourse&server=https%3A%2F%2Fdiscuss.terminusdb.com%2F&style=plastic)](https://discuss.terminusdb.com/)
+[![Twitter](https://img.shields.io/twitter/follow/terminusdb?color=skyblue&label=Follow%20on%20Twitter&logo=twitter&style=flat)](https://twitter.com/TerminusDB)
 
-# TerminusDB Server Container Control
+[![build status](https://img.shields.io/github/workflow/status/terminusdb/terminusdb-bootstrap/CI?logo=github)](https://github.com/terminusdb/terminusdb-bootstrap/actions)
+[![license](https://img.shields.io/github/license/terminusdb/terminusdb-bootstrap?color=pink&logo=apache)](https://github.com/terminusdb/terminusdb-bootstrap/blob/main/LICENSE)
 
-This is a simple convenience script to run terminusdb-server as a docker
-container.
+> Script for running TerminusDB with Docker.
 
-What the heck is TerminusDB? See here: https://terminusdb.com
+[**TerminusDB**][terminusdb] is an [open-source][terminusdb-repo] graph database
+and document store. It allows you to link JSON documents in a powerful knowledge
+graph all through a simple document API.
+
+[terminusdb]: https://terminusdb.com/
+[terminusdb-repo]: https://github.com/terminusdb/terminusdb
+
+In case you don't want to run TerminusDB yourself, try out **TerminusX**, a
+hosted data platform, built on TerminusDB, that allows you to build, deploy,
+execute, monitor, and share versioned data products. TerminusX is in public beta
+and you can [sign up now][dashboard].
+
+[dashboard]: https://dashboard.terminusdb.com/ 
 
 ## Table of Contents
 
