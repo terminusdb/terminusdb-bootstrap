@@ -54,12 +54,6 @@ fi
 
 TERMINUSDB_QUICKSTART_DOCKER=${TERMINUSDB_DOCKER:-$TERMINUSDB_QUICKSTART_DOCKER_DEFAULT}
 
-if ! command -v "$TERMINUSDB_QUICKSTART_DOCKER" > /dev/null; then
-  printf "Sadly, we tried to find '%s', but we don't know where it is.\n" \
-    "$TERMINUSDB_QUICKSTART_DOCKER"
-  exit 1
-fi
-
 function remove_old_volumes {
   read -p "Are you sure? [y/N] " -r -n 1
   printf "\n"    # (optional) move to a new line
@@ -111,6 +105,14 @@ fi
 #
 # FUNCTIONS
 #
+
+_check_if_docker_is_in_path () {
+  if ! command -v "$TERMINUSDB_QUICKSTART_DOCKER" > /dev/null; then
+    printf "Error! Sadly, we tried to find '%s', but we don't know where it is.\n" \
+      "$TERMINUSDB_QUICKSTART_DOCKER"
+    exit 1
+  fi
+}
 
 # Run platform check
 _platform_check () {
@@ -227,10 +229,6 @@ _platform_check
 # PROCESS ARGS
 #
 
-if [[ $1 != "nop" ]]; then
-  printf "\n"
-fi
-
 if [[ -n "$1" ]]; then
   case "$1" in
     "help")
@@ -238,26 +236,31 @@ if [[ -n "$1" ]]; then
     ;;
     "run")
       # _build
+      _check_if_docker_is_in_path
       version_check
       _run > /dev/null \
         && printf "terminusdb-server container started %s\n" "$TERMINUSDB_URL" \
         || printf "\nIs the container already running?\n"
     ;;
     "stop")
+      _check_if_docker_is_in_path
       _stop > /dev/null \
         && printf "terminusdb-server container stopped\n" \
         || printf "\nIs the container running?\n"
     ;;
     "attach")
+      _check_if_docker_is_in_path
       printf "Ctrl+p Ctrl+q to detach\n\n"
       _attach
     ;;
     "rm")
+      _check_if_docker_is_in_path
       printf "This will delete storage volume\n"
       _rm \
         || printf "\nIs the container stopped?\n"
     ;;
     "exec")
+      _check_if_docker_is_in_path
       if [[ -n "$2" ]]; then
         # shellcheck disable=SC2124
         TERMINUSDB_RUN_CMD="${@:2}"
@@ -270,20 +273,16 @@ if [[ -n "$1" ]]; then
       true
     ;;
     "serve")
+      _check_if_docker_is_in_path
       _serve
     ;;
     *)
-      printf "invalid command\n\n"
+      printf "Error! Command unknown: %s\n\n" "$1"
       _usage
     ;;
   esac
 else
   _usage
 fi
-
-if [[ $1 != "nop" ]]; then
-  printf "\n"
-fi
-
 
 # vim:ft=sh
