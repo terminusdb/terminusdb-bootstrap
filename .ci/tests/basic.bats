@@ -16,9 +16,7 @@ fi
 # shellcheck source=$(pwd)/terminusdb-container
 source "$(pwd)/terminusdb-container" nop
 
-echo "*** Running..."
-"$TERMINUSDB_QUICKSTART_DOCKER"
-echo "*** Done."
+_check_if_docker_is_in_path
 
 set +o allexport
 
