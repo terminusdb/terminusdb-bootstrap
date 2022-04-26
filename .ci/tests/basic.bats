@@ -16,6 +16,10 @@ fi
 # shellcheck source=$(pwd)/terminusdb-container
 source "$(pwd)/terminusdb-container" nop
 
+echo "*** Running..."
+"$TERMINUSDB_QUICKSTART_DOCKER"
+echo "*** Done."
+
 set +o allexport
 
 PATH="${BATS_TEST_DIRNAME}/stubs:$PATH"
