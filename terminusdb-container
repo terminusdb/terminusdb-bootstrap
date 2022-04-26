@@ -279,6 +279,7 @@ if [[ -n "$1" ]]; then
     *)
       printf "Error! Command unknown: %s\n\n" "$1"
       _usage
+      exit 1
     ;;
   esac
 else
