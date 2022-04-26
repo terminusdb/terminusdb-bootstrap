@@ -7,12 +7,16 @@ TERMINUSDB_PORT=56363
 TERMINUSDB_CONTAINER="terminusdb-server-bats-test"
 TERMINUSDB_STORAGE=terminusdb-server-bats-test
 
-mkdir -p "$TERMINUSDB_LOCAL" || true
+if [[ -n "$TERMINUSDB_LOCAL" ]]; then
+  mkdir -p "$TERMINUSDB_LOCAL"
+fi
 
 # LOAD QUICKSTART ENV
 # shellcheck disable=SC1091
 # shellcheck source=$(pwd)/terminusdb-container
 source "$(pwd)/terminusdb-container" nop
+
+_check_if_docker_is_in_path
 
 set +o allexport
 
