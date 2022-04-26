@@ -59,65 +59,38 @@ container.
 To use `terminusdb-container`, you mainly need:
 
 * [Bash][bash]
-* [Docker][install_docker]
+* [Docker][install_docker] or [Podman][install_podman]
 * [Git][install_git]
 
 [bash]: https://www.gnu.org/software/bash/
 [install_docker]: https://docs.docker.com/get-docker/
-[install_git]: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+[install_podman]: https://podman.io/getting-started/installation
+[install_git]: https://git-scm.com/downloads
 
-### Docker
+There are few other standard command-line tools used by the script, but if you
+have the above, those should be available.
 
-Since this script uses the TerminusDB Docker container, you need to have Docker
-running.
+> :memo: **A note on the `docker` command.** Depending on your system,
+> `terminusdb-container` may run `sudo docker` or `docker`. If you prefer a
+> different command, set the environment variable `$TERMINUSDB_DOCKER`.
 
-On Windows and Mac, Docker Desktop can be downloaded here:
-https://www.docker.com/products/docker-desktop
+Clone this repository:
 
-Note that on Windows, the default memory allowed for Docker is 2GB. Since this
-is an in-memory database, bigger databases require more memory. Therefore
-raise the default allowed memory usage to a higher value in the Docker Desktop
-settings.
-
-On Linux, use your distro's package manager, or find more information here:
-https://www.docker.com/products/container-runtime
-
-### Git
-
-This script is distributed via GitHub, so you will need git to clone and update
-it, if you don't already have git, you can download it here:
-https://git-scm.com/downloads
-
-Windows users should use the application "Git Bash" for all terminal commands
-described below, this application comes with Git for Windows.
-
-### Sudo
-
-Sudo is optional. As letting unprivileged users run docker is insecure, this
-script uses sudo by default if it is available. 
-
-Most users will not need to do anything here, sudo is installed by default on
-Macs and many populer Linux distros such as Fedora, Red Hat, Debian, Ubuntu and
-Mint. Linux users who use minmal distros such as Archlinux, are advised to
-install sudo and confugure their sudoers file accordingly.
-
-Windows users do not need to do anything here.
-
-## Installing
-
-### Get this repo, cd to it
-
-```
+```sh
 git clone https://github.com/terminusdb/terminusdb-bootstrap
 cd terminusdb-bootstrap
 ```
 
-### Run the container by using the script (the first time)
+Run the script with `run`:
+
+```sh
+./terminusdb-container run
+```
+
+You will see output like this:
 
 ```
-./terminusdb-container run
-
-Unable to find image 'terminusdb/terminusdb-server:latest' locally
+Unable to find image 'terminusdb.docker.scarf.sh/terminusdb/terminusdb-server:latest' locally
 latest: Pulling from terminusdb/terminusdb-server
 8f91359f1fff: Pulling fs layer
 939634dec138: Pulling fs layer
