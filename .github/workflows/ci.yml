@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TERMINUSDB_SUDO:
+      TERMINUSDB_SUDO: ""
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
