@@ -16,8 +16,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Install expect
-        run: sudo apt-get install expect
+      - name: Install docker and expect
+        run: sudo apt-get install docker expect
 
       - name: Install bats for testing
         run: sudo npm install -g bats
