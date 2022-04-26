@@ -28,5 +28,9 @@ jobs:
       - name: Run shellcheck
         run: shellcheck ./terminusdb-container
 
+      - run: id -u
+
+      - run: docker
+
       - name: Run tests with bats
         run: bats .ci/tests/basic.bats
