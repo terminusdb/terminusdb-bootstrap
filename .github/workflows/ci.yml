@@ -26,6 +26,4 @@ jobs:
         run: shellcheck ./terminusdb-container
 
       - name: Run tests with bats
-        run: |
-          sudo docker
-          bats .ci/tests/basic.bats
+        run: bats .ci/tests/basic.bats
