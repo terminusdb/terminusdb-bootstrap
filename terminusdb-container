@@ -155,10 +155,7 @@ _confirm() {
 }
 
 _run () {
-  if [[ $TERMINUSDB_QUICKSTART_TAG == "latest" \
-        || $TERMINUSDB_QUICKSTART_TAG == "dev" \
-        || $TERMINUSDB_QUICKSTART_TAG == "canary" \
-        || $TERMINUSDB_QUICKSTART_TAG == "rc" ]]; then
+  if [[ $TERMINUSDB_QUICKSTART_TAG == "latest" || $TERMINUSDB_QUICKSTART_TAG == "dev" ]]; then
     $TERMINUSDB_QUICKSTART_DOCKER image rm "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" 2>/dev/null
   fi
   if [[ -z "$TERMINUSDB_QUICKSTART_JWKS" ]]; then
