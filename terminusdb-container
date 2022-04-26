@@ -55,7 +55,8 @@ fi
 TERMINUSDB_QUICKSTART_DOCKER=${TERMINUSDB_DOCKER:-$TERMINUSDB_QUICKSTART_DOCKER_DEFAULT}
 
 if ! command -v "$TERMINUSDB_QUICKSTART_DOCKER" > /dev/null; then
-  printf "Sadly, we tried to find '$TERMINUSDB_QUICKSTART_DOCKER', but we don't know where it is.\n"
+  printf "Sadly, we tried to find '%s', but we don't know where it is.\n" \
+    "$TERMINUSDB_QUICKSTART_DOCKER"
   exit 1
 fi
 
