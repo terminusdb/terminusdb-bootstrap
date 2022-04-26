@@ -41,7 +41,29 @@ and you can [sign up now][dashboard].
   * [`ENV` File](#ENV-file)
   * [`ENV` Examples](#ENV-Examples)
 
-## Prerequisites
+## What is it?
+
+The focus of this repository is the Bash script [`terminusdb-container`][script]
+that provides a convenient command-line interface to running [Docker][docker]
+commands with the TerminusDB container using the [`terminusdb/terminusdb-server`
+image][terminusdb_docker_hub]. `terminusdb-container` supports commands and
+environment variables that simplify running and accessing the TerminusDB
+container.
+
+[script]: ./terminusdb-container
+[docker]: https://www.docker.com/
+[terminusdb_docker_hub]: https://hub.docker.com/r/terminusdb/terminusdb-server
+
+## Getting started
+
+To use `terminusdb-container`, you need:
+
+* [Bash][bash]
+* Docker
+* Git
+* `sudo`
+
+[bash]: https://www.gnu.org/software/bash/
 
 ### Docker
 
