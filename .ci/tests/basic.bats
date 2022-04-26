@@ -16,9 +16,6 @@ fi
 # shellcheck source=$(pwd)/terminusdb-container
 source "$(pwd)/terminusdb-container" nop
 
-echo "TERMINUSDB_QUICKSTART_DOCKER=$TERMINUSDB_QUICKSTART_DOCKER"
-$TERMINUSDB_QUICKSTART_DOCKER
-
 set +o allexport
 
 PATH="${BATS_TEST_DIRNAME}/stubs:$PATH"
