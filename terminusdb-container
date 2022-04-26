@@ -107,7 +107,7 @@ fi
 #
 
 _check_if_docker_is_in_path () {
-  if ! "$TERMINUSDB_QUICKSTART_DOCKER" --version > /dev/null; then
+  if ! $TERMINUSDB_QUICKSTART_DOCKER --version > /dev/null; then
     printf "Error! We searched for a way to run '%s', but, sadly, we couldn't find it.\n" \
       "$TERMINUSDB_QUICKSTART_DOCKER"
     exit 1
