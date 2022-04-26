@@ -56,14 +56,15 @@ container.
 
 ## Getting started
 
-To use `terminusdb-container`, you need:
+To use `terminusdb-container`, you mainly need:
 
 * [Bash][bash]
-* Docker
-* Git
-* `sudo`
+* [Docker][install_docker]
+* [Git][install_git]
 
 [bash]: https://www.gnu.org/software/bash/
+[install_docker]: https://docs.docker.com/get-docker/
+[install_git]: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 
 ### Docker
 
