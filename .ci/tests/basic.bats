@@ -38,6 +38,14 @@ inspect_volume() {
   $TERMINUSDB_QUICKSTART_DOCKER volume inspect -f '{{.Name}}' "${TERMINUSDB_QUICKSTART_STORAGE}"
 }
 
+
+@test "quickstart cli" {
+  run container run
+  run container cli
+  [[ "${status}" == 0 ]]
+  run container stop
+}
+
 @test "quickstart run" {
   run container run
   [[ "${status}" == 0 ]]
@@ -53,13 +61,6 @@ inspect_volume() {
 @test "quickstart help" {
   run container help
   [[ "${status}" == 0 ]]
-}
-
-@test "quickstart cli" {
-  run container run
-  run container cli
-  [[ "${status}" == 0 ]]
-  run container stop
 }
 
 @test "quickstart attach" {
