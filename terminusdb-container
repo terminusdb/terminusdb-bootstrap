@@ -135,6 +135,7 @@ USAGE:
 
   help        show usage
   run         run container
+  cli         use the terminusdb cli
   stop        stop container
   attach      attach to prolog shell
   exec        execeute a command inside the container
@@ -179,6 +180,13 @@ _run () {
     "-e TERMINUSDB_AUTOLOGIN_ENABLED=\"$TERMINUSDB_QUICKSTART_AUTOLOGIN\"" \
     "-e TERMINUSDB_JWT_ENABLED=\"$TERMINUSDB_QUICKSTART_JWT_ENABLED\"" \
     "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG"
+}
+
+_cli () {
+    eval "$TERMINUSDB_QUICKSTART_DOCKER" exec -it \
+      "$TERMINUSDB_QUICKSTART_CONTAINER" \
+      "./terminusdb" \
+      "$TERMINUSDB_RUN_CMD"
 }
 
 _stop () {
@@ -238,6 +246,14 @@ if [[ -n "$1" ]]; then
       _run > /dev/null \
         && printf "terminusdb-server container started %s\n" "$TERMINUSDB_URL" \
         || printf "\nIs the container already running?\n"
+    ;;
+    "cli")
+       _check_if_docker_is_in_path
+      if [[ -n "$2" ]]; then
+        # shellcheck disable=SC2124
+        TERMINUSDB_RUN_CMD="${@:2}"
+      fi
+        _cli
     ;;
     "stop")
       _check_if_docker_is_in_path

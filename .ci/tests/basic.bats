@@ -55,6 +55,15 @@ inspect_volume() {
   [[ "${status}" == 0 ]]
 }
 
+@test "quickstart cli" {
+  run container cli
+  [[ "${status}" == 0 ]]
+  run container cli --help
+  [[ "${status}" == 0 ]]
+  run container cli doc get _system
+  [[ "${status}" == 0 ]]
+}
+
 @test "quickstart attach" {
   command -v expect || skip
   run expect "${BATS_TEST_DIRNAME}/expect/attach.exp"
