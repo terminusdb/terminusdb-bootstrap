@@ -56,8 +56,10 @@ inspect_volume() {
 }
 
 @test "quickstart cli" {
+  run container run
   run container cli
   [[ "${status}" == 0 ]]
+  run container stop
 }
 
 @test "quickstart attach" {
