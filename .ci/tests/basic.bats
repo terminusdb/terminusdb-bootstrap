@@ -58,10 +58,6 @@ inspect_volume() {
 @test "quickstart cli" {
   run container cli
   [[ "${status}" == 0 ]]
-  run container cli --help
-  [[ "${status}" == 0 ]]
-  run container cli doc get _system
-  [[ "${status}" == 0 ]]
 }
 
 @test "quickstart attach" {
