@@ -183,7 +183,7 @@ _run () {
 }
 
 _cli () {
-    eval "$TERMINUSDB_QUICKSTART_DOCKER" exec -it \
+    eval "$TERMINUSDB_QUICKSTART_DOCKER" exec -i \
       "$TERMINUSDB_QUICKSTART_CONTAINER" \
       "./terminusdb" \
       "$TERMINUSDB_RUN_CMD"
