@@ -184,7 +184,8 @@ _run () {
 
 _cli () {
     EXTRA_OPTIONS=""
-    if [[ $(echo "$TERMINUSDB_RUN_CMD" | grep '^\(fetch\|clone\|push\|pull\|user\)') ]]; then
+    if echo "$TERMINUSDB_RUN_CMD" | grep -q '^\(fetch\|clone\|push\|pull\|user\)'
+    then
         EXTRA_OPTIONS="-t"
     fi
     eval "$TERMINUSDB_QUICKSTART_DOCKER" exec -i "$EXTRA_OPTIONS" \
