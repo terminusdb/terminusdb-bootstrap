@@ -171,18 +171,19 @@ follow these steps:
 
 ## ENV reference
 
-| ENV name                    | Default value                                                               | Purpose                                                       |
-|-----------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------|
-| TERMINUSDB_DOCKER           | sudo docker                                                                 | Default docker command                                        |
-| TERMINUSDB_CONTAINER        | terminusdb-server                                                           | Name of the running container                                 |
-| TERMINUSDB_REPOSITORY       | terminusdb/terminusdb-server                                                | Docker image                                                  |
-| TERMINUSDB_NETWORK          | bridge                                                                      | Docker network mode                                           |
-| TERMINUSDB_TAG              | The latest version tag of terminusdb-server                                 | TerminusDB docker image version                               |
-| TERMINUSDB_STORAGE          | terminusdb_storage_local                                                    | Storage volume name                                           |
-| TERMINUSDB_PORT             | 6363                                                                        | Port to run TerminusDB                                        |
-| TERMINUSDB_LOCAL            |                                                                             | Local folder to mount inside container                        |
-| TERMINUSDB_SERVER           | 127.0.0.1                                                                   | Server on which TerminusDB will run                           |
-| TERMINUSDB_PASS             | root                                                                        | Password for accessing TerminusDB                             |
+| ENV name                        | Default value                               | Purpose                                  |
+|---------------------------------|---------------------------------------------|------------------------------------------|
+| TERMINUSDB_DOCKER               | sudo docker                                 | Default docker command                   |
+| TERMINUSDB_CONTAINER            | terminusdb-server                           | Name of the running container            |
+| TERMINUSDB_REPOSITORY           | terminusdb/terminusdb-server                | Docker image                             |
+| TERMINUSDB_NETWORK              | bridge                                      | Docker network mode                      |
+| TERMINUSDB_TAG                  | The latest version tag of terminusdb-server | TerminusDB docker image version          |
+| TERMINUSDB_STORAGE              | terminusdb_storage_local                    | Storage volume name                      |
+| TERMINUSDB_PORT                 | 6363                                        | Port to run TerminusDB                   |
+| TERMINUSDB_LOCAL                |                                             | Local folder to mount inside container   |
+| TERMINUSDB_SERVER               | 127.0.0.1                                   | Server on which TerminusDB will run      |
+| TERMINUSDB_PASS                 | root                                        | Password for accessing TerminusDB        |
+| TERMINUSDB_DASHBOARD_LOCAL_PATH | ""                                          | Path to a local version of the dashboard |
 
 ## Examples
 
