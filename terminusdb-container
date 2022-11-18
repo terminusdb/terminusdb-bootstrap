@@ -123,9 +123,9 @@ _check_if_docker_is_in_path () {
 # Run platform check
 _platform_check () {
   PLATFORM_ARCHITECTURE=$(uname -m)
-  if [[ $PLATFORM_ARCHITECTURE != "x86_64" ]]; then
+  if [[ $PLATFORM_ARCHITECTURE != "x86_64" ]] && [[ $PLATFORM_ARCHITECTURE != "arm64" ]]; then
       printf "\
-There are no Docker images for other CPU architectures than x86_64 yet.
+There are no Docker images for other CPU architectures than x86_64 and arm64 yet.
 You can try to manually compile the components of TerminusDB by following the
 instructions on the terminusdb-server repository although other architectures are not
 officially supported yet.
