@@ -265,7 +265,7 @@ if [[ -n "$1" ]]; then
         # shellcheck disable=SC2124
         TERMINUSDB_RUN_CMD="${@:2}"
       fi
-        _cli || printf "\nError on executing the CLI command, did you forget to run the container first with the run command?"
+        _cli || printf "\nError on executing the CLI command, did you forget to run the container first with the run command? Run: ./terminusdb-container run"
     ;;
     "stop")
       _check_if_docker_is_in_path
