@@ -146,6 +146,7 @@ USAGE:
   stop        stop container
   attach      attach to prolog shell
   exec        execeute a command inside the container
+  upgrade     attempt to upgrade the storage to the latest version of terminusdb
   rm          remove volumes\n"
 }
 
@@ -243,6 +244,13 @@ else
 fi
 }
 
+_upgrade() {
+    docker run \
+           -e TERMINUSDB_QUICKSTART_STORAGE="$TERMINUSDB_QUICKSTART_STORAGE_VOLUME" \
+           -v "$TERMINUSDB_QUICKSTART_STORAGE:$TERMINUSDB_QUICKSTART_STORAGE_VOLUME:rw" \
+           terminusdb-upgrade
+}
+
 _platform_check
 #
 # PROCESS ARGS
@@ -294,7 +302,10 @@ if [[ -n "$1" ]]; then
       fi
       printf "This will exec a command on terminusdb-server\n"
       _exec \
-        || printf "\nIs the container stopped?\n"
+          || printf "\nIs the container stopped?\n"
+    ;;
+    "upgrade")
+      _upgrade
     ;;
     "nop")
       true
