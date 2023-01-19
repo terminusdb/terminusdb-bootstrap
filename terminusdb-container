@@ -95,7 +95,7 @@ Continuing will remove your existing databases.\n" "$TERMINUSDB_QUICKSTART_TAG"
      echo "Your TerminusDB store is not supported by this version of TerminusDB. Please upgrade TerminusDB."
      exit 1
   elif [ $STORAGE_VERSION -lt $EXPECTED_STORAGE_VERSION ];then
-     echo "Your store is outdated and needs to be upgraded. Run `terminusdb-container upgrade` to do so."
+     echo "Your store is outdated and needs to be upgraded. Run \`terminusdb-container upgrade\` to do so."
      exit 1
   fi
 }
@@ -209,10 +209,13 @@ retrieve_expected_storage_version() {
     esac
 }
 
-_run () {
+upgrade_image() {
   if [[ $TERMINUSDB_QUICKSTART_TAG == "latest" || $TERMINUSDB_QUICKSTART_TAG == "dev" ]]; then
     $TERMINUSDB_QUICKSTART_DOCKER image rm "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" 2>/dev/null
   fi
+}
+
+_run () {
   if [[ -z "$TERMINUSDB_QUICKSTART_JWKS" ]]; then
       TERMINUSDB_QUICKSTART_JWKS_ENV=""
   else
@@ -310,6 +313,7 @@ if [[ -n "$1" ]]; then
     "run")
       # _build
       _check_if_docker_is_in_path
+      upgrade_image
       version_check
       _run > /dev/null \
         && printf "terminusdb-server container started %s\n" "$TERMINUSDB_URL" \
