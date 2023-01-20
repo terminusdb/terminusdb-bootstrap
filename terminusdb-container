@@ -72,12 +72,12 @@ function version_check {
   # does not as prefixes are handled in a different way. Therefore
   # it is safe to assume that an existing storage volume with the
   # prefix.db is a user running an old version of TerminusDB
-  if ! $TERMINUSDB_QUICKSTART_DOCKER volume inspect $TERMINUSDB_QUICKSTART_STORAGE > /dev/null 2>&1; then
+  if ! $TERMINUSDB_QUICKSTART_DOCKER volume inspect "$TERMINUSDB_QUICKSTART_STORAGE" > /dev/null 2>&1; then
       # no volume? then it will be created later on and further checks are unnecessary
       return 0
   fi
 
-  if $TERMINUSDB_QUICKSTART_DOCKER run --rm -v $TERMINUSDB_QUICKSTART_STORAGE_VOLUME:/home/ alpine cat /home/prefix.db > /dev/null 2>&1; then
+  if $TERMINUSDB_QUICKSTART_DOCKER run --rm -v "$TERMINUSDB_QUICKSTART_STORAGE_VOLUME":/home/ alpine cat /home/prefix.db > /dev/null 2>&1; then
       printf "\
 You are running an old version of terminusdb-server. The new %s version
 uses a very different data structure which breaks backwards compatibility.
@@ -175,21 +175,22 @@ _confirm() {
           return 1
       ;;
   esac
-  printf "\n"
 }
 
 retrieve_storage_version () {
-    return `eval "$TERMINUSDB_QUICKSTART_DOCKER" run --rm \
+    # shellcheck disable=SC2046
+    return $(eval "$TERMINUSDB_QUICKSTART_DOCKER" run --rm \
       "-v \"$TERMINUSDB_QUICKSTART_STORAGE:/storage:rw\"" \
       "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" \
-    cat /storage/db/STORAGE_VERSION`
+    cat /storage/db/STORAGE_VERSION)
 }
 
 retrieve_terminusdb_major_version() {
-    return `eval "$TERMINUSDB_QUICKSTART_DOCKER" run --rm \
+    # shellcheck disable=SC2046
+    return $(eval "$TERMINUSDB_QUICKSTART_DOCKER" run --rm \
       "-v \"$TERMINUSDB_QUICKSTART_STORAGE:/storage:rw\"" \
       "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" \
-      ./terminusdb --version|grep 'TerminusDB v'|sed 's|.*TerminusDB v\([[:digit:]]\+\).*|\1|'`
+      ./terminusdb --version|grep 'TerminusDB v'|sed 's|.*TerminusDB v\([[:digit:]]\+\).*|\1|')
 }
 
 retrieve_expected_storage_version() {
@@ -263,12 +264,6 @@ _restart () {
 
 _attach () {
   $TERMINUSDB_QUICKSTART_DOCKER attach "$TERMINUSDB_QUICKSTART_CONTAINER"
-}
-
-_rm () {
- if _confirm; then
-    $TERMINUSDB_QUICKSTART_DOCKER volume rm "$TERMINUSDB_QUICKSTART_STORAGE"
- fi
 }
 
 _exec () {
