@@ -59,7 +59,7 @@ function remove_old_volumes {
   read -p "Are you sure? [y/N] " -r -n 1
   printf "\n"    # (optional) move to a new line
   if [[ $REPLY =~ ^[Yy]$ ]]; then
-      if ! $TERMINUSDB_QUICKSTART_DOCKER volume rm terminus_config terminus_storage; then
+      if ! $TERMINUSDB_QUICKSTART_DOCKER volume rm terminus_config $TERMINUSDB_QUICKSTART_STORAGE_VOLUME; then
           printf "Could not remove volumes. Are you running an existing container of TerminusDB? Stop it first.\n"
       fi
   else
@@ -72,16 +72,31 @@ function version_check {
   # does not as prefixes are handled in a different way. Therefore
   # it is safe to assume that an existing storage volume with the
   # prefix.db is a user running an old version of TerminusDB
-  if ! $TERMINUSDB_QUICKSTART_DOCKER volume inspect terminus_storage > /dev/null 2>&1; then
+  if ! $TERMINUSDB_QUICKSTART_DOCKER volume inspect "$TERMINUSDB_QUICKSTART_STORAGE" > /dev/null 2>&1; then
+      # no volume? then it will be created later on and further checks are unnecessary
       return 0
   fi
 
-  if $TERMINUSDB_QUICKSTART_DOCKER run --rm -v terminus_storage:/home/ alpine cat /home/prefix.db > /dev/null 2>&1; then
+  if $TERMINUSDB_QUICKSTART_DOCKER run --rm -v "$TERMINUSDB_QUICKSTART_STORAGE_VOLUME":/home/ alpine cat /home/prefix.db > /dev/null 2>&1; then
       printf "\
 You are running an old version of terminusdb-server. The new %s version
 uses a very different data structure which breaks backwards compatibility.
 Continuing will remove your existing databases.\n" "$TERMINUSDB_QUICKSTART_TAG"
       remove_old_volumes
+  fi
+
+  # Any other case will be handled by comparing storage version
+  retrieve_storage_version
+  STORAGE_VERSION=$?
+  retrieve_expected_storage_version
+  EXPECTED_STORAGE_VERSION=$?
+
+  if [ $STORAGE_VERSION -gt $EXPECTED_STORAGE_VERSION ];then
+     echo "Your TerminusDB store is not supported by this version of TerminusDB. Please upgrade TerminusDB."
+     exit 1
+  elif [ $STORAGE_VERSION -lt $EXPECTED_STORAGE_VERSION ];then
+     echo "Your store is outdated and needs to be upgraded. Run \`terminusdb-container upgrade\` to do so."
+     exit 1
   fi
 }
 
@@ -146,6 +161,7 @@ USAGE:
   stop        stop container
   attach      attach to prolog shell
   exec        execeute a command inside the container
+  upgrade     attempt to upgrade the storage to the latest version of terminusdb
   rm          remove volumes\n"
 }
 
@@ -159,13 +175,48 @@ _confirm() {
           return 1
       ;;
   esac
-  printf "\n"
 }
 
-_run () {
+retrieve_storage_version () {
+    # shellcheck disable=SC2046
+    return $(eval "$TERMINUSDB_QUICKSTART_DOCKER" run --rm \
+      "-v \"$TERMINUSDB_QUICKSTART_STORAGE:/storage:rw\"" \
+      "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" \
+    cat /storage/db/STORAGE_VERSION)
+}
+
+retrieve_terminusdb_major_version() {
+    # shellcheck disable=SC2046
+    return $(eval "$TERMINUSDB_QUICKSTART_DOCKER" run --rm \
+      "-v \"$TERMINUSDB_QUICKSTART_STORAGE:/storage:rw\"" \
+      "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" \
+      ./terminusdb --version|grep 'TerminusDB v'|sed 's|.*TerminusDB v\([[:digit:]]\+\).*|\1|')
+}
+
+retrieve_expected_storage_version() {
+    retrieve_terminusdb_major_version
+    MAJOR_VERSION=$?
+    case $MAJOR_VERSION in
+        10)
+            return 1
+            ;;
+        11)
+            return 2
+            ;;
+        *)
+            echo "TerminusDB version $MAJOR_VERSION is not supported by bootstrap"
+            exit 1
+            ;;
+    esac
+}
+
+upgrade_image() {
   if [[ $TERMINUSDB_QUICKSTART_TAG == "latest" || $TERMINUSDB_QUICKSTART_TAG == "dev" ]]; then
     $TERMINUSDB_QUICKSTART_DOCKER image rm "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" 2>/dev/null
   fi
+}
+
+_run () {
   if [[ -z "$TERMINUSDB_QUICKSTART_JWKS" ]]; then
       TERMINUSDB_QUICKSTART_JWKS_ENV=""
   else
@@ -197,7 +248,7 @@ _cli () {
     then
         EXTRA_OPTIONS="-t"
     fi
-    eval "$TERMINUSDB_QUICKSTART_DOCKER" exec -i "$EXTRA_OPTIONS" \
+    eval "$TERMINUSDB_QUICKSTART_DOCKER"  -i "$EXTRA_OPTIONS" \
       "$TERMINUSDB_QUICKSTART_CONTAINER" \
       "./terminusdb" \
       "$TERMINUSDB_RUN_CMD"
@@ -213,12 +264,6 @@ _restart () {
 
 _attach () {
   $TERMINUSDB_QUICKSTART_DOCKER attach "$TERMINUSDB_QUICKSTART_CONTAINER"
-}
-
-_rm () {
- if _confirm; then
-    $TERMINUSDB_QUICKSTART_DOCKER volume rm "$TERMINUSDB_QUICKSTART_STORAGE"
- fi
 }
 
 _exec () {
@@ -243,6 +288,13 @@ else
 fi
 }
 
+_upgrade() {
+    docker run \
+           -e TERMINUSDB_QUICKSTART_STORAGE="$TERMINUSDB_QUICKSTART_STORAGE_VOLUME" \
+           -v "$TERMINUSDB_QUICKSTART_STORAGE:$TERMINUSDB_QUICKSTART_STORAGE_VOLUME:rw" \
+           terminusdb/terminusdb-upgrade
+}
+
 _platform_check
 #
 # PROCESS ARGS
@@ -256,6 +308,7 @@ if [[ -n "$1" ]]; then
     "run")
       # _build
       _check_if_docker_is_in_path
+      upgrade_image
       version_check
       _run > /dev/null \
         && printf "terminusdb-server container started %s\n" "$TERMINUSDB_URL" \
@@ -294,7 +347,10 @@ if [[ -n "$1" ]]; then
       fi
       printf "This will exec a command on terminusdb-server\n"
       _exec \
-        || printf "\nIs the container stopped?\n"
+          || printf "\nIs the container stopped?\n"
+    ;;
+    "upgrade")
+      _upgrade
     ;;
     "nop")
       true
