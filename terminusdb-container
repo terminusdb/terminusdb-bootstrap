@@ -190,7 +190,7 @@ retrieve_terminusdb_major_version() {
     return $(eval "$TERMINUSDB_QUICKSTART_DOCKER" run --rm \
       "-v \"$TERMINUSDB_QUICKSTART_STORAGE:/storage:rw\"" \
       "$TERMINUSDB_QUICKSTART_REPOSITORY:$TERMINUSDB_QUICKSTART_TAG" \
-      ./terminusdb --version|grep 'TerminusDB v'|sed 's|.*TerminusDB v\([[:digit:]]\+\).*|\1|')
+      ./terminusdb --version|grep 'TerminusDB v'|perl -pe 's|TerminusDB v([0-9]+).*|\1|')
 }
 
 retrieve_expected_storage_version() {
