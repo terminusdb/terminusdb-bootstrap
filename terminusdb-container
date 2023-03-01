@@ -289,7 +289,7 @@ fi
 }
 
 _upgrade() {
-    docker run \
+    $TERMINUSDB_QUICKSTART_DOCKER run \
            -e TERMINUSDB_QUICKSTART_STORAGE="$TERMINUSDB_QUICKSTART_STORAGE_VOLUME" \
            -v "$TERMINUSDB_QUICKSTART_STORAGE:$TERMINUSDB_QUICKSTART_STORAGE_VOLUME:rw" \
            terminusdb/terminusdb-upgrade
