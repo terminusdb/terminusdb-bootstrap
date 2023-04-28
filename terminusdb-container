@@ -292,7 +292,7 @@ _upgrade() {
     $TERMINUSDB_QUICKSTART_DOCKER run \
            -e TERMINUSDB_QUICKSTART_STORAGE="$TERMINUSDB_QUICKSTART_STORAGE_VOLUME" \
            -v "$TERMINUSDB_QUICKSTART_STORAGE:$TERMINUSDB_QUICKSTART_STORAGE_VOLUME:rw" \
-           terminusdb/terminusdb-upgrade
+           --rm terminusdb/terminusdb-upgrade
 }
 
 _platform_check
