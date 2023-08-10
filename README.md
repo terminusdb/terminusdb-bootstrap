@@ -6,6 +6,7 @@
 
 The preferred method of running TerminusDB locally is by using `docker compose`. The Docker image can be used to run TerminusDB
 on servers whereas the docker compose is the preferred method of running TerminusDB and its TerminusCMS components locally.
+See the main [TerminusDB repository](https://github.com/terminusdb/terminusdb) and our [documentation](https://terminusdb.com/docs/] for more information.
 
 [![Discord](https://img.shields.io/discord/689805612053168129?label=Discord&logo=Discord&style=plastic)](https://discord.gg/yTJKAma)
 [![Reddit](https://img.shields.io/reddit/subreddit-subscribers/TerminusDB?style=social)](https://www.reddit.com/r/TerminusDB/)
