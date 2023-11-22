@@ -1,6 +1,3 @@
-# This project is deprecated 
-## You can use the docker compose file distributed with [TerminusDB](https://github.com/terminusdb/terminusdb) to achieve the same ends
-
 [![TerminusDB Bootstrap](https://assets.terminusdb.com/readmes/terminusdb-bootstrap/header.gif)][terminusdb]
 
 ---
