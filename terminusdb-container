@@ -295,6 +295,9 @@ _upgrade() {
            --rm terminusdb/terminusdb-upgrade
 }
 
+printf "\nTERMINUSDB-BOOTSTRAP IS DEPRECATED. Use the docker compose in the main TerminusDB repository instead or check our "
+printf "documentation regarding server and Kubernetes deployments\n\n"
+
 _platform_check
 #
 # PROCESS ARGS
